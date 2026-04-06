@@ -188,15 +188,7 @@ var DAYS = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 var CAL_TARGET = 1800;
 var WEIGHT_START = 317.0;
 
-var DEFAULT_EX = {
-  Sun: {type:"Power Zone", dur:55},
-  Mon: {type:"Rest", dur:0},
-  Tue: {type:"Ride", dur:55},
-  Wed: {type:"Accelerator", dur:40},
-  Thu: {type:"Rest", dur:0},
-  Fri: {type:"Endurance", dur:55},
-  Sat: {type:"Endurance", dur:70}
-};
+var DEFAULT_EX = {}; // No defaults — enter actual ride each day
 
 var _mem = {};
 var store = {
@@ -223,8 +215,8 @@ function getWeekRange() {
 function emptyDay(day) {
   return {
     weight:"", calories:"", protein:"", carbs:"", fat:"", sodium:"",
-    exerciseType: DEFAULT_EX[day] ? DEFAULT_EX[day].type : "Rest",
-    exerciseDuration: DEFAULT_EX[day] ? DEFAULT_EX[day].dur : 0,
+    exerciseType: "",
+    exerciseDuration: "",
     alcoholDrinks:"", notes:""
   };
 }
@@ -395,7 +387,7 @@ function parsePaste(text) {
   r.fat       = num(/\bfat[:\s]+([\d.]+)/i)     || num(/([\d.]+)\s*g?\s*fat/i);
   r.sodium    = num(/sodium[:\s]+(\d+)/i)       || num(/(\d+)\s*mg/i);
   r.weight    = num(/weight[:\s]+([\d.]+)/i)    || num(/([\d.]+)\s*lbs?/i);
-  r.alcoholDrinks = num(/(\d+)\s*drink/i)       || num(/alcohol[:\s]+(\d+)/i);
+  r.alcoholDrinks = num(/drinks?[:\s]+(\d+)/i) || num(/alcohol[:\s]+(\d+)/i) || num(/(\d+)\s*drink/i) || num(/(\d+)\s*cocktail/i) || num(/(\d+)\s*beer/i) || num(/(\d+)\s*glass/i);
   var types = ["power zone endurance","power zone","accelerator","endurance","tabata","intervals","climb","rest","ride"];
   for (var i=0; i<types.length; i++) {
     if (lo.indexOf(types[i]) !== -1) {
