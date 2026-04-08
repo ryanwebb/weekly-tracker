@@ -662,34 +662,32 @@ function showSettingsModal() {
     + '<div class="settings-field"><div class="settings-label">JSONBin API Key</div>'
     + '<input class="settings-input" id="jbApiKey" type="password" placeholder="$2a$10$..." value="' + (s.apiKey||"") + '" autocapitalize="none" autocorrect="off"/>'
     + '<div class="settings-hint">From jsonbin.io → Account → API Keys → Master Key</div></div>'
-    + (configured
-        ? '<div class="settings-field"><div class="settings-label">Bin ID</div>'
-          + '<input class="settings-input" id="jbBinId" type="text" value="' + (s.binId||"") + '" readonly style="color:var(--muted)"/>'
-          + '<div class="settings-hint">Auto-created. Don\'t change this.</div></div>'
-        : '')
+    + '<div class="settings-field"><div class="settings-label">Bin ID</div>'
+    + '<input class="settings-input" id="jbBinId" type="text" placeholder="Leave blank to auto-create" value="' + (s.binId||"") + '" autocapitalize="none" autocorrect="off"/>'
+    + '<div class="settings-hint">On your main device: tap ⚙️ to find your Bin ID and paste it here.</div></div>'
     + '<button class="btn-settings-save" onclick="connectJSONBin()">'
       + (configured ? 'Re-test Connection' : 'Connect JSONBin') + '</button>'
     + (configured ? '<button class="btn-settings-clear" onclick="disconnectSync()">Disconnect Sync</button>' : '')
     + '<div style="margin-top:20px;padding-top:16px;border-top:0.5px solid var(--border)">'
-    + '<div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px">How to set up (2 min)</div>'
+    + '<div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px">Setting up on a new device?</div>'
     + '<div style="font-size:13px;color:var(--text2);line-height:1.8">'
-    + '1. Go to <b>jsonbin.io</b> and create a free account<br>'
-    + '2. Click your avatar → <b>API Keys</b><br>'
-    + '3. Copy your <b>Master Key</b><br>'
-    + '4. Paste it above and tap Connect<br>'
-    + '<span style="color:var(--muted)">A private bin is created automatically — nothing else needed.</span>'
+    + '1. On your main device, tap ⚙️<br>'
+    + '2. Copy the <b>Bin ID</b> shown there<br>'
+    + '3. Paste your API Key + Bin ID here and tap Connect<br>'
+    + '<span style="color:var(--muted)">First time setup: just paste API key and leave Bin ID blank.</span>'
     + '</div></div>';
   openModal("☁️ Cloud Sync", html);
 }
 
 async function connectJSONBin() {
   var apiKey = document.getElementById("jbApiKey").value.trim();
+  var enteredBinId = document.getElementById("jbBinId").value.trim();
   if (!apiKey) { showToast("Paste your API key first"); return; }
   var s = loadSyncSettings();
-  var binId = s.binId || null;
+  // Use entered bin ID > existing saved bin ID > create new
+  var binId = enteredBinId || s.binId || null;
   setSyncStatus("saving", "Connecting...");
   showToast("Connecting...");
-  // If no bin yet, create one
   if (!binId) {
     binId = await jbCreateBin(apiKey);
     if (!binId) {
@@ -705,9 +703,12 @@ async function connectJSONBin() {
     closeModalDirect();
     showToast("✓ Cloud sync connected!");
     setSyncStatus("ok", "Connected to JSONBin");
-    saveWeek(); // push current data up
+    // Load data from cloud into this device
+    loadFromCloud().then(function(loaded) {
+      if (loaded) { renderAll(); openDay = DAYS[todayIdx()]; renderDays(); }
+    });
   } else {
-    showToast("❌ Connection failed — check API key");
+    showToast("❌ Connection failed — check API key and Bin ID");
     setSyncStatus("error", "Connection failed");
   }
 }
