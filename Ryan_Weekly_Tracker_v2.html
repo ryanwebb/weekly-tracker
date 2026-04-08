@@ -88,7 +88,7 @@
   .ring-center { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; }
 
   /* ── WEIGHT SPARKLINE CARD ── */
-  .sparkline-card { background: var(--card); border-radius: var(--radius); padding: 14px 16px; min-width: 160px; flex-shrink: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.08); cursor: pointer; }
+  .sparkline-card { background: var(--card); border-radius: var(--radius); padding: 14px 16px; min-width: 180px; flex-shrink: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.08); cursor: pointer; }
   .sparkline-card:active { transform: scale(0.96); }
   .sparkline-svg { display: block; margin-top: 6px; }
 
@@ -366,6 +366,20 @@ var MILESTONES = [
   {label:"Under 250", weight:250},
   {label:"Under 240", weight:240},
   {label:"Goal: 230",  weight:230}
+];
+
+// Full weight history — add new entries each week
+var WEIGHT_HISTORY = [
+  {date:"2025-11-01", weight:317.0},
+  {date:"2026-01-23", weight:302.0},
+  {date:"2026-01-29", weight:300.5},
+  {date:"2026-02-05", weight:297.0},
+  {date:"2026-02-26", weight:292.5},
+  {date:"2026-03-24", weight:288.5},
+  {date:"2026-03-25", weight:287.5},
+  {date:"2026-03-26", weight:284.2},
+  {date:"2026-04-02", weight:283.3},
+  {date:"2026-04-05", weight:279.3}
 ];
 
 // ── ZEPBOUND CONFIG ─────────────────────────────────────
@@ -966,24 +980,39 @@ function showRidesModal() {
   openModal("Rides This Week", html);
 }
 function showWeightModal() {
+  var allWeights = getAllWeights();
+  var curWt = allWeights[allWeights.length-1].weight;
+  var totalLost = (WEIGHT_START - curWt).toFixed(1);
+  // This week delta
   var wtDays = [];
   for (var i=0; i<DAYS.length; i++) { if (week[DAYS[i]].weight) wtDays.push(DAYS[i]); }
-  if (!wtDays.length) { openModal("Weight", '<p class="detail-empty">No weight logged yet</p>'); return; }
-  var first=parseFloat(week[wtDays[0]].weight), last=parseFloat(week[wtDays[wtDays.length-1]].weight);
-  var weekDelta=(last-first).toFixed(1), totalLost=(WEIGHT_START-last).toFixed(1);
+  var weekDelta = wtDays.length >= 2
+    ? (parseFloat(week[wtDays[wtDays.length-1]].weight) - parseFloat(week[wtDays[0]].weight)).toFixed(1)
+    : "—";
   var html = '<div class="wt-stat-row">'
-    + '<div class="wt-stat"><div class="wt-stat-val">'+last+'</div><div class="wt-stat-lbl">Current</div></div>'
-    + '<div class="wt-stat"><div class="wt-stat-val" style="color:'+(weekDelta<=0?"#34c759":"#ff3b30")+'">'+(weekDelta<=0?"":"+")+weekDelta+'</div><div class="wt-stat-lbl">This Week</div></div>'
-    + '<div class="wt-stat"><div class="wt-stat-val">−'+totalLost+'</div><div class="wt-stat-lbl">From Start</div></div>'
+    + '<div class="wt-stat"><div class="wt-stat-val">'+curWt+'</div><div class="wt-stat-lbl">Current</div></div>'
+    + '<div class="wt-stat"><div class="wt-stat-val" style="color:'+(weekDelta!=="—"&&parseFloat(weekDelta)<=0?"#34c759":"#ff3b30")+'">'+(weekDelta!=="—"&&parseFloat(weekDelta)>0?"+":"")+weekDelta+'</div><div class="wt-stat-lbl">This Week</div></div>'
+    + '<div class="wt-stat"><div class="wt-stat-val">−'+totalLost+'</div><div class="wt-stat-lbl">Total Lost</div></div>'
     + '</div>';
-  for (var i=0; i<wtDays.length; i++) {
-    var day=wtDays[i], wt=parseFloat(week[day].weight);
-    var delta=i>0?(wt-parseFloat(week[wtDays[i-1]].weight)).toFixed(1):null;
-    var deltaText=delta!==null?((delta<=0?"":"+")+ delta+" lbs"):"week start";
-    html += '<div class="wt-row"><div><div class="wt-date">'+day+'</div></div>'
-      + '<div style="text-align:right"><div class="wt-val">'+wt+' lbs</div><div class="wt-delta">'+deltaText+'</div></div></div>';
+  html += '<div style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;padding:12px 0 8px">Full History</div>';
+  // Show all history points newest first
+  var reversed = allWeights.slice().reverse();
+  for (var i=0; i<reversed.length; i++) {
+    var pt = reversed[i];
+    var prev = i < reversed.length-1 ? reversed[i+1] : null;
+    var delta = prev ? (pt.weight - prev.weight).toFixed(1) : null;
+    var deltaText = delta !== null ? ((parseFloat(delta)<=0?"":"+") + delta + " lbs") : "start";
+    var deltaColor = delta !== null ? (parseFloat(delta)<=0?"var(--green)":"var(--red)") : "var(--muted)";
+    var d = new Date(pt.date + "T12:00:00");
+    var label = d.toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"});
+    html += '<div class="wt-row">'
+      + '<div><div class="wt-date">'+label+'</div></div>'
+      + '<div style="text-align:right">'
+      + '<div class="wt-val">'+pt.weight+' lbs</div>'
+      + '<div class="wt-delta" style="color:'+deltaColor+'">'+deltaText+'</div>'
+      + '</div></div>';
   }
-  openModal("Weight This Week", html);
+  openModal("Weight History", html);
 }
 function showDrinksModal() {
   var drinkDays=[], total=0;
@@ -1048,23 +1077,60 @@ function applyParsed(day,parsed,mode) {
   }
 }
 
+// ── WEIGHT HISTORY ───────────────────────────────────────
+function getAllWeights() {
+  // Merge WEIGHT_HISTORY with any new weights logged this week
+  var points = WEIGHT_HISTORY.slice(); // copy
+  // Get this week's Sunday date
+  var sunday = getSundayKey();
+  for (var i=0; i<DAYS.length; i++) {
+    var d = week[DAYS[i]];
+    if (!d.weight) continue;
+    var dayDate = new Date(sunday);
+    dayDate.setDate(dayDate.getDate() + i);
+    var dateStr = dayDate.toISOString().slice(0,10);
+    // Only add if not already in history
+    var exists = false;
+    for (var j=0; j<points.length; j++) { if (points[j].date === dateStr) { exists=true; break; } }
+    if (!exists) points.push({date: dateStr, weight: parseFloat(d.weight)});
+  }
+  // Sort by date
+  points.sort(function(a,b){ return a.date < b.date ? -1 : 1; });
+  return points;
+}
+
 // ── SPARKLINE ───────────────────────────────────────────
-function buildSparkline(weights) {
-  if (weights.length < 2) return '<svg width="80" height="30" class="sparkline-svg"><text x="40" y="18" text-anchor="middle" font-size="10" fill="#8e8e93">—</text></svg>';
+function buildSparkline(weightPoints) {
+  // weightPoints: array of {date, weight}
+  if (!weightPoints || weightPoints.length < 2) {
+    return '<svg width="120" height="36" class="sparkline-svg"><text x="60" y="20" text-anchor="middle" font-size="10" fill="#8e8e93">—</text></svg>';
+  }
+  var weights = weightPoints.map(function(p){ return p.weight; });
   var min=weights[0], max=weights[0];
   for (var i=1;i<weights.length;i++){if(weights[i]<min)min=weights[i];if(weights[i]>max)max=weights[i];}
   var range=max-min||1;
-  var W=80, H=30, pad=3;
+  var W=120, H=36, padX=4, padY=4;
   var pts=weights.map(function(w,i){
-    var x=pad+(i/(weights.length-1))*(W-pad*2);
-    var y=H-pad-(((w-min)/range)*(H-pad*2));
+    var x=padX+(i/(weights.length-1))*(W-padX*2);
+    var y=H-padY-(((w-min)/range)*(H-padY*2));
     return x.toFixed(1)+","+y.toFixed(1);
   });
   var last=weights[weights.length-1];
   var prev=weights[weights.length-2];
   var color=last<=prev?"#34c759":"#ff3b30";
+  // Draw goal line at 230
+  var goalY = H-padY-(((230-min)/range)*(H-padY*2));
+  var goalLine = "";
+  if (230 >= min && 230 <= max) {
+    goalLine = '<line x1="'+padX+'" y1="'+goalY.toFixed(1)+'" x2="'+(W-padX)+'" y2="'+goalY.toFixed(1)+'" stroke="#e5e5ea" stroke-width="1" stroke-dasharray="3,2"/>';
+  }
+  // Dot at latest point
+  var lastX = padX + ((weights.length-1)/(weights.length-1))*(W-padX*2);
+  var lastY = H-padY-(((last-min)/range)*(H-padY*2));
   return '<svg width="'+W+'" height="'+H+'" class="sparkline-svg">'
+    + goalLine
     +'<polyline points="'+pts.join(" ")+'" fill="none" stroke="'+color+'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'
+    +'<circle cx="'+lastX.toFixed(1)+'" cy="'+lastY.toFixed(1)+'" r="3" fill="'+color+'"/>'
     +'</svg>';
 }
 
@@ -1095,10 +1161,9 @@ function renderSummary() {
   var R=20, C=2*Math.PI*R, dash=pct*C;
   var rc=avgCal>CAL_TARGET?"#ff3b30":avgCal>CAL_TARGET*0.9?"#ff9500":"#34c759";
 
-  // Sparkline weights
-  var wtVals=[];
-  for(var i=0;i<DAYS.length;i++){if(week[DAYS[i]].weight)wtVals.push(parseFloat(week[DAYS[i]].weight));}
-  var sparkHtml=buildSparkline(wtVals);
+  // Full weight history sparkline
+  var allWeights = getAllWeights();
+  var sparkHtml = buildSparkline(allWeights);
 
   // Avg sodium
   var sodiumDays=[];
@@ -1125,9 +1190,12 @@ function renderSummary() {
     +'<div class="s-label">Rides</div>'
     +'<div class="s-value" style="color:#af52de">'+rides.length+'</div>'
     +'<div class="s-sub">'+totalMins+' min total</div></div>'
-    +'<div class="sparkline-card" onclick="showWeightModal()">'
-    +'<div class="s-label">Weight</div>'
+    +'<div class="sparkline-card" onclick="showWeightModal()" style="min-width:180px">'
+    +'<div style="display:flex;justify-content:space-between;align-items:flex-start">'
+    +'<div><div class="s-label">Weight</div>'
     +'<div class="s-value" style="color:#34c759;font-size:20px">'+curWt+'</div>'
+    +'<div class="s-sub">−'+lost+' lbs total</div></div>'
+    +'</div>'
     + sparkHtml
     +'</div>'
     +'<div class="summary-card" onclick="showSodiumModal()">'
