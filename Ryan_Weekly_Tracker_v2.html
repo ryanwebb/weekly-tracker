@@ -637,13 +637,34 @@ function saveWeek() {
   setSyncStatus("saving", "Saving...");
   clearTimeout(_syncTimer);
   _syncTimer = setTimeout(async function() {
-    // Read current cloud record, update this week's slot, write back
+    // Read current cloud record first
     var record = await jbRead() || { weeks: {}, zeplog: [] };
     if (!record.weeks) record.weeks = {};
-    record.weeks[storageKey()] = week;
+    // Merge: take cloud week as base, then overlay any days that have data locally
+    // This prevents wiping days that were logged on another session
+    var cloudWeek = record.weeks[storageKey()] || {};
+    var merged = {};
+    for (var i=0; i<DAYS.length; i++) {
+      var day = DAYS[i];
+      var local = week[day];
+      var cloud = cloudWeek[day] || emptyDay();
+      // Prefer whichever day has more data (calories logged = real data)
+      if (local && local.calories !== "") {
+        merged[day] = local;
+      } else if (cloud && cloud.calories !== "") {
+        merged[day] = cloud;
+      } else {
+        merged[day] = local || emptyDay();
+      }
+    }
+    // Update local week with merged result
+    week = merged;
+    store.set(storageKey(), JSON.stringify(week));
+    record.weeks[storageKey()] = merged;
     var ok = await jbWrite(record);
     if (ok) {
       setSyncStatus("ok", "Synced · " + new Date().toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit"}));
+      renderAll();
     } else {
       setSyncStatus("error", "Sync failed — saved locally");
     }
