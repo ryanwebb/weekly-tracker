@@ -560,9 +560,11 @@ var store = {
   remove: function(k) { try { localStorage.removeItem(k); } catch(e) { delete _mem[k]; } }
 };
 function getSundayKey() {
-  var n = new Date(), s = new Date(n);
-  s.setDate(n.getDate() - n.getDay());
-  return s.toISOString().slice(0,10);
+  var n = new Date();
+  var s = new Date(n.getFullYear(), n.getMonth(), n.getDate() - n.getDay());
+  var mm = String(s.getMonth()+1).padStart(2,"0");
+  var dd = String(s.getDate()).padStart(2,"0");
+  return s.getFullYear() + "-" + mm + "-" + dd;
 }
 function storageKey() { return "ryan_tracker_v2_" + getSundayKey(); }
 
@@ -632,35 +634,30 @@ async function jbCreateBin(apiKey) {
 // ── SAVE / LOAD ──────────────────────────────────────────
 // Debounced save — writes to localStorage immediately, syncs to JSONBin after 1.5s idle
 function saveWeek() {
-  store.set(storageKey(), JSON.stringify(week));
+  // Stamp the current time on local data so we can compare with cloud
+  var localRecord = { data: week, savedAt: Date.now() };
+  store.set(storageKey(), JSON.stringify(localRecord));
   if (!isSyncConfigured()) return;
   setSyncStatus("saving", "Saving...");
   clearTimeout(_syncTimer);
   _syncTimer = setTimeout(async function() {
-    // Read current cloud record first
     var record = await jbRead() || { weeks: {}, zeplog: [] };
     if (!record.weeks) record.weeks = {};
-    // Merge: take cloud week as base, then overlay any days that have data locally
-    // This prevents wiping days that were logged on another session
-    var cloudWeek = record.weeks[storageKey()] || {};
-    var merged = {};
-    for (var i=0; i<DAYS.length; i++) {
-      var day = DAYS[i];
-      var local = week[day];
-      var cloud = cloudWeek[day] || emptyDay();
-      // Prefer whichever day has more data (calories logged = real data)
-      if (local && local.calories !== "") {
-        merged[day] = local;
-      } else if (cloud && cloud.calories !== "") {
-        merged[day] = cloud;
-      } else {
-        merged[day] = local || emptyDay();
-      }
+    var cloudEntry = record.weeks[storageKey()] || {};
+    var cloudSavedAt = cloudEntry.savedAt || 0;
+    var localSavedAt = localRecord.savedAt;
+    var merged;
+    if (localSavedAt >= cloudSavedAt) {
+      // Local is newer — but still merge in any cloud days we don't have locally
+      merged = mergeWeeks(week, cloudEntry.data || {});
+    } else {
+      // Cloud is newer — merge local days on top only if they have data
+      merged = mergeWeeks(cloudEntry.data || {}, week);
     }
-    // Update local week with merged result
     week = merged;
-    store.set(storageKey(), JSON.stringify(week));
-    record.weeks[storageKey()] = merged;
+    var mergedRecord = { data: merged, savedAt: Date.now() };
+    store.set(storageKey(), JSON.stringify(mergedRecord));
+    record.weeks[storageKey()] = mergedRecord;
     var ok = await jbWrite(record);
     if (ok) {
       setSyncStatus("ok", "Synced · " + new Date().toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit"}));
@@ -671,21 +668,62 @@ function saveWeek() {
   }, 1500);
 }
 
+// Merge two week objects — prefer 'primary' days, fall back to 'secondary' for empty days
+function mergeWeeks(primary, secondary) {
+  var merged = {};
+  for (var i=0; i<DAYS.length; i++) {
+    var day = DAYS[i];
+    var p = primary[day];
+    var s = secondary[day] || emptyDay();
+    if (p && p.calories !== "") {
+      merged[day] = p;
+    } else if (s && s.calories !== "") {
+      merged[day] = s;
+    } else {
+      merged[day] = p || emptyDay();
+    }
+  }
+  return merged;
+}
+
 async function loadFromCloud() {
   if (!isSyncConfigured()) return false;
   setSyncStatus("saving", "Syncing...");
   var record = await jbRead();
   if (record && record.weeks && record.weeks[storageKey()]) {
-    var data = record.weeks[storageKey()];
-    for (var i=0; i<DAYS.length; i++) { if (!data[DAYS[i]]) data[DAYS[i]] = emptyDay(); }
-    week = data;
-    store.set(storageKey(), JSON.stringify(week));
+    var cloudEntry = record.weeks[storageKey()];
+    var cloudData = cloudEntry.data || cloudEntry; // handle old format without .data wrapper
+    var cloudSavedAt = cloudEntry.savedAt || 0;
+    // Compare with local
+    var localRaw = store.get(storageKey());
+    var localSavedAt = 0;
+    var localData = week;
+    if (localRaw) {
+      try {
+        var lp = JSON.parse(localRaw);
+        localSavedAt = lp.savedAt || 0;
+        localData = lp.data || lp; // handle old format
+      } catch(e) {}
+    }
+    // Merge, preferring whichever is newer
+    var merged;
+    if (cloudSavedAt >= localSavedAt) {
+      merged = mergeWeeks(cloudData, localData);
+    } else {
+      merged = mergeWeeks(localData, cloudData);
+    }
+    for (var i=0; i<DAYS.length; i++) { if (!merged[DAYS[i]]) merged[DAYS[i]] = emptyDay(); }
+    week = merged;
+    store.set(storageKey(), JSON.stringify({ data: merged, savedAt: Math.max(cloudSavedAt, localSavedAt) }));
     setSyncStatus("ok", "Synced · " + new Date().toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit"}));
     return true;
   }
   setSyncStatus("ok", "Connected — no data for this week yet");
   return false;
 }
+
+// Also update loadWeek to handle new format with .data wrapper
+
 
 function showSettingsModal() {
   var s = loadSyncSettings();
@@ -777,8 +815,10 @@ function loadWeek() {
     var raw = store.get(storageKey());
     if (raw) {
       var p = JSON.parse(raw);
-      for (var i=0; i<DAYS.length; i++) { if (!p[DAYS[i]]) p[DAYS[i]] = emptyDay(); }
-      return p;
+      // Handle new format {data: {...}, savedAt: timestamp}
+      var d = p.data || p;
+      for (var i=0; i<DAYS.length; i++) { if (!d[DAYS[i]]) d[DAYS[i]] = emptyDay(); }
+      return d;
     }
   } catch(e) {}
   return emptyWeek();
@@ -1101,22 +1141,21 @@ function applyParsed(day,parsed,mode) {
 
 // ── WEIGHT HISTORY ───────────────────────────────────────
 function getAllWeights() {
-  // Merge WEIGHT_HISTORY with any new weights logged this week
-  var points = WEIGHT_HISTORY.slice(); // copy
-  // Get this week's Sunday date
+  // Start with hardcoded history
+  var points = WEIGHT_HISTORY.slice();
   var sunday = getSundayKey();
+  // Only add this week's days that have an actual weight logged
   for (var i=0; i<DAYS.length; i++) {
     var d = week[DAYS[i]];
-    if (!d.weight) continue;
-    var dayDate = new Date(sunday);
+    if (!d.weight || d.weight === "") continue; // skip empty
+    var dayDate = new Date(sunday + "T12:00:00");
     dayDate.setDate(dayDate.getDate() + i);
     var dateStr = dayDate.toISOString().slice(0,10);
-    // Only add if not already in history
+    // Skip if already in history (e.g. Apr 5 is already hardcoded)
     var exists = false;
     for (var j=0; j<points.length; j++) { if (points[j].date === dateStr) { exists=true; break; } }
     if (!exists) points.push({date: dateStr, weight: parseFloat(d.weight)});
   }
-  // Sort by date
   points.sort(function(a,b){ return a.date < b.date ? -1 : 1; });
   return points;
 }
