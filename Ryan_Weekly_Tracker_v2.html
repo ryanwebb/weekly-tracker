@@ -45,6 +45,16 @@
   .milestone-labels { display: flex; justify-content: space-between; margin-top: 5px; }
   .milestone-lbl { font-size: 10px; color: var(--muted); }
 
+  /* ── NEW WEEK BANNER ── */
+  .new-week-banner { margin: 10px 16px 0; background: linear-gradient(135deg, #007aff, #5856d6); border-radius: var(--radius); padding: 16px; box-shadow: 0 2px 8px rgba(0,122,255,0.3); }
+  .new-week-title { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.8); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .new-week-main { font-size: 17px; font-weight: 700; color: white; margin-bottom: 10px; }
+  .new-week-btns { display: flex; gap: 8px; }
+  .btn-copy-report { flex: 1; background: white; color: #007aff; border: none; border-radius: 10px; padding: 10px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; }
+  .btn-copy-report:active { opacity: 0.85; }
+  .btn-start-week { flex: 1; background: rgba(255,255,255,0.2); color: white; border: none; border-radius: 10px; padding: 10px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; }
+  .btn-start-week:active { opacity: 0.85; }
+
   /* ── ZEPBOUND BANNER ── */
   .zep-banner { margin: 10px 16px 0; border-radius: var(--radius); padding: 13px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); display: flex; align-items: center; justify-content: space-between; gap: 12px; cursor: pointer; transition: transform 0.1s; }
   .zep-banner:active { transform: scale(0.98); }
@@ -274,6 +284,9 @@
   <div class="sync-dot sync-dot-off" id="syncDot"></div>
   <span class="sync-label" id="syncLabel"></span>
 </div>
+
+<!-- New week banner (shown Sunday until user starts new week) -->
+<div id="newWeekBanner" style="display:none"></div>
 
 <!-- Pace banner -->
 <div class="pace-banner" id="paceBanner">
@@ -1201,6 +1214,7 @@ function renderAll() {
   updateHeaderExtras();
   updatePaceBanner();
   updateMilestoneBanner();
+  renderNewWeekBanner();
   renderZepBanner();
   renderSummary();
   renderQuickAdd();
@@ -1405,6 +1419,123 @@ function handlePaste(day) {
 function upd(day,key,val) { week[day][key]=val; saveWeek(); updateHeaderExtras(); updatePaceBanner(); updateMilestoneBanner(); renderSummary(); renderDays(); }
 function resetWeek() {
   if(confirm("Reset all data for this week?")){week=emptyWeek();activeTab={};pasteMode={};openDay=null;saveWeek();renderAll();}
+}
+
+// ── NEW WEEK HANDLING ────────────────────────────────────
+function getLastSundayKey() {
+  var n = new Date();
+  // Go back 7 days from current Sunday
+  var thisSunday = new Date(n.getFullYear(), n.getMonth(), n.getDate() - n.getDay());
+  var lastSunday = new Date(thisSunday);
+  lastSunday.setDate(thisSunday.getDate() - 7);
+  var mm = String(lastSunday.getMonth()+1).padStart(2,"0");
+  var dd = String(lastSunday.getDate()).padStart(2,"0");
+  return lastSunday.getFullYear() + "-" + mm + "-" + dd;
+}
+
+function getLastWeekData() {
+  // Try to load last week's data from localStorage
+  var lastKey = "ryan_tracker_v2_" + getLastSundayKey();
+  try {
+    var raw = store.get(lastKey);
+    if (raw) {
+      var p = JSON.parse(raw);
+      return p.data || p;
+    }
+  } catch(e) {}
+  return null;
+}
+
+function isSundayAndHasLastWeek() {
+  if (new Date().getDay() !== 0) return false; // only Sunday
+  return getLastWeekData() !== null;
+}
+
+function renderNewWeekBanner() {
+  var el = document.getElementById("newWeekBanner");
+  if (!isSundayAndHasLastWeek()) { el.style.display = "none"; return; }
+  el.style.display = "block";
+  var lastRange = getLastWeekRange();
+  el.className = "new-week-banner";
+  el.innerHTML = '<div class="new-week-title">📋 New Week</div>'
+    + '<div class="new-week-main">Last week\'s data is ready for your report</div>'
+    + '<div class="new-week-btns">'
+    + '<button class="btn-copy-report" onclick="copyLastWeekData()">Copy Report Data</button>'
+    + '<button class="btn-start-week" onclick="startNewWeek()">Start New Week →</button>'
+    + '</div>';
+}
+
+function getLastWeekRange() {
+  var lastKey = getLastSundayKey();
+  var s = new Date(lastKey + "T12:00:00");
+  var sat = new Date(s); sat.setDate(s.getDate() + 6);
+  var f = function(d) { return d.toLocaleDateString("en-US",{month:"short",day:"numeric"}); };
+  return f(s) + " – " + f(sat);
+}
+
+function copyLastWeekData() {
+  var lastWeek = getLastWeekData();
+  if (!lastWeek) { showToast("No last week data found"); return; }
+  // Build report text from last week
+  var lastRange = getLastWeekRange();
+  var lines = ["WEEKLY LOG — " + lastRange, ""];
+  for (var i=0; i<DAYS.length; i++) {
+    var day=DAYS[i], d=lastWeek[day];
+    if (!d) continue;
+    var hm=d.calories!=="", he=(parseInt(d.exerciseDuration)||0)>0&&d.exerciseType!=="Rest";
+    if(!hm&&!he&&!d.weight)continue;
+    lines.push("## "+day);
+    if(d.weight)lines.push("Weight: "+d.weight+" lbs");
+    if(hm)lines.push("Macros: "+d.calories+" cal | "+d.protein+"g protein | "+d.carbs+"g carbs | "+d.fat+"g fat | "+d.sodium+"mg sodium");
+    if(parseInt(d.alcoholDrinks)>0)lines.push("Alcohol: "+d.alcoholDrinks+" drink(s)");
+    if(he)lines.push("Exercise: "+d.exerciseType+" — "+((parseInt(d.exerciseDuration)||0)+10)+" mins (incl. cooldown/stretch)");
+    if(d.notes)lines.push("Notes: "+d.notes);
+    lines.push("");
+  }
+  var logged=[];
+  for(var i=0;i<DAYS.length;i++){if(lastWeek[DAYS[i]]&&lastWeek[DAYS[i]].calories!=="")logged.push(DAYS[i]);}
+  if(logged.length){
+    var sc=0,sp=0,td=0;
+    for(var i=0;i<logged.length;i++){sc+=parseFloat(lastWeek[logged[i]].calories)||0;sp+=parseFloat(lastWeek[logged[i]].protein)||0;}
+    for(var i=0;i<DAYS.length;i++)td+=parseInt((lastWeek[DAYS[i]]||{}).alcoholDrinks)||0;
+    var lw=null;
+    for(var i=DAYS.length-1;i>=0;i--){if(lastWeek[DAYS[i]]&&lastWeek[DAYS[i]].weight){lw=DAYS[i];break;}}
+    lines.push("--- WEEK SUMMARY ---");
+    lines.push("Days logged: "+logged.length+"/7");
+    lines.push("Avg calories: "+Math.round(sc/logged.length)+" (target: "+CAL_TARGET+")");
+    lines.push("Avg protein: "+Math.round(sp/logged.length)+"g");
+    lines.push("Total alcohol: "+td+" drink(s)");
+    if(lw)lines.push("Latest weight: "+lastWeek[lw].weight+" lbs (−"+(WEIGHT_START-parseFloat(lastWeek[lw].weight)).toFixed(1)+" lbs from start)");
+  }
+  var text = lines.join("\n");
+  var btn = document.querySelector(".btn-copy-report");
+  function ok() { if(btn){btn.textContent="✓ Copied!";setTimeout(function(){btn.textContent="Copy Report Data";},2500);} }
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(ok).catch(function(){fb(text,ok);});}else{fb(text,ok);}
+}
+
+async function startNewWeek() {
+  if (!confirm("Archive last week and start fresh? This week's log will clear.")) return;
+  // Archive last week to JSONBin if configured
+  if (isSyncConfigured()) {
+    setSyncStatus("saving", "Archiving last week...");
+    var record = await jbRead() || { weeks: {}, zeplog: [] };
+    if (!record.weeks) record.weeks = {};
+    var lastKey = "ryan_tracker_v2_" + getLastSundayKey();
+    var lastData = getLastWeekData();
+    if (lastData) {
+      record.weeks[lastKey] = { data: lastData, savedAt: Date.now(), archived: true };
+      await jbWrite(record);
+    }
+  }
+  // Clear last week from localStorage
+  var lastKey = "ryan_tracker_v2_" + getLastSundayKey();
+  store.remove(lastKey);
+  // Start fresh for this week
+  week = emptyWeek(); activeTab = {}; pasteMode = {}; openDay = DAYS[todayIdx()];
+  saveWeek();
+  document.getElementById("newWeekBanner").style.display = "none";
+  showToast("New week started!");
+  renderAll();
 }
 function showToast(msg) {
   var t=document.getElementById("toast"); t.textContent=msg; t.classList.add("toast-show");
