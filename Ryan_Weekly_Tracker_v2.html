@@ -852,12 +852,24 @@ function getLoggedDays() {
 }
 function getLatestWeight() {
   for (var i=DAYS.length-1; i>=0; i--) { if (week[DAYS[i]].weight) return parseFloat(week[DAYS[i]].weight); }
+  // Fall back to last week's most recent weight
+  try {
+    var lastKey = "ryan_tracker_v2_" + getLastSundayKey();
+    var raw = store.get(lastKey);
+    if (raw) {
+      var p = JSON.parse(raw);
+      var d = p.data || p;
+      for (var i=DAYS.length-1; i>=0; i--) { if (d[DAYS[i]] && d[DAYS[i]].weight) return parseFloat(d[DAYS[i]].weight); }
+    }
+  } catch(e) {}
+  // Final fallback: most recent entry in WEIGHT_HISTORY
+  if (WEIGHT_HISTORY.length) return WEIGHT_HISTORY[WEIGHT_HISTORY.length-1].weight;
   return 279.3;
 }
 function getWeeklyDrinks() {
   var t = 0;
-  for (var i=0; i<DAYS.length; i++) t += parseInt(week[DAYS[i]].alcoholDrinks)||0;
-  return t;
+  for (var i=0; i<DAYS.length; i++) t += parseFloat(week[DAYS[i]].alcoholDrinks)||0;
+  return Math.round(t * 10) / 10;
 }
 function getStreak() {
   // Count consecutive days from today backwards that are logged
@@ -1091,14 +1103,15 @@ function showWeightModal() {
 }
 function showDrinksModal() {
   var drinkDays=[], total=0;
-  for (var i=0; i<DAYS.length; i++) { if (parseInt(week[DAYS[i]].alcoholDrinks)>0) drinkDays.push(DAYS[i]); }
+  for (var i=0; i<DAYS.length; i++) { if (parseFloat(week[DAYS[i]].alcoholDrinks)>0) drinkDays.push(DAYS[i]); }
   if (!drinkDays.length) { openModal("Drinks", '<p class="detail-empty">No drinks logged</p>'); return; }
   var html="";
   for (var i=0; i<drinkDays.length; i++) {
-    var day=drinkDays[i], n=parseInt(week[day].alcoholDrinks); total+=n;
+    var day=drinkDays[i], n=parseFloat(week[day].alcoholDrinks); total+=n;
     html += '<div class="detail-row"><div class="detail-row-day">'+day+'</div>'
       + '<div class="detail-row-val" style="color:#ff9500">'+n+' drink'+(n!==1?'s':'')+'</div></div>';
   }
+  total = Math.round(total * 10) / 10;
   html += '<div style="padding:14px 0 4px;text-align:center;font-size:13px;color:var(--muted)">'+total+' total drink'+(total!==1?'s':'')+' this week</div>';
   openModal("Alcohol This Week", html);
 }
@@ -1131,13 +1144,25 @@ function parsePaste(text) {
   r.fat       = num(/\bfat[:\s]+([\d.]+)/i)   || num(/([\d.]+)\s*g?\s*fat/i);
   r.sodium    = num(/sodium[:\s]+(\d+)/i)     || num(/(\d+)\s*mg/i);
   r.weight    = num(/weight[:\s]+([\d.]+)/i)  || num(/([\d.]+)\s*lbs?/i);
-  r.alcoholDrinks = num(/drinks?[:\s]+(\d+)/i)||num(/alcohol[:\s]+(\d+)/i)||num(/(\d+)\s*drink/i)||num(/(\d+)\s*cocktail/i)||num(/(\d+)\s*beer/i)||num(/(\d+)\s*glass/i);
-  var types=["power zone endurance","power zone","accelerator","endurance","tabata","intervals","climb","rest","ride"];
-  for (var i=0; i<types.length; i++) {
-    if (lo.indexOf(types[i])!==-1) { r.exerciseType=types[i].replace(/\b\w/g,function(c){return c.toUpperCase();}); break; }
+  r.alcoholDrinks = num(/drinks?[:\s]+([\d.]+)/i)||num(/alcohol[:\s]+([\d.]+)/i)||num(/([\d.]+)\s*drink/i)||num(/([\d.]+)\s*cocktail/i)||num(/([\d.]+)\s*beer/i)||num(/([\d.]+)\s*glass/i);
+  var TYPE_MAP=[
+    {match:"power zone endurance", label:"PZE"},
+    {match:"pro cyclist",          label:"Pro"},
+    {match:"power zone",           label:"PZ"},
+    {match:"accelerator",          label:"Acc"},
+    {match:"tabata",               label:"Tabata"},
+    {match:"intervals",            label:"Intervals"},
+    {match:"climb",                label:"Climb"},
+    {match:"endurance",            label:"Endurance"},
+    {match:"rest",                 label:"Rest"},
+    {match:"ride",                 label:"Ride"}
+  ];
+  for (var i=0; i<TYPE_MAP.length; i++) {
+    if (lo.indexOf(TYPE_MAP[i].match)!==-1) { r.exerciseType=TYPE_MAP[i].label; break; }
   }
+  // Grab the first number followed by "min" — that's the ride duration; ignore cooldown references
   var dm=text.match(/(\d+)\s*(?:min|minutes?)/i);
-  if (dm) { var raw=parseInt(dm[1]); var hasCool=lo.indexOf("cooldown")!==-1||lo.indexOf("cool down")!==-1; r.exerciseDuration=String(hasCool?raw-10:raw); }
+  if (dm) { r.exerciseDuration=String(parseInt(dm[1])); }
   var keys=Object.keys(r);
   for (var j=0; j<keys.length; j++) { if (r[keys[j]]===null||r[keys[j]]==="") delete r[keys[j]]; }
   return r;
@@ -1354,26 +1379,26 @@ function renderDays() {
     var manualContent=macrosRemainHtml+calBar+sodiumIndicator
       +'<div class="sec-div">⚖️ Weight</div>'
       +'<div class="detail-grid detail-full"><div class="field-group"><label class="field-label">Morning Weight (lbs)</label>'
-      +'<input class="field-input" type="number" step="0.1" placeholder="e.g. 279.3" value="'+d.weight+'" oninput="upd(\''+day+'\',\'weight\',this.value)" inputmode="decimal"/></div></div>'
+      +'<input class="field-input" type="number" step="0.1" placeholder="e.g. 279.3" value="'+d.weight+'" onblur="upd(\''+day+'\',\'weight\',this.value)" inputmode="decimal"/></div></div>'
       +'<div class="sec-div">🥗 Macros</div>'
       +'<div class="detail-grid">'
-      +'<div class="field-group"><label class="field-label">Calories</label><input class="field-input" type="number" placeholder="0" value="'+d.calories+'" oninput="upd(\''+day+'\',\'calories\',this.value)" inputmode="decimal"/></div>'
-      +'<div class="field-group"><label class="field-label">Protein (g)</label><input class="field-input" type="number" placeholder="0" value="'+d.protein+'" oninput="upd(\''+day+'\',\'protein\',this.value)" inputmode="decimal"/></div>'
-      +'<div class="field-group"><label class="field-label">Carbs (g)</label><input class="field-input" type="number" placeholder="0" value="'+d.carbs+'" oninput="upd(\''+day+'\',\'carbs\',this.value)" inputmode="decimal"/></div>'
-      +'<div class="field-group"><label class="field-label">Fat (g)</label><input class="field-input" type="number" placeholder="0" value="'+d.fat+'" oninput="upd(\''+day+'\',\'fat\',this.value)" inputmode="decimal"/></div>'
-      +'<div class="field-group"><label class="field-label">Sodium (mg)</label><input class="field-input" type="number" placeholder="0" value="'+d.sodium+'" oninput="upd(\''+day+'\',\'sodium\',this.value)" inputmode="decimal"/></div>'
+      +'<div class="field-group"><label class="field-label">Calories</label><input class="field-input" type="number" placeholder="0" value="'+d.calories+'" onblur="upd(\''+day+'\',\'calories\',this.value)" inputmode="decimal"/></div>'
+      +'<div class="field-group"><label class="field-label">Protein (g)</label><input class="field-input" type="number" placeholder="0" value="'+d.protein+'" onblur="upd(\''+day+'\',\'protein\',this.value)" inputmode="decimal"/></div>'
+      +'<div class="field-group"><label class="field-label">Carbs (g)</label><input class="field-input" type="number" placeholder="0" value="'+d.carbs+'" onblur="upd(\''+day+'\',\'carbs\',this.value)" inputmode="decimal"/></div>'
+      +'<div class="field-group"><label class="field-label">Fat (g)</label><input class="field-input" type="number" placeholder="0" value="'+d.fat+'" onblur="upd(\''+day+'\',\'fat\',this.value)" inputmode="decimal"/></div>'
+      +'<div class="field-group"><label class="field-label">Sodium (mg)</label><input class="field-input" type="number" placeholder="0" value="'+d.sodium+'" onblur="upd(\''+day+'\',\'sodium\',this.value)" inputmode="decimal"/></div>'
       +'</div>'
       +'<div class="sec-div">🍷 Alcohol</div>'
       +'<div class="alc-row"><span style="font-size:18px">🍷</span><span class="alc-label">Drinks (cals folded in)</span>'
-      +'<input class="field-input" type="number" min="0" placeholder="0" value="'+d.alcoholDrinks+'" oninput="upd(\''+day+'\',\'alcoholDrinks\',this.value)" style="width:64px;text-align:center" inputmode="numeric"/></div>'
+      +'<input class="field-input" type="number" min="0" step="0.5" placeholder="0" value="'+d.alcoholDrinks+'" onblur="upd(\''+day+'\',\'alcoholDrinks\',this.value)" style="width:64px;text-align:center" inputmode="decimal"/></div>'
       +'<div class="sec-div">🚴 Exercise</div>'
       +'<div class="detail-grid">'
-      +'<div class="field-group"><label class="field-label">Type</label><input class="field-input" type="text" value="'+d.exerciseType+'" oninput="upd(\''+day+'\',\'exerciseType\',this.value)"/></div>'
-      +'<div class="field-group"><label class="field-label">Duration (mins)</label><input class="field-input" type="number" placeholder="0" value="'+(d.exerciseDuration||"")+'" oninput="upd(\''+day+'\',\'exerciseDuration\',this.value)" inputmode="numeric"/></div>'
+      +'<div class="field-group"><label class="field-label">Type</label><input class="field-input" type="text" value="'+d.exerciseType+'" onblur="upd(\''+day+'\',\'exerciseType\',this.value)"/></div>'
+      +'<div class="field-group"><label class="field-label">Duration (mins)</label><input class="field-input" type="number" placeholder="0" value="'+(d.exerciseDuration||"")+'" onblur="upd(\''+day+'\',\'exerciseDuration\',this.value)" inputmode="numeric"/></div>'
       +'</div>'
       +'<div style="font-size:12px;color:var(--muted);padding-left:2px;margin-bottom:10px">+10 min cooldown/stretch added when reporting</div>'
       +'<div class="sec-div">📝 Notes</div>'
-      +'<textarea class="notes-input" placeholder="Anything to remember..." oninput="upd(\''+day+'\',\'notes\',this.value)">'+(d.notes||"")+'</textarea>';
+      +'<textarea class="notes-input" placeholder="Anything to remember..." onblur="upd(\''+day+'\',\'notes\',this.value)">'+(d.notes||"")+'</textarea>';
 
     html+='<div class="day-row" id="row_'+day+'">'
       +'<div class="day-row-header" onclick="toggleDay(\''+day+'\',event)">'
@@ -1487,7 +1512,7 @@ function copyLastWeekData() {
     lines.push("## "+day);
     if(d.weight)lines.push("Weight: "+d.weight+" lbs");
     if(hm)lines.push("Macros: "+d.calories+" cal | "+d.protein+"g protein | "+d.carbs+"g carbs | "+d.fat+"g fat | "+d.sodium+"mg sodium");
-    if(parseInt(d.alcoholDrinks)>0)lines.push("Alcohol: "+d.alcoholDrinks+" drink(s)");
+    if(parseFloat(d.alcoholDrinks)>0)lines.push("Alcohol: "+d.alcoholDrinks+" drink(s)");
     if(he)lines.push("Exercise: "+d.exerciseType+" — "+((parseInt(d.exerciseDuration)||0)+10)+" mins (incl. cooldown/stretch)");
     if(d.notes)lines.push("Notes: "+d.notes);
     lines.push("");
@@ -1497,7 +1522,7 @@ function copyLastWeekData() {
   if(logged.length){
     var sc=0,sp=0,td=0;
     for(var i=0;i<logged.length;i++){sc+=parseFloat(lastWeek[logged[i]].calories)||0;sp+=parseFloat(lastWeek[logged[i]].protein)||0;}
-    for(var i=0;i<DAYS.length;i++)td+=parseInt((lastWeek[DAYS[i]]||{}).alcoholDrinks)||0;
+    for(var i=0;i<DAYS.length;i++)td+=parseFloat((lastWeek[DAYS[i]]||{}).alcoholDrinks)||0;
     var lw=null;
     for(var i=DAYS.length-1;i>=0;i--){if(lastWeek[DAYS[i]]&&lastWeek[DAYS[i]].weight){lw=DAYS[i];break;}}
     lines.push("--- WEEK SUMMARY ---");
@@ -1552,7 +1577,7 @@ function copyData() {
     lines.push("## "+day);
     if(d.weight)lines.push("Weight: "+d.weight+" lbs");
     if(hm)lines.push("Macros: "+d.calories+" cal | "+d.protein+"g protein | "+d.carbs+"g carbs | "+d.fat+"g fat | "+d.sodium+"mg sodium");
-    if(parseInt(d.alcoholDrinks)>0)lines.push("Alcohol: "+d.alcoholDrinks+" drink(s)");
+    if(parseFloat(d.alcoholDrinks)>0)lines.push("Alcohol: "+d.alcoholDrinks+" drink(s)");
     if(he)lines.push("Exercise: "+d.exerciseType+" — "+((parseInt(d.exerciseDuration)||0)+10)+" mins (incl. cooldown/stretch)");
     if(d.notes)lines.push("Notes: "+d.notes);
     lines.push("");
@@ -1561,7 +1586,7 @@ function copyData() {
   if(logged.length){
     var sc=0,sp=0,td=0;
     for(var i=0;i<logged.length;i++){sc+=parseFloat(week[logged[i]].calories)||0;sp+=parseFloat(week[logged[i]].protein)||0;}
-    for(var i=0;i<DAYS.length;i++)td+=parseInt(week[DAYS[i]].alcoholDrinks)||0;
+    for(var i=0;i<DAYS.length;i++)td+=parseFloat(week[DAYS[i]].alcoholDrinks)||0;
     var lw=null;
     for(var i=DAYS.length-1;i>=0;i--){if(week[DAYS[i]].weight){lw=DAYS[i];break;}}
     lines.push("--- WEEK SUMMARY ---");
