@@ -797,14 +797,16 @@ function showSodiumModal() {
 
 function parsePaste(text) {
   var r = {};
-  function num(re) { var m = text.match(re); return m ? m[1] : null; }
-  r.calories  = num(/calories?[:\s]+(\d+)/i)  || num(/(\d+)\s*cal(?:ories)?/i);
+  // Strip commas from numbers before parsing (handles "1,360 cal" etc.)
+  var textClean = text.replace(/(\d),(\d)/g, '$1$2');
+  function num(re) { var m = textClean.match(re); return m ? m[1] : null; }
+  r.calories  = num(/calories?[:\s]+([\d.]+)/i)  || num(/([\d.]+)\s*cal(?:ories)?/i);
   r.protein   = num(/protein[:\s]+([\d.]+)/i) || num(/([\d.]+)\s*g?\s*protein/i);
   r.carbs     = num(/carbs?[:\s]+([\d.]+)/i)  || num(/([\d.]+)\s*g?\s*carbs?/i);
   r.fat       = num(/\bfat[:\s]+([\d.]+)/i)   || num(/([\d.]+)\s*g?\s*fat/i);
-  r.sodium    = num(/sodium[:\s]+(\d+)/i)     || num(/(\d+)\s*mg/i);
+  r.sodium    = num(/sodium[:\s]+([\d.]+)/i)  || num(/([\d.]+)\s*mg/i);
   r.weight    = num(/weight[:\s]+([\d.]+)/i)  || num(/([\d.]+)\s*lbs?/i);
-  r.alcoholDrinks = num(/drinks?[:\s]+(\d+)/i)||num(/alcohol[:\s]+(\d+)/i)||num(/(\d+)\s*drink/i)||num(/(\d+)\s*glass/i)||num(/(\d+)\s*wine/i)||num(/(\d+)\s*beer/i);
+  r.alcoholDrinks = num(/drinks?[:\s]+([\d.]+)/i)||num(/alcohol[:\s]+([\d.]+)/i)||num(/([\d.]+)\s*drink/i)||num(/([\d.]+)\s*glass/i)||num(/([\d.]+)\s*wine/i)||num(/([\d.]+)\s*beer/i);
   var lo = text.toLowerCase();
   var types=["outdoor walk","walk","chair exercise","tai chi","taichi","yoga","rest"];
   for (var i=0; i<types.length; i++) {
@@ -987,25 +989,25 @@ function renderDays() {
     var manualContent=macrosRemainHtml+calBar+sodiumIndicator
       +'<div class="sec-div">⚖️ Weight</div>'
       +'<div class="detail-grid detail-full"><div class="field-group"><label class="field-label">Morning Weight (lbs)</label>'
-      +'<input class="field-input" type="number" step="0.1" placeholder="e.g. 221.5" value="'+d.weight+'" oninput="upd(\''+day+'\',\'weight\',this.value)" inputmode="decimal"/></div></div>'
+      +'<input class="field-input" type="number" step="0.1" placeholder="e.g. 221.5" value="'+d.weight+'" onblur="upd(\''+day+'\',\'weight\',this.value)" inputmode="decimal"/></div></div>'
       +'<div class="sec-div">🥗 Macros</div>'
       +'<div class="detail-grid">'
-      +'<div class="field-group"><label class="field-label">Calories</label><input class="field-input" type="number" placeholder="0" value="'+d.calories+'" oninput="upd(\''+day+'\',\'calories\',this.value)" inputmode="decimal"/></div>'
-      +'<div class="field-group"><label class="field-label">Protein (g)</label><input class="field-input" type="number" placeholder="0" value="'+d.protein+'" oninput="upd(\''+day+'\',\'protein\',this.value)" inputmode="decimal"/></div>'
-      +'<div class="field-group"><label class="field-label">Carbs (g)</label><input class="field-input" type="number" placeholder="0" value="'+d.carbs+'" oninput="upd(\''+day+'\',\'carbs\',this.value)" inputmode="decimal"/></div>'
-      +'<div class="field-group"><label class="field-label">Fat (g)</label><input class="field-input" type="number" placeholder="0" value="'+d.fat+'" oninput="upd(\''+day+'\',\'fat\',this.value)" inputmode="decimal"/></div>'
-      +'<div class="field-group"><label class="field-label">Sodium (mg)</label><input class="field-input" type="number" placeholder="0" value="'+d.sodium+'" oninput="upd(\''+day+'\',\'sodium\',this.value)" inputmode="decimal"/></div>'
+      +'<div class="field-group"><label class="field-label">Calories</label><input class="field-input" type="number" placeholder="0" value="'+d.calories+'" onblur="upd(\''+day+'\',\'calories\',this.value)" inputmode="decimal"/></div>'
+      +'<div class="field-group"><label class="field-label">Protein (g)</label><input class="field-input" type="number" placeholder="0" value="'+d.protein+'" onblur="upd(\''+day+'\',\'protein\',this.value)" inputmode="decimal"/></div>'
+      +'<div class="field-group"><label class="field-label">Carbs (g)</label><input class="field-input" type="number" placeholder="0" value="'+d.carbs+'" onblur="upd(\''+day+'\',\'carbs\',this.value)" inputmode="decimal"/></div>'
+      +'<div class="field-group"><label class="field-label">Fat (g)</label><input class="field-input" type="number" placeholder="0" value="'+d.fat+'" onblur="upd(\''+day+'\',\'fat\',this.value)" inputmode="decimal"/></div>'
+      +'<div class="field-group"><label class="field-label">Sodium (mg)</label><input class="field-input" type="number" placeholder="0" value="'+d.sodium+'" onblur="upd(\''+day+'\',\'sodium\',this.value)" inputmode="decimal"/></div>'
       +'</div>'
       +'<div class="sec-div">🍷 Alcohol</div>'
       +'<div class="alc-row"><span style="font-size:18px">🍷</span><span class="alc-label">Drinks (cals folded in)</span>'
-      +'<input class="field-input" type="number" min="0" placeholder="0" value="'+d.alcoholDrinks+'" oninput="upd(\''+day+'\',\'alcoholDrinks\',this.value)" style="width:64px;text-align:center" inputmode="numeric"/></div>'
+      +'<input class="field-input" type="number" min="0" step="0.5" placeholder="0" value="'+d.alcoholDrinks+'" onblur="upd(\''+day+'\',\'alcoholDrinks\',this.value)" style="width:64px;text-align:center" inputmode="decimal"/></div>'
       +'<div class="sec-div">🚶 Exercise</div>'
       +'<div class="detail-grid">'
-      +'<div class="field-group"><label class="field-label">Type</label><input class="field-input" type="text" placeholder="e.g. Outdoor Walk" value="'+d.exerciseType+'" oninput="upd(\''+day+'\',\'exerciseType\',this.value)"/></div>'
-      +'<div class="field-group"><label class="field-label">Duration (mins)</label><input class="field-input" type="number" placeholder="0" value="'+(d.exerciseDuration||"")+'" oninput="upd(\''+day+'\',\'exerciseDuration\',this.value)" inputmode="numeric"/></div>'
+      +'<div class="field-group"><label class="field-label">Type</label><input class="field-input" type="text" placeholder="e.g. Outdoor Walk" value="'+d.exerciseType+'" onblur="upd(\''+day+'\',\'exerciseType\',this.value)"/></div>'
+      +'<div class="field-group"><label class="field-label">Duration (mins)</label><input class="field-input" type="number" placeholder="0" value="'+(d.exerciseDuration||"")+'" onblur="upd(\''+day+'\',\'exerciseDuration\',this.value)" inputmode="numeric"/></div>'
       +'</div>'
       +'<div class="sec-div">📝 Notes</div>'
-      +'<textarea class="notes-input" placeholder="Anything to remember..." oninput="upd(\''+day+'\',\'notes\',this.value)">'+(d.notes||"")+'</textarea>';
+      +'<textarea class="notes-input" placeholder="Anything to remember..." onblur="upd(\''+day+'\',\'notes\',this.value)">'+(d.notes||"")+'</textarea>';
 
     html+='<div class="day-row" id="row_'+day+'">'
       +'<div class="day-row-header" onclick="toggleDay(\''+day+'\',event)">'
