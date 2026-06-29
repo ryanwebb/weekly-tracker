@@ -9,345 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lato:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<style>
-/* ═══ TOKENS ═══ */
-:root{
-  --cream:#FAFAF6; --cream2:#F3EFE6; --cream3:#EAE4D8;
-  --navy:#1B2A4A; --navy2:#2E4170;
-  --green:#2D5016; --green2:#EBF2E4;
-  --burgundy:#7C1F2E; --burg2:#F9EDEF;
-  --gold:#9C7A2E; --gold2:#FBF5E6;
-  --text:#222222; --muted:#666666; --rule:#D8CFC0;
-  color-scheme: light only;
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{font-size:15px;color-scheme:light only;}
-body{background:var(--cream);color:var(--text);font-family:'Lato',Georgia,serif;font-weight:300;line-height:1.75;
-  -webkit-print-color-adjust:exact;print-color-adjust:exact;}
-img{display:block;width:100%;object-fit:cover;}
-h1,h2,h3,h4{font-family:'Playfair Display',Georgia,serif;line-height:1.2;font-weight:700;}
-.eyebrow{font-family:'Lato',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);}
 
-/* ═══ COVER ═══ */
-.cover{position:relative;height:100vh;min-height:680px;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;overflow:hidden;background:#e8e0d4;
-  page-break-after:always;}
-.cover-bg{position:absolute;inset:0;
-  background-size:cover;background-position:center 40%;opacity:.28;}
-.cover-content{position:relative;z-index:2;text-align:center;padding:3rem 2rem;max-width:720px;}
-.cover-ornament{color:var(--gold);font-size:1.2rem;letter-spacing:.5em;margin-bottom:1.8rem;opacity:.8;}
-.cover-title{font-family:'Playfair Display',serif;font-size:clamp(2.8rem,7vw,5rem);font-weight:700;
-  color:var(--navy);line-height:1.05;margin-bottom:.5rem;}
-.cover-subtitle{font-family:'Playfair Display',serif;font-size:clamp(1rem,2.5vw,1.5rem);
-  font-style:italic;color:var(--muted);margin-bottom:2.5rem;}
-.cover-meta{display:flex;gap:2rem;justify-content:center;flex-wrap:wrap;margin-bottom:2.5rem;
-  border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:1.2rem 0;}
-.cover-meta-item{color:var(--text);font-size:.83rem;}
-.cover-meta-item strong{display:block;font-size:.6rem;font-weight:700;letter-spacing:.2em;
-  text-transform:uppercase;color:var(--gold);margin-bottom:.2rem;}
-.cover-stops{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:.35rem;
-  font-size:.72rem;color:var(--muted);}
-.cover-stops .arr{color:var(--gold);}
-.cover-border{position:absolute;inset:18px;border:1px solid rgba(156,122,46,.3);pointer-events:none;}
-
-/* ═══ PAGE STRUCTURE ═══ */
-.page{max-width:980px;margin:0 auto;padding:3rem 2.5rem;background:var(--cream);}
-.page-break{page-break-after:always;}
-.page-title{font-size:clamp(1.7rem,3.5vw,2.4rem);color:var(--navy);margin-bottom:.5rem;}
-.title-rule{width:52px;height:3px;background:linear-gradient(90deg,var(--gold),var(--burgundy));margin-bottom:2rem;}
-
-/* ═══ MAP PAGE ═══ */
-.map-page{page-break-before:always;page-break-after:always;page-break-inside:avoid;}
-.map-page .page-inner{max-width:980px;margin:0 auto;padding:2.5rem 2.5rem 1rem;}
-#routemap{height:520px;width:100%;border:1px solid var(--rule);margin-bottom:1.5rem;}
-.map-legend{display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:1rem;}
-.map-legend-item{display:flex;align-items:center;gap:.5rem;font-size:.78rem;color:var(--muted);}
-.map-legend-dot{width:12px;height:12px;border-radius:50%;border:2px solid var(--navy);flex-shrink:0;}
-
-/* ═══ ROUTE BANNER (LIGHT) ═══ */
-.route-banner{background:var(--cream2);border:1px solid var(--rule);
-  padding:1.2rem 2rem;margin-bottom:2rem;}
-.route-banner .rt{font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
-  color:var(--muted);margin-bottom:.5rem;}
-.route-stops{display:flex;align-items:center;flex-wrap:wrap;gap:.35rem;}
-.route-stops .stop{font-size:.8rem;font-weight:700;color:var(--navy);}
-.route-stops .arr{color:var(--gold);font-size:.9rem;}
-
-/* ═══ SUMMARY GRID ═══ */
-.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2rem;}
-@media(max-width:580px){.summary-grid{grid-template-columns:1fr;}}
-.info-card{background:#fff;border:1px solid var(--rule);border-top:3px solid var(--navy);padding:1.3rem 1.4rem;page-break-inside:avoid;}
-.info-card.g{border-top-color:var(--green);} .info-card.b{border-top-color:var(--burgundy);} .info-card.gold{border-top-color:var(--gold);}
-.info-card-title{font-family:'Playfair Display',serif;font-size:.95rem;color:var(--navy);margin-bottom:.9rem;}
-.info-row{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px dotted var(--rule);padding:.38rem 0;font-size:.83rem;gap:.8rem;}
-.info-row:last-child{border-bottom:none;}
-.il{color:var(--muted);font-size:.72rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;flex-shrink:0;}
-.iv{color:var(--text);text-align:right;}
-.conf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:1rem;margin-bottom:2rem;}
-.conf-card{background:var(--cream2);border:1px solid var(--rule);padding:1rem 1.1rem;page-break-inside:avoid;}
-.conf-icon{font-size:1.3rem;margin-bottom:.35rem;} .conf-name{font-family:'Playfair Display',serif;font-size:.9rem;color:var(--navy);margin-bottom:.25rem;}
-.conf-detail{font-size:.75rem;color:var(--muted);line-height:1.5;} .conf-num{font-size:.75rem;font-weight:700;color:var(--green);margin-top:.35rem;}
-.todo-box{background:var(--gold2);border:1px solid #e0ccaa;border-left:4px solid var(--gold);padding:1.1rem 1.3rem;margin-bottom:1.5rem;page-break-inside:avoid;}
-.todo-box h4{font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.6rem;}
-.todo-list{list-style:none;} .todo-list li{font-size:.83rem;color:var(--text);padding:.22rem 0;display:flex;gap:.6rem;border-bottom:1px solid rgba(0,0,0,.06);}
-.todo-list li:last-child{border-bottom:none;} .todo-list li::before{content:'☐';color:var(--gold);flex-shrink:0;}
-
-/* ═══ HERO IMAGE ═══ */
-.day-hero{position:relative;height:36vh;min-height:240px;overflow:hidden;background:var(--cream2);page-break-inside:avoid;}
-.day-hero img{height:100%;object-position:center;}
-.day-hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(250,250,246,0) 0%,rgba(250,250,246,.12) 55%,rgba(250,250,246,.88) 100%);}
-.day-num-bg{position:absolute;right:2rem;top:.8rem;font-family:'Playfair Display',serif;font-size:8rem;font-weight:700;color:rgba(27,42,74,.06);line-height:1;pointer-events:none;}
-.day-hero-label{position:absolute;bottom:0;left:0;right:0;padding:1.4rem 2.5rem 1.6rem;display:flex;align-items:flex-end;justify-content:space-between;}
-.day-label-left .day-date{font-size:.68rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.25rem;}
-.day-label-left h2{font-family:'Playfair Display',serif;font-size:clamp(1.4rem,3.5vw,2rem);color:var(--navy);line-height:1.1;}
-.day-loc-pill{background:var(--navy);color:#fff;font-size:.68rem;padding:.3rem .75rem;display:none;}
-@media(min-width:480px){.day-loc-pill{display:block;}}
-
-/* ═══ DRIVE STRIP ═══ */
-.drive-banner{background:var(--cream2);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
-  padding:.65rem 2.5rem;display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap;page-break-inside:avoid;}
-.drive-banner .di{font-size:.72rem;color:var(--muted);display:flex;align-items:center;gap:.35rem;}
-.drive-banner .di strong{color:var(--text);font-weight:700;}
-
-/* ═══ DAY PAGE ═══ */
-.day-page{page-break-before:always;page-break-after:always;}
-.day-body{display:grid;grid-template-columns:1fr 280px;gap:2.5rem;padding:2rem 2.5rem 2rem;max-width:980px;margin:0 auto;}
-@media(max-width:680px){.day-body{grid-template-columns:1fr;}}
-
-/* ═══ DRIVING STOPS ═══ */
-.driving-stops{background:#fff;border:1px solid var(--rule);border-left:3px solid var(--navy2);
-  padding:1rem 1.2rem;margin:0 2.5rem 1rem;page-break-inside:avoid;}
-.driving-stops h4{font-size:.62rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--navy2);margin-bottom:.7rem;}
-.ds-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.75rem;}
-.ds-item{}
-.ds-item .ds-name{font-family:'Playfair Display',serif;font-size:.85rem;color:var(--navy);margin-bottom:.15rem;}
-.ds-item .ds-desc{font-size:.75rem;color:var(--muted);line-height:1.5;}
-.ds-item .ds-tag{display:inline-block;font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
-  padding:.1rem .45rem;background:var(--cream2);color:var(--navy2);border:1px solid var(--rule);margin-top:.2rem;}
-
-/* ═══ SCHEDULE ═══ */
-.sched-label{font-size:.62rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;}
-.sched-item{display:flex;gap:1rem;padding-bottom:1.2rem;position:relative;}
-.sched-item::before{content:'';position:absolute;left:23px;top:36px;bottom:0;width:1px;background:var(--rule);}
-.sched-item:last-child::before{display:none;}
-.sched-dot{width:46px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:3px;}
-.sched-dot .dot{width:9px;height:9px;border-radius:50%;background:var(--gold);border:2px solid #fff;box-shadow:0 0 0 2px var(--rule);flex-shrink:0;margin-top:5px;}
-.sched-dot .time{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);text-align:center;line-height:1.2;margin-top:2px;}
-.sched-content h4{font-family:'Playfair Display',serif;font-size:1rem;color:var(--navy);margin-bottom:.22rem;}
-.sched-content p{font-size:.82rem;color:var(--muted);line-height:1.65;}
-.tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.4rem;}
-.tag{display:inline-block;font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
-  padding:.12rem .5rem;background:var(--cream2);color:var(--muted);border:1px solid var(--rule);}
-.tag.must{color:var(--burgundy);background:var(--burg2);border-color:#e8c4cb;}
-.tag.dining{color:var(--green);background:var(--green2);border-color:#c4d9b0;}
-.tag.lodge{color:var(--navy);background:#e8edfa;border-color:#b8c8e8;}
-.tag.drive{color:var(--gold);background:var(--gold2);border-color:#e0ccaa;}
-.tag.opt{color:var(--muted);background:var(--cream2);}
-
-/* ═══ SIDEBAR ═══ */
-.sb-card{border:1px solid var(--rule);overflow:hidden;margin-bottom:1rem;background:#fff;page-break-inside:avoid;}
-.sb-card-img{height:140px;overflow:hidden;} .sb-card-img img{height:140px;}
-.sb-card-body{padding:.85rem 1rem;}
-.sb-card-label{font-size:.58rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:.25rem;}
-.sb-card-title{font-family:'Playfair Display',serif;font-size:.9rem;color:var(--navy);margin-bottom:.25rem;}
-.sb-card-text{font-size:.74rem;color:var(--muted);line-height:1.5;}
-.sb-conf{background:var(--cream2);border:1px solid var(--rule);padding:.75rem 1rem;margin-bottom:1rem;page-break-inside:avoid;}
-.sb-conf-label{font-size:.58rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:.15rem;}
-.sb-conf-val{font-size:.8rem;color:var(--navy);font-weight:700;}
-.tip{border-left:3px solid var(--green);background:var(--green2);padding:.8rem 1rem;margin-bottom:.9rem;page-break-inside:avoid;}
-.tip .tip-label{font-size:.58rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--green);margin-bottom:.22rem;}
-.tip p{font-size:.76rem;color:#2a3a1a;line-height:1.6;}
-.warn{border-left:3px solid var(--gold);background:var(--gold2);padding:.8rem 1rem;margin-bottom:.9rem;page-break-inside:avoid;}
-.warn .tip-label{font-size:.58rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:.22rem;}
-.warn p{font-size:.76rem;color:#5a4010;line-height:1.6;}
-.highlights{background:var(--cream2);border:1px solid var(--rule);padding:.85rem 1rem;margin-bottom:.9rem;page-break-inside:avoid;}
-.highlights .hl-label{font-size:.58rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--navy);margin-bottom:.45rem;}
-.highlights ul{list-style:none;}
-.highlights li{font-size:.77rem;color:var(--text);padding:.18rem 0;border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:.45rem;}
-.highlights li:last-child{border-bottom:none;}
-.highlights li::before{content:'◆';color:var(--gold);font-size:.38rem;flex-shrink:0;}
-.photo-spots{background:var(--cream2);border:1px solid var(--rule);padding:.85rem 1rem;margin-bottom:.9rem;page-break-inside:avoid;}
-.photo-spots .ps-label{font-size:.58rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--navy);margin-bottom:.45rem;}
-.photo-spots ul{list-style:none;}
-.photo-spots li{font-size:.76rem;color:var(--text);padding:.18rem 0;display:flex;gap:.4rem;align-items:center;}
-
-/* ═══ RECOMMENDATIONS SECTION ═══ */
-.recs-section{margin:0 2.5rem 1.5rem;page-break-inside:avoid;}
-.recs-header{display:flex;align-items:center;gap:.8rem;margin-bottom:1rem;}
-.recs-header h3{font-family:'Playfair Display',serif;font-size:1rem;color:var(--navy);}
-.recs-header::after{content:'';flex:1;height:1px;background:var(--rule);}
-.recs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;}
-.rec-card{background:#fff;border:1px solid var(--rule);padding:.9rem 1rem;page-break-inside:avoid;}
-.rec-cat{font-size:.58rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;margin-bottom:.4rem;}
-.rec-cat.food{color:var(--burgundy);} .rec-cat.sight{color:var(--navy);} .rec-cat.hidden{color:var(--green);} .rec-cat.detour{color:var(--gold);}
-.rec-name{font-family:'Playfair Display',serif;font-size:.88rem;color:var(--navy);margin-bottom:.2rem;}
-.rec-desc{font-size:.75rem;color:var(--muted);line-height:1.5;}
-
-/* ═══ CLOSING ═══ */
-.closing-page{page-break-before:always;background:var(--cream2);min-height:50vh;padding:3.5rem 2.5rem;}
-.closing-inner{max-width:920px;margin:0 auto;}
-.closing-header{text-align:center;margin-bottom:2.5rem;}
-.closing-header h2{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.6rem);color:var(--navy);margin-bottom:.4rem;}
-.closing-header p{color:var(--muted);font-size:.88rem;}
-.quick-ref{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-bottom:2.5rem;}
-.qr-card{background:#fff;border:1px solid var(--rule);padding:1rem 1.1rem;page-break-inside:avoid;}
-.qr-label{font-size:.58rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:.3rem;}
-.qr-val{font-size:.82rem;color:var(--navy);font-weight:700;line-height:1.5;}
-.qr-sub{font-size:.72rem;color:var(--muted);margin-top:.15rem;}
-.packing-section h3,.tips-section h3,.journal-section h3{font-family:'Playfair Display',serif;color:var(--navy);font-size:1.3rem;margin-bottom:1.2rem;}
-.pack-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1.5rem;margin-bottom:2rem;}
-.pack-cat h4{font-size:.62rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:.65rem;border-bottom:1px solid var(--rule);padding-bottom:.35rem;}
-.pack-cat ul{list-style:none;}
-.pack-cat li{font-size:.8rem;color:var(--text);padding:.2rem 0;display:flex;gap:.5rem;}
-.pack-cat li::before{content:'☐';color:var(--gold);flex-shrink:0;}
-.tips-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2rem;}
-@media(max-width:540px){.tips-grid{grid-template-columns:1fr;}}
-.tips-grid .tip{margin-bottom:0;}
-.journal-lines{margin-top:.5rem;}
-.journal-line{border-bottom:1px solid var(--rule);height:2.4rem;margin-bottom:.15rem;}
-.page-footer{margin-top:2rem;padding-top:.8rem;border-top:1px solid var(--rule);text-align:center;font-size:.68rem;color:var(--muted);}
-
-/* ═══ PRINT ═══ */
-@media print{
-  @page{size:8.5in 11in;margin:.55in .6in;}
-  @page:first{margin:.3in .6in;}
-
-  *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
-  html,body{background:#fff !important;width:100% !important;margin:0 !important;padding:0 !important;}
-
-  /* Cover: exactly one page */
-  .cover{
-    display:flex !important;
-    height:10in !important;
-    min-height:unset !important;
-    page-break-after:always !important;
-    page-break-inside:avoid !important;
-    overflow:hidden !important;
-  }
-
-  /* Map page: one page */
-  .map-page{
-    page-break-before:always !important;
-    page-break-after:always !important;
-    page-break-inside:avoid !important;
-  }
-  .map-page .page-inner{padding:1rem 1.2rem !important;}
-  #routemap{height:5.5in !important;}
-
-  /* Summary page */
-  .page.page-break{
-    page-break-before:always !important;
-    page-break-after:always !important;
-    padding:1.2rem 1.2rem !important;
-  }
-
-  /* Each day = new page start, content flows naturally */
-  .day-page{
-    page-break-before:always !important;
-    page-break-inside:avoid !important;
-  }
-
-  /* Day hero smaller for print */
-  .day-hero{height:2.4in !important;min-height:unset !important;}
-  .day-hero-overlay{background:linear-gradient(to bottom,rgba(250,250,246,0) 0%,rgba(250,250,246,.25) 55%,rgba(250,250,246,.92) 100%) !important;}
-
-  /* Day body tighter */
-  .day-body{
-    display:grid !important;
-    grid-template-columns:1fr 2.4in !important;
-    gap:0.5in !important;
-    padding:0.3in 0 0.2in !important;
-    max-width:100% !important;
-  }
-
-  /* Drive banner */
-  .drive-banner{padding:.3rem .5rem !important;font-size:.65rem !important;}
-
-  /* Driving stops */
-  .driving-stops{margin:0 0 .3in !important;page-break-inside:avoid !important;}
-  .ds-grid{grid-template-columns:1fr 1fr 1fr !important;}
-
-  /* Schedule items — avoid breaking mid-item */
-  .sched-item{page-break-inside:avoid !important;break-inside:avoid !important;}
-  .sched-content h4{page-break-after:avoid !important;}
-
-  /* Sidebar cards */
-  .sb-card{page-break-inside:avoid !important;break-inside:avoid !important;margin-bottom:.15in !important;}
-  .sb-card-img{height:1.4in !important;}
-  .sb-card-img img{height:1.4in !important;}
-  .sb-conf{page-break-inside:avoid !important;margin-bottom:.12in !important;}
-  .highlights{page-break-inside:avoid !important;margin-bottom:.12in !important;}
-  .photo-spots{page-break-inside:avoid !important;margin-bottom:.12in !important;}
-  .tip,.warn{page-break-inside:avoid !important;margin-bottom:.12in !important;}
-
-  /* Recs section */
-  .recs-section{
-    margin:0.15in 0 0 !important;
-    page-break-before:auto !important;
-    page-break-inside:avoid !important;
-  }
-  .recs-grid{grid-template-columns:repeat(3,1fr) !important;}
-  .rec-card{page-break-inside:avoid !important;}
-
-  /* Closing page */
-  .closing-page{
-    page-break-before:always !important;
-    padding:1in 0.8in !important;
-  }
-  .quick-ref{grid-template-columns:repeat(4,1fr) !important;}
-  .pack-grid{grid-template-columns:repeat(4,1fr) !important;}
-  .tips-grid{grid-template-columns:repeat(4,1fr) !important;}
-  .qr-card,.pack-cat,.rec-card,.info-card,.conf-card,.todo-box{
-    page-break-inside:avoid !important;break-inside:avoid !important;
-  }
-
-  /* Summary grid */
-  .summary-grid{grid-template-columns:1fr 1fr !important;}
-  .conf-grid{grid-template-columns:repeat(5,1fr) !important;}
-
-  /* Hide URL in footer printed by browser */
-  .page-footer{display:none !important;}
-
-  /* Fonts slightly smaller for print */
-  body{font-size:13px !important;}
-  h2.page-title{font-size:1.5rem !important;}
-}
-
-/* ═══ DARK MODE OVERRIDE — EVERY ELEMENT ═══ */
-@media(prefers-color-scheme:dark){
-  html,body,.page,.day-page,.closing-page,.map-page,.page-break{background:var(--cream) !important;color:var(--text) !important;}
-  .cover{background:#e8e0d4 !important;}
-  .cover-title{color:var(--navy) !important;}
-  .cover-subtitle{color:var(--muted) !important;}
-  .route-banner{background:var(--cream2) !important;border-color:var(--rule) !important;}
-  .route-stops .stop{color:var(--navy) !important;}
-  .info-card{background:#fff !important;} .conf-card{background:var(--cream2) !important;}
-  .todo-box{background:var(--gold2) !important;}
-  .day-hero-overlay{background:linear-gradient(to bottom,rgba(250,250,246,0) 0%,rgba(250,250,246,.15) 55%,rgba(250,250,246,.9) 100%) !important;}
-  .day-label-left h2{color:var(--navy) !important;} .day-date{color:var(--gold) !important;}
-  .day-loc-pill{background:var(--navy) !important;color:#fff !important;}
-  .drive-banner{background:var(--cream2) !important;border-color:var(--rule) !important;}
-  .sched-content h4{color:var(--navy) !important;} .sched-content p{color:var(--muted) !important;}
-  .tag{background:var(--cream2) !important;color:var(--muted) !important;border-color:var(--rule) !important;}
-  .tag.must{background:var(--burg2) !important;color:var(--burgundy) !important;}
-  .tag.dining{background:var(--green2) !important;color:var(--green) !important;}
-  .tag.lodge{background:#e8edfa !important;color:var(--navy) !important;}
-  .tag.drive{background:var(--gold2) !important;color:var(--gold) !important;}
-  .sb-card,.sb-card-body{background:#fff !important;} .sb-conf{background:var(--cream2) !important;}
-  .sb-card-title{color:var(--navy) !important;} .sb-card-text{color:var(--muted) !important;}
-  .tip{background:var(--green2) !important;} .tip p{color:#2a3a1a !important;}
-  .warn{background:var(--gold2) !important;} .warn p{color:#5a4010 !important;}
-  .highlights{background:var(--cream2) !important;} .highlights li{color:var(--text) !important;border-color:var(--rule) !important;}
-  .photo-spots{background:var(--cream2) !important;} .photo-spots li{color:var(--text) !important;}
-  .driving-stops{background:#fff !important;}
-  .rec-card{background:#fff !important;} .rec-name{color:var(--navy) !important;}
-  .closing-page{background:var(--cream2) !important;}
-  .qr-card{background:#fff !important;} .qr-val{color:var(--navy) !important;}
-  .pack-cat li{color:var(--text) !important;}
-  h1,h2,h3,h4{color:var(--navy) !important;}
-}
-</style>
 </head>
 <body>
 
@@ -1459,67 +1121,7 @@ document.addEventListener('DOMContentLoaded', function() {
   </div>
 </div>
 
-<style>
-/* ── PRINT OVERRIDE — highest priority ── */
-@media print {
-  /* Force cover to exactly fill one page with image */
-  .cover { 
-    position: relative !important;
-    width: 8.5in !important;
-    height: 11in !important;
-    page-break-after: always !important;
-    overflow: hidden !important;
-  }
-  .cover-bg {
-    position: absolute !important;
-    inset: 0 !important;
-    opacity: 0.28 !important;
-  }
-  .cover-content {
-    position: relative !important;
-    z-index: 2 !important;
-  }
-  
-  /* Every day page starts fresh */
-  .day-page { page-break-before: always !important; }
-  
-  /* Prevent these from ever splitting across pages */
-  .sched-item, .sb-card, .rec-card, .driving-stops, 
-  .recs-section, .info-card, .conf-card, .tip, .warn,
-  .highlights, .photo-spots, .sb-conf, .todo-box {
-    break-inside: avoid !important;
-    page-break-inside: avoid !important;
-  }
 
-  /* Keep headings with their content */
-  h2, h3, h4 { 
-    break-after: avoid !important;
-    page-break-after: avoid !important; 
-  }
-
-  /* Tighten spacing for print */
-  .sched-item { padding-bottom: 0.8rem !important; }
-  .recs-section { margin-top: 0.2in !important; }
-  
-  /* Make sidebar images reasonable height */  
-  .sb-card-img, .sb-card-img img { height: 1.3in !important; }
-  
-  /* Closing page always starts fresh */
-  .closing-page { page-break-before: always !important; }
-
-  /* Map page always on its own */
-  .map-page { 
-    page-break-before: always !important; 
-    page-break-after: always !important;
-  }
-
-  /* Summary page */
-  .page.page-break { page-break-before: always !important; }
-
-  /* Remove box shadows and transitions for print */
-  * { box-shadow: none !important; transition: none !important; }
-}
-</style>
 
 <style>
 /* Cover image print fix */
@@ -1561,73 +1163,145 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 </style>
 
+
+
 <style>
+/* ═══ FINAL PRINT CSS — ONE SOURCE OF TRUTH ═══ */
 @media print {
-  /* ── ALL IMAGES: force print ── */
-  img {
-    display: block !important;
-    visibility: visible !important;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-    max-width: 100% !important;
-  }
-  /* Cover */
+  @page { size: 8.5in 11in; margin: 0.5in 0.55in; }
+  
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  
+  body { font-size: 11px !important; background: white !important; }
+
+  /* ── COVER: full page ── */
   .cover {
+    width: 100% !important;
+    height: 9.8in !important;
+    min-height: unset !important;
     page-break-after: always !important;
-    min-height: 10in !important;
-    overflow: hidden !important;
+    page-break-inside: avoid !important;
     position: relative !important;
-  }
-  .cover-bg {
-    position: absolute !important;
-    top: 0 !important; left: 0 !important;
-    width: 100% !important; height: 100% !important;
     overflow: hidden !important;
   }
+  .cover-bg { position: absolute !important; inset: 0 !important; overflow: hidden !important; }
   .cover-bg img {
+    position: absolute !important; inset: 0 !important;
     width: 100% !important; height: 100% !important;
     object-fit: cover !important; object-position: center 40% !important;
-    opacity: 0.28 !important;
-    position: absolute !important; top: 0 !important; left: 0 !important;
+    opacity: 0.45 !important;
   }
-  /* Day heroes */
-  .day-hero { height: 2.8in !important; overflow: hidden !important; display: block !important; }
-  .day-hero img { width: 100% !important; height: 2.8in !important; object-fit: cover !important; display: block !important; }
-  /* Hotel sidebar images */
-  .sb-card-img { height: 1.4in !important; overflow: hidden !important; display: block !important; }
-  .sb-card-img img { width: 100% !important; height: 1.4in !important; object-fit: cover !important; display: block !important; }
+  .cover-content { position: relative !important; z-index: 2 !important; }
 
-  /* ── PAGE BREAKS: no blank pages ── */
+  /* ── MAP: its own page ── */
+  .map-page { page-break-before: always !important; page-break-after: always !important; }
+  .map-page .page-inner { padding: 0.3in 0 !important; }
+  #routemap { height: 5.8in !important; }
+
+  /* ── SUMMARY PAGE ── */
+  .page.page-break { page-break-before: always !important; padding: 0.2in 0 !important; }
+
+  /* ── DAY PAGES: NO forced page break — flow naturally ── */
+  /* Instead use a visual top border as separator */
   .day-page {
     page-break-before: always !important;
     page-break-after: auto !important;
     page-break-inside: auto !important;
   }
-  .recs-section {
-    page-break-before: auto !important;
-    page-break-after: auto !important;
-    page-break-inside: avoid !important;
-    margin: 0.2in 0 0 !important;
-  }
-  .page.page-break { page-break-before: always !important; page-break-after: auto !important; }
-  .map-page { page-break-before: always !important; page-break-after: always !important; }
-  .closing-page { page-break-before: always !important; }
 
-  /* ── LAYOUT ── */
+  /* ── DAY HERO: visible and full-color ── */
+  .day-hero {
+    display: block !important;
+    height: 2.4in !important;
+    min-height: unset !important;
+    overflow: hidden !important;
+    position: relative !important;
+  }
+  .day-hero img {
+    display: block !important;
+    width: 100% !important;
+    height: 2.4in !important;
+    object-fit: cover !important;
+    object-position: center 35% !important;
+  }
+  .day-hero-overlay {
+    position: absolute !important; inset: 0 !important;
+    background: linear-gradient(to bottom, rgba(250,250,246,0) 30%, rgba(250,250,246,0.9) 100%) !important;
+  }
+  .day-hero-label {
+    position: absolute !important; bottom: 0 !important; left: 0 !important; right: 0 !important;
+    padding: 0.8rem 0.4in 0.9rem !important;
+  }
+  .day-num-bg { font-size: 5rem !important; right: 0.3in !important; top: 0.3in !important; }
+
+  /* ── DAY BODY ── */
   .day-body {
     display: grid !important;
-    grid-template-columns: 1fr 2.2in !important;
-    gap: 0.4in !important;
+    grid-template-columns: 1fr 2.1in !important;
+    gap: 0.3in !important;
     padding: 0.15in 0 0.1in !important;
+    max-width: 100% !important;
   }
-  .driving-stops { margin: 0 0 0.15in !important; page-break-inside: avoid !important; }
-  .sched-item, .sb-card, .rec-card, .tip, .warn, .highlights,
-  .photo-spots, .info-card, .conf-card, .todo-box {
+  
+  /* ── DRIVE BANNER ── */
+  .drive-banner { padding: 0.2rem 0.3in !important; font-size: 7.5px !important; }
+  .drive-banner .di { font-size: 7.5px !important; }
+
+  /* ── DRIVING STOPS ── */
+  .driving-stops { margin: 0 0 0.1in !important; padding: 0.6rem 0.8rem !important; }
+  .ds-grid { grid-template-columns: 1fr 1fr 1fr !important; gap: 0.4rem !important; }
+
+  /* ── SCHEDULE ── */
+  .sched-item { padding-bottom: 0.6rem !important; page-break-inside: avoid !important; }
+  .sched-content h4 { font-size: 9.5px !important; margin-bottom: 0.15rem !important; }
+  .sched-content p { font-size: 7.5px !important; line-height: 1.4 !important; }
+  .tags { margin-top: 0.2rem !important; }
+  .tag { font-size: 6px !important; padding: 0.08rem 0.35rem !important; }
+
+  /* ── SIDEBAR ── */
+  .sb-card { margin-bottom: 0.1in !important; page-break-inside: avoid !important; }
+  .sb-card-img { height: 1.3in !important; overflow: hidden !important; display: block !important; }
+  .sb-card-img img { display: block !important; width: 100% !important; height: 1.3in !important; object-fit: cover !important; }
+  .sb-card-body { padding: 0.5rem 0.6rem !important; }
+  .sb-card-title { font-size: 8.5px !important; }
+  .sb-card-text { font-size: 7px !important; line-height: 1.4 !important; }
+  .sb-conf { padding: 0.5rem 0.6rem !important; margin-bottom: 0.08in !important; }
+  .highlights { padding: 0.5rem 0.6rem !important; margin-bottom: 0.08in !important; page-break-inside: avoid !important; }
+  .highlights li { font-size: 7px !important; }
+  .photo-spots { padding: 0.5rem 0.6rem !important; margin-bottom: 0.08in !important; page-break-inside: avoid !important; }
+  .photo-spots li { font-size: 7px !important; }
+  .tip, .warn { padding: 0.5rem 0.7rem !important; margin-bottom: 0.08in !important; page-break-inside: avoid !important; }
+  .tip p, .warn p { font-size: 7px !important; line-height: 1.4 !important; }
+
+  /* ── RECS: flow naturally after day content ── */
+  .recs-section {
+    margin: 0.1in 0 0 !important;
     page-break-inside: avoid !important;
+    page-break-before: auto !important;
   }
-  .drive-banner { padding: 0.25rem 0.5in !important; }
-  body { font-size: 12px !important; }
-  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  .recs-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 0.5rem !important; }
+  .rec-card { padding: 0.5rem 0.6rem !important; page-break-inside: avoid !important; }
+  .rec-name { font-size: 8px !important; }
+  .rec-desc { font-size: 7px !important; line-height: 1.4 !important; }
+  .rec-cat { font-size: 6px !important; }
+  .recs-header h3 { font-size: 9px !important; }
+
+  /* ── CLOSING ── */
+  .closing-page { page-break-before: always !important; padding: 0.3in 0 !important; }
+  .quick-ref { grid-template-columns: repeat(4, 1fr) !important; gap: 0.5rem !important; }
+  .qr-card { padding: 0.5rem 0.6rem !important; }
+  .qr-val { font-size: 7.5px !important; }
+  .qr-sub { font-size: 6.5px !important; }
+  .pack-grid { grid-template-columns: repeat(4, 1fr) !important; }
+  .tips-grid { grid-template-columns: repeat(4, 1fr) !important; }
+  .pack-cat li { font-size: 7px !important; }
+  .tip { font-size: 7px !important; }
+
+  /* ── PREVENT ORPHAN ELEMENTS ── */  
+  h2, h3, h4 { page-break-after: avoid !important; }
+  .info-card, .conf-card, .todo-box { page-break-inside: avoid !important; }
+  .summary-grid { grid-template-columns: 1fr 1fr !important; }
+  .conf-grid { grid-template-columns: repeat(5, 1fr) !important; }
 }
 </style>
 </body>
