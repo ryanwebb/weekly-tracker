@@ -1560,5 +1560,75 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 }
 </style>
+
+<style>
+@media print {
+  /* ── ALL IMAGES: force print ── */
+  img {
+    display: block !important;
+    visibility: visible !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    max-width: 100% !important;
+  }
+  /* Cover */
+  .cover {
+    page-break-after: always !important;
+    min-height: 10in !important;
+    overflow: hidden !important;
+    position: relative !important;
+  }
+  .cover-bg {
+    position: absolute !important;
+    top: 0 !important; left: 0 !important;
+    width: 100% !important; height: 100% !important;
+    overflow: hidden !important;
+  }
+  .cover-bg img {
+    width: 100% !important; height: 100% !important;
+    object-fit: cover !important; object-position: center 40% !important;
+    opacity: 0.28 !important;
+    position: absolute !important; top: 0 !important; left: 0 !important;
+  }
+  /* Day heroes */
+  .day-hero { height: 2.8in !important; overflow: hidden !important; display: block !important; }
+  .day-hero img { width: 100% !important; height: 2.8in !important; object-fit: cover !important; display: block !important; }
+  /* Hotel sidebar images */
+  .sb-card-img { height: 1.4in !important; overflow: hidden !important; display: block !important; }
+  .sb-card-img img { width: 100% !important; height: 1.4in !important; object-fit: cover !important; display: block !important; }
+
+  /* ── PAGE BREAKS: no blank pages ── */
+  .day-page {
+    page-break-before: always !important;
+    page-break-after: auto !important;
+    page-break-inside: auto !important;
+  }
+  .recs-section {
+    page-break-before: auto !important;
+    page-break-after: auto !important;
+    page-break-inside: avoid !important;
+    margin: 0.2in 0 0 !important;
+  }
+  .page.page-break { page-break-before: always !important; page-break-after: auto !important; }
+  .map-page { page-break-before: always !important; page-break-after: always !important; }
+  .closing-page { page-break-before: always !important; }
+
+  /* ── LAYOUT ── */
+  .day-body {
+    display: grid !important;
+    grid-template-columns: 1fr 2.2in !important;
+    gap: 0.4in !important;
+    padding: 0.15in 0 0.1in !important;
+  }
+  .driving-stops { margin: 0 0 0.15in !important; page-break-inside: avoid !important; }
+  .sched-item, .sb-card, .rec-card, .tip, .warn, .highlights,
+  .photo-spots, .info-card, .conf-card, .todo-box {
+    page-break-inside: avoid !important;
+  }
+  .drive-banner { padding: 0.25rem 0.5in !important; }
+  body { font-size: 12px !important; }
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+}
+</style>
 </body>
 </html>
