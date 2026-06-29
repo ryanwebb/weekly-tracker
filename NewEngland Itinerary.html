@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light only">
+<title>New England Road Journey — Ryan & Pam Webb · July 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lato:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream:    #FAFAF6;
+  --cream2:   #F3EFE6;
+  --cream3:   #EAE4D8;
+  --navy:     #1B2A4A;
+  --navy-lt:  #2E4170;
+  --green:    #2D5016;
+  --green-lt: #EBF2E4;
+  --burgundy: #7C1F2E;
+  --burg-lt:  #F9EDEF;
+  --gold:     #9C7A2E;
+  --gold-lt:  #FBF5E6;
+  --text:     #222222;
+  --muted:    #666666;
+  --rule:     #D8CFC0;
+  --white:    #FFFFFF;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:15px;}
+html {
+  color-scheme: light only !important;
+}
+@media (prefers-color-scheme: dark) {
+  html, body, * {
+    background-color: revert !important;
+    color: revert !important;
+  }
+  html { filter: none !important; }
+}
+body{
+  background:var(--white);
+  color:var(--text);
+  font-family:'Lato',Georgia,serif;
+  font-weight:300;
+  line-height:1.75;
+  -webkit-print-color-adjust:exact;
+  print-color-adjust:exact;
+}
+img{display:block;width:100%;object-fit:cover;}
+
+/* ── TYPE ── */
+h1,h2,h3,h4{font-family:'Playfair Display',Georgia,serif;line-height:1.2;font-weight:700;}
+.eyebrow{font-family:'Lato',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);}
+
+/* ── COVER ── */
+.cover{
+  position:relative;
+  height:100vh;min-height:680px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  overflow:hidden;
+  background:#e8e0d4;
+  page-break-after:always;
+}
+.cover-bg{
+  position:absolute;inset:0;
+  background-image:url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&q=85');
+  background-size:cover;background-position:center 40%;
+  opacity:.22;
+}
+.cover-content{
+  position:relative;z-index:2;
+  text-align:center;padding:3rem 2rem;max-width:720px;
+}
+.cover-ornament{color:var(--gold);font-size:1.2rem;letter-spacing:.5em;margin-bottom:1.8rem;opacity:.8;}
+.cover-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2.8rem,7vw,5rem);
+  font-weight:700;color:var(--navy);
+  line-height:1.05;margin-bottom:.5rem;
+}
+.cover-subtitle{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1rem,2.5vw,1.5rem);
+  font-style:italic;color:var(--muted);
+  margin-bottom:2.5rem;
+}
+.cover-meta{
+  display:flex;gap:2rem;justify-content:center;flex-wrap:wrap;
+  margin-bottom:2.5rem;
+  border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+  padding:1.2rem 0;
+}
+.cover-meta-item{color:var(--text);font-size:.83rem;font-weight:300;letter-spacing:.06em;}
+.cover-meta-item strong{display:block;font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.2rem;}
+.cover-stops{
+  display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:.35rem;
+  font-size:.72rem;font-weight:300;letter-spacing:.06em;color:var(--muted);
+}
+.cover-stops .arr{color:var(--gold);}
+.cover-border{position:absolute;inset:18px;border:1px solid rgba(156,122,46,.3);pointer-events:none;}
+
+/* ── PAGES ── */
+.page{max-width:980px;margin:0 auto;padding:3.5rem 2.5rem;}
+.page-break{page-break-after:always;}
+
+.page-eyebrow{margin-bottom:.4rem;}
+.page-title{font-size:clamp(1.7rem,3.5vw,2.4rem);color:var(--navy);margin-bottom:.5rem;}
+.title-rule{width:52px;height:3px;background:linear-gradient(90deg,var(--gold),var(--burgundy));margin-bottom:2.5rem;}
+
+/* ── ROUTE BANNER ── */
+.route-banner{
+  background:var(--navy);color:#fff;
+  padding:1.4rem 2rem;margin-bottom:2.5rem;
+}
+.route-banner .rt{font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:.6rem;}
+.route-stops{display:flex;align-items:center;flex-wrap:wrap;gap:.35rem;}
+.route-stops .stop{font-size:.8rem;font-weight:700;letter-spacing:.03em;}
+.route-stops .arr{color:rgba(156,122,46,.9);font-size:.9rem;}
+
+/* ── SUMMARY GRID ── */
+.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2.5rem;}
+@media(max-width:580px){.summary-grid{grid-template-columns:1fr;}}
+.info-card{background:var(--white);border:1px solid var(--rule);border-top:3px solid var(--navy);padding:1.4rem 1.5rem;}
+.info-card.g{border-top-color:var(--green);}
+.info-card.b{border-top-color:var(--burgundy);}
+.info-card.gold{border-top-color:var(--gold);}
+.info-card-title{font-family:'Playfair Display',serif;font-size:.95rem;color:var(--navy);margin-bottom:.9rem;}
+.info-row{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px dotted var(--rule);padding:.38rem 0;font-size:.83rem;gap:.8rem;}
+.info-row:last-child{border-bottom:none;}
+.il{color:var(--muted);font-size:.72rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;flex-shrink:0;}
+.iv{color:var(--text);text-align:right;font-weight:400;}
+
+/* ── CONFIRMATION CARDS ── */
+.conf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:1rem;margin-bottom:2.5rem;}
+.conf-card{background:var(--cream);border:1px solid var(--rule);padding:1rem 1.1rem;}
+.conf-icon{font-size:1.3rem;margin-bottom:.35rem;}
+.conf-name{font-family:'Playfair Display',serif;font-size:.9rem;color:var(--navy);margin-bottom:.25rem;}
+.conf-detail{font-size:.75rem;color:var(--muted);line-height:1.5;}
+.conf-num{font-size:.75rem;font-weight:700;color:var(--green);margin-top:.35rem;letter-spacing:.03em;}
+
+/* ── TODO BOX ── */
+.todo-box{background:var(--gold-lt);border:1px solid #e0ccaa;border-left:4px solid var(--gold);padding:1.2rem 1.4rem;margin-bottom:2rem;}
+.todo-box h4{font-family:'Lato',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.7rem;}
+.todo-list{list-style:none;}
+.todo-list li{font-size:.83rem;color:var(--text);padding:.25rem 0;display:flex;gap:.6rem;align-items:flex-start;border-bottom:1px solid rgba(0,0,0,.06);}
+.todo-list li:last-child{border-bottom:none;}
+.todo-list li::before{content:'☐';color:var(--gold);flex-shrink:0;margin-top:.05rem;}
+
+/* ── DAY PAGE ── */
+.day-page{page-break-before:always;page-break-after:always;}
+
+/* Day hero — lighter treatment */
+.day-hero{
+  position:relative;
+  height:38vh;min-height:260px;
+  overflow:hidden;
+  background:var(--cream2);
+}
+.day-hero img{height:100%;object-position:center;}
+/* Light wash instead of dark overlay */
+.day-hero-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom,
+    rgba(250,250,246,.0) 0%,
+    rgba(250,250,246,.15) 60%,
+    rgba(250,250,246,.85) 100%);
+}
+.day-hero-label{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:1.5rem 2.5rem 1.8rem;
+  display:flex;align-items:flex-end;justify-content:space-between;
+}
+.day-num-bg{
+  position:absolute;right:2rem;top:.8rem;
+  font-family:'Playfair Display',serif;
+  font-size:8rem;font-weight:700;
+  color:rgba(27,42,74,.06);
+  line-height:1;pointer-events:none;
+}
+.day-label-left .day-date{font-size:.68rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.3rem;}
+.day-label-left h2{font-family:'Playfair Display',serif;font-size:clamp(1.4rem,3.5vw,2.1rem);color:var(--navy);line-height:1.1;}
+.day-loc-pill{
+  background:var(--navy);color:#fff;
+  font-size:.68rem;font-weight:400;letter-spacing:.05em;
+  padding:.35rem .8rem;white-space:nowrap;
+  display:none;
+}
+@media(min-width:480px){.day-loc-pill{display:block;}}
+
+/* Day drive banner */
+.drive-banner{
+  background:var(--cream2);border-bottom:1px solid var(--rule);
+  padding:.7rem 2.5rem;
+  display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;
+}
+.drive-banner .di{font-size:.7rem;font-weight:400;color:var(--muted);display:flex;align-items:center;gap:.4rem;}
+.drive-banner .di strong{color:var(--text);font-weight:700;}
+
+/* Day body */
+.day-body{
+  display:grid;grid-template-columns:1fr 280px;gap:3rem;
+  padding:2.2rem 2.5rem 3rem;max-width:980px;margin:0 auto;
+}
+@media(max-width:680px){.day-body{grid-template-columns:1fr;}}
+
+/* Timeline */
+.sched-label{font-size:.62rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:1.2rem;}
+.sched-item{display:flex;gap:1rem;padding-bottom:1.4rem;position:relative;}
+.sched-item::before{content:'';position:absolute;left:23px;top:36px;bottom:0;width:1px;background:var(--rule);}
+.sched-item:last-child::before{display:none;}
+.sched-dot{width:46px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:3px;}
+.sched-dot .dot{width:9px;height:9px;border-radius:50%;background:var(--gold);border:2px solid var(--white);box-shadow:0 0 0 2px var(--rule);flex-shrink:0;margin-top:5px;}
+.sched-dot .time{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);text-align:center;line-height:1.2;margin-top:2px;}
+.sched-content h4{font-family:'Playfair Display',serif;font-size:1rem;color:var(--navy);margin-bottom:.25rem;}
+.sched-content p{font-size:.83rem;color:var(--muted);line-height:1.68;}
+.tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.45rem;}
+.tag{display:inline-block;font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.12rem .5rem;background:var(--cream2);color:var(--muted);border:1px solid var(--rule);}
+.tag.must{color:var(--burgundy);background:var(--burg-lt);border-color:#e8c4cb;}
+.tag.dining{color:var(--green);background:var(--green-lt);border-color:#c4d9b0;}
+.tag.lodge{color:var(--navy);background:#e8edfa;border-color:#b8c8e8;}
+.tag.drive{color:var(--gold);background:var(--gold-lt);border-color:#e0ccaa;}
+.tag.opt{color:var(--muted);background:var(--cream2);}
+
+/* Sidebar */
+.day-sidebar{}
+.sb-card{border:1px solid var(--rule);overflow:hidden;margin-bottom:1.2rem;background:var(--white);}
+.sb-card-img{height:150px;overflow:hidden;}
+.sb-card-img img{height:150px;}
+.sb-card-body{padding:.9rem 1rem;}
+.sb-card-label{font-size:.58rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:.3rem;}
+.sb-card-title{font-family:'Playfair Display',serif;font-size:.92rem;color:var(--navy);margin-bottom:.3rem;}
+.sb-card-text{font-size:.75rem;color:var(--muted);line-height:1.55;}
+
+.sb-conf{background:var(--cream);border:1px solid var(--rule);padding:.8rem 1rem;margin-bottom:1.2rem;}
+.sb-conf-label{font-size:.58rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:.2rem;}
+.sb-conf-val{font-size:.8rem;color:var(--navy);font-weight:700;letter-spacing:.03em;}
+
+.tip{border-left:3px solid var(--green);background:var(--green-lt);padding:.8rem 1rem;margin-bottom:1rem;}
+.tip .tip-label{font-size:.58rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--green);margin-bottom:.25rem;}
+.tip p{font-size:.76rem;color:#3a4a2a;line-height:1.6;}
+
+.warn{border-left:3px solid var(--gold);background:var(--gold-lt);padding:.8rem 1rem;margin-bottom:1rem;}
+.warn .tip-label{font-size:.58rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:.25rem;}
+.warn p{font-size:.76rem;color:#5a4010;line-height:1.6;}
+
+.highlights{background:var(--cream2);border:1px solid var(--rule);padding:.9rem 1rem;margin-bottom:1rem;}
+.highlights .hl-label{font-size:.58rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--navy);margin-bottom:.5rem;}
+.highlights ul{list-style:none;}
+.highlights li{font-size:.77rem;color:var(--text);padding:.2rem 0;border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:.45rem;}
+.highlights li:last-child{border-bottom:none;}
+.highlights li::before{content:'◆';color:var(--gold);font-size:.38rem;flex-shrink:0;}
+
+/* Dining spotlight */
+.dining-spot{background:var(--burg-lt);border:1px solid #e8c4cb;border-left:3px solid var(--burgundy);padding:.8rem 1rem;margin-bottom:1rem;}
+.dining-spot .ds-label{font-size:.58rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--burgundy);margin-bottom:.25rem;}
+.dining-spot p{font-size:.76rem;color:#5a1020;line-height:1.6;}
+
+/* Photo spots */
+.photo-spots{background:var(--navy);padding:.9rem 1rem;margin-bottom:1rem;}
+.photo-spots .ps-label{font-size:.58rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:.5rem;}
+.photo-spots ul{list-style:none;}
+.photo-spots li{font-size:.76rem;color:rgba(255,255,255,.85);padding:.18rem 0;display:flex;gap:.4rem;align-items:center;}
+.photo-spots li::before{content:'📷';font-size:.7rem;}
+
+/* ── CLOSING PAGE ── */
+.closing-page{
+  page-break-before:always;
+  background:var(--cream);
+  min-height:100vh;
+  padding:4rem 2.5rem;
+}
+.closing-inner{max-width:920px;margin:0 auto;}
+.closing-header{text-align:center;margin-bottom:3rem;}
+.closing-header h2{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.8rem);color:var(--navy);margin-bottom:.5rem;}
+.closing-header p{color:var(--muted);font-size:.88rem;}
+
+.quick-ref{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-bottom:3rem;}
+.qr-card{background:var(--white);border:1px solid var(--rule);padding:1rem 1.1rem;}
+.qr-label{font-size:.58rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:.35rem;}
+.qr-val{font-size:.82rem;color:var(--navy);font-weight:700;line-height:1.5;}
+.qr-sub{font-size:.72rem;color:var(--muted);margin-top:.2rem;}
+
+.packing-section{margin-bottom:3rem;}
+.packing-section h3{font-family:'Playfair Display',serif;color:var(--navy);font-size:1.4rem;margin-bottom:1.5rem;}
+.pack-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:1.5rem;}
+.pack-cat h4{font-size:.62rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:.7rem;border-bottom:1px solid var(--rule);padding-bottom:.4rem;}
+.pack-cat ul{list-style:none;}
+.pack-cat li{font-size:.8rem;color:var(--text);padding:.22rem 0;display:flex;gap:.5rem;align-items:flex-start;}
+.pack-cat li::before{content:'☐';color:var(--gold);flex-shrink:0;}
+
+.tips-section{margin-bottom:2rem;}
+.tips-section h3{font-family:'Playfair Display',serif;color:var(--navy);font-size:1.3rem;margin-bottom:1.2rem;}
+.tips-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+@media(max-width:540px){.tips-grid{grid-template-columns:1fr;}}
+.tips-grid .tip{margin-bottom:0;}
+
+.journal-section{margin-top:2rem;}
+.journal-section h3{font-family:'Playfair Display',serif;color:var(--navy);font-size:1.3rem;margin-bottom:1rem;}
+.journal-lines{margin-top:.5rem;}
+.journal-line{border-bottom:1px solid var(--rule);height:2.4rem;margin-bottom:.2rem;}
+
+/* footer */
+.page-footer{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--rule);text-align:center;font-size:.68rem;color:var(--muted);letter-spacing:.06em;}
+
+/* ── PRINT ── */
+@media print{
+  @page{size:letter;margin:.6in .7in;}
+  body{background:#fff;}
+  .cover{height:100vh;page-break-after:always;}
+  .day-page{page-break-before:always;page-break-after:always;page-break-inside:avoid;}
+  .page-break{page-break-after:always;}
+  .closing-page{page-break-before:always;}
+  .day-hero{height:32vh;}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+}
+</style>
+
+<style>
+/* ═══ FORCE LIGHT MODE — override dark mode completely ═══ */
+@media (prefers-color-scheme: dark) {
+  html { filter: invert(0) !important; background: #FAFAF6 !important; }
+  body { background: #ffffff !important; color: #222222 !important; }
+  .cover { background: #e8e0d4 !important; }
+  .route-banner { background: #1B2A4A !important; }
+  .day-hero { background: #F3EFE6 !important; }
+  .drive-banner { background: #F3EFE6 !important; color: #222 !important; }
+  .info-card { background: #ffffff !important; }
+  .conf-card, .todo-box { background: #F3EFE6 !important; }
+  .sb-card { background: #ffffff !important; }
+  .sb-conf { background: #F3EFE6 !important; }
+  .tip { background: #EBF2E4 !important; }
+  .warn { background: #FBF5E6 !important; }
+  .highlights { background: #F3EFE6 !important; }
+  .dining-spot { background: #F9EDEF !important; }
+  .photo-spots { background: #1B2A4A !important; }
+  .closing-page { background: #F3EFE6 !important; }
+  .qr-card { background: #ffffff !important; }
+  .pack-cat li, .highlights li, .todo-list li { color: #222222 !important; }
+  h1,h2,h3,h4 { color: #1B2A4A !important; }
+  p { color: #444444 !important; }
+}
+</style>
+</head>
+<body style="background:#ffffff !important; color:#222222 !important;">
+
+<!-- ════════════ COVER ════════════ -->
+<div class="cover page-break">
+  <div class="cover-bg"></div>
+  <div class="cover-border"></div>
+  <div class="cover-content">
+    <div class="cover-ornament">— ✦ —</div>
+    <h1 class="cover-title">New England<br>Road Journey</h1>
+    <p class="cover-subtitle">Eight Days of History, Lighthouse & Lobster</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><strong>Travelers</strong>Ryan & Pam Webb</div>
+      <div class="cover-meta-item"><strong>Dates</strong>July 8 – 15, 2026</div>
+      <div class="cover-meta-item"><strong>Miles</strong>~1,400</div>
+      <div class="cover-meta-item"><strong>Vehicle</strong>2023 Mercedes C-Class</div>
+    </div>
+    <div class="cover-stops">
+      <span>Boston</span><span class="arr">→</span>
+      <span>Stockbridge</span><span class="arr">→</span>
+      <span>Albany</span><span class="arr">→</span>
+      <span>Hartford</span><span class="arr">→</span>
+      <span>Hampton NH</span><span class="arr">→</span>
+      <span>Acadia</span><span class="arr">→</span>
+      <span>Portland Head</span><span class="arr">→</span>
+      <span>Boston</span>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ TRIP SUMMARY ════════════ -->
+<div class="page page-break">
+  <p class="eyebrow page-eyebrow">Trip Overview</p>
+  <h2 class="page-title">Your Journey at a Glance</h2>
+  <div class="title-rule"></div>
+
+  <div class="route-banner">
+    <div class="rt">Route</div>
+    <div class="route-stops">
+      <span class="stop">DFW</span><span class="arr">✈</span>
+      <span class="stop">Boston Logan</span><span class="arr">→</span>
+      <span class="stop">Stockbridge MA</span><span class="arr">→</span>
+      <span class="stop">Albany NY</span><span class="arr">→</span>
+      <span class="stop">Hartford CT</span><span class="arr">→</span>
+      <span class="stop">Hampton NH</span><span class="arr">→</span>
+      <span class="stop">Southwest Harbor ME</span><span class="arr">→</span>
+      <span class="stop">Portland Head Light</span><span class="arr">→</span>
+      <span class="stop">Boston</span><span class="arr">✈</span>
+      <span class="stop">DFW</span>
+    </div>
+  </div>
+
+  <div class="summary-grid">
+    <div class="info-card">
+      <div class="info-card-title">✈ Outbound — Delta DL2351</div>
+      <div class="info-row"><span class="il">Route</span><span class="iv">DFW → Boston Logan</span></div>
+      <div class="info-row"><span class="il">Date</span><span class="iv">Wednesday, July 8</span></div>
+      <div class="info-row"><span class="il">Departs</span><span class="iv">7:15 AM</span></div>
+      <div class="info-row"><span class="il">Arrives</span><span class="iv">12:08 PM</span></div>
+      <div class="info-row"><span class="il">Seats</span><span class="iv">26A / 26B</span></div>
+      <div class="info-row"><span class="il">Confirmation</span><span class="iv">F6BVFX</span></div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-title">✈ Return — Delta DL0303</div>
+      <div class="info-row"><span class="il">Route</span><span class="iv">Boston → DFW</span></div>
+      <div class="info-row"><span class="il">Date</span><span class="iv">Wednesday, July 15</span></div>
+      <div class="info-row"><span class="il">Departs</span><span class="iv">12:05 PM</span></div>
+      <div class="info-row"><span class="il">Arrives</span><span class="iv">3:17 PM</span></div>
+      <div class="info-row"><span class="il">Seats</span><span class="iv">29A / 29B</span></div>
+      <div class="info-row"><span class="il">Confirmation</span><span class="iv">F6BVFX</span></div>
+    </div>
+    <div class="info-card g">
+      <div class="info-card-title">🚗 Turo — 2023 Mercedes-Benz C-Class</div>
+      <div class="info-row"><span class="il">Plate</span><span class="iv">Massachusetts 5YJP45</span></div>
+      <div class="info-row"><span class="il">Reservation</span><span class="iv">#58616893</span></div>
+      <div class="info-row"><span class="il">Mileage Included</span><span class="iv">1,400 miles</span></div>
+      <div class="info-row"><span class="il">Overage Rate</span><span class="iv">$0.62 / mile</span></div>
+      <div class="info-row"><span class="il">Protection</span><span class="iv">Standard + Roadside</span></div>
+      <div class="info-row"><span class="il">Support</span><span class="iv">Turo app</span></div>
+    </div>
+    <div class="info-card gold">
+      <div class="info-card-title">📋 Trip Style & Priorities</div>
+      <div class="info-row"><span class="il">Pace</span><span class="iv">Relaxed — quality over quantity</span></div>
+      <div class="info-row"><span class="il">Top Priority</span><span class="iv">Norman Rockwell Museum</span></div>
+      <div class="info-row"><span class="il">Nature</span><span class="iv">Acadia National Park</span></div>
+      <div class="info-row"><span class="il">Literary</span><span class="iv">Mark Twain House</span></div>
+      <div class="info-row"><span class="il">Food Goal</span><span class="iv">Bite Into Maine lobster roll</span></div>
+      <div class="info-row"><span class="il">Walking</span><span class="iv">Easy terrain preferred</span></div>
+    </div>
+  </div>
+
+  <p class="eyebrow" style="margin-bottom:.8rem;">Lodging — All Confirmations</p>
+  <div class="conf-grid">
+    <div class="conf-card">
+      <div class="conf-icon">🏛️</div>
+      <div class="conf-name">Red Lion Inn</div>
+      <div class="conf-detail">Stockbridge, MA · Jul 8<br>Main Inn King Room · Est. 1773</div>
+      <div class="conf-num">47804SG033001</div>
+    </div>
+    <div class="conf-card">
+      <div class="conf-icon">🏠</div>
+      <div class="conf-name">Airbnb — Albany</div>
+      <div class="conf-detail">128 Grand St, Albany NY<br>1874 Row House · Jul 9–11 · Host: Phat</div>
+      <div class="conf-num">HM5PHWNKY2</div>
+    </div>
+    <div class="conf-card">
+      <div class="conf-icon">⚓</div>
+      <div class="conf-name">Lamie's Inn</div>
+      <div class="conf-detail">Hampton, NH · Jul 11<br>Standard King · AAA Rate · Est. 1740</div>
+      <div class="conf-num">BB26033120496000</div>
+    </div>
+    <div class="conf-card">
+      <div class="conf-icon">⛵</div>
+      <div class="conf-name">Harbour Cottage Inn</div>
+      <div class="conf-detail">Southwest Harbor, ME · Jul 12–14<br>Yawl Room · Breakfast included</div>
+      <div class="conf-num">695C3973</div>
+    </div>
+    <div class="conf-card">
+      <div class="conf-icon">🏙️</div>
+      <div class="conf-name">Copley Square Hotel</div>
+      <div class="conf-detail">Boston, MA · Jul 14–15<br>King Room · Final night + Skadz</div>
+      <div class="conf-num">73420339884662</div>
+    </div>
+  </div>
+
+  <div class="todo-box">
+    <h4>⚠ Outstanding To-Dos Before You Go</h4>
+    <ul class="todo-list">
+      <li>Buy Mark Twain House tickets online — <strong>marktwainhouse.org</strong> — summer tours sell out</li>
+      <li>Confirm State Farm covers Turo peer-to-peer rentals with your agent</li>
+      <li>Check Acadia timed-entry reservation requirements at <strong>recreation.gov</strong></li>
+      <li>Download Turo app and save reservation #58616893 offline</li>
+      <li>Decide on Salem timing — Day 7 or skip?</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ════════════ DAY 1 ════════════ -->
+<div class="day-page">
+  <div class="day-hero">
+    <img src="https://images.unsplash.com/photo-1576280314498-2b55e9a0b821?w=1400&q=80" alt="Berkshires New England" loading="lazy">
+    <div class="day-hero-overlay"></div>
+    <div class="day-num-bg">1</div>
+    <div class="day-hero-label">
+      <div class="day-label-left">
+        <div class="day-date">Wednesday · July 8, 2026</div>
+        <h2>Wheels Up — Into the Berkshires</h2>
+      </div>
+      <div class="day-loc-pill">DFW → Boston → Stockbridge, MA</div>
+    </div>
+  </div>
+  <div class="drive-banner">
+    <div class="di">✈ <strong>Flight:</strong> DL2351 · Departs 7:15 AM · Arrives 12:08 PM</div>
+    <div class="di">🚗 <strong>Drive Boston → Stockbridge:</strong> ~2.5 hrs · I-90 West</div>
+    <div class="di">📍 <strong>Overnight:</strong> Red Lion Inn, Stockbridge</div>
+  </div>
+  <div class="day-body">
+    <div class="day-main">
+      <p class="sched-label">Day Schedule</p>
+
+      <div class="sched-item">
+        <div class="sched-dot"><div class="dot"></div><div class="time">7:15 AM</div></div>
+        <div class="sched-content">
+          <h4>Delta DL2351 — Depart DFW</h4>
+          <p>Seats 26A / 26B. Confirmation F6BVFX. Flight is approximately 3.5 hours. The approach into Logan over Boston Harbor is beautiful on a clear day — look left.</p>
+          <div class="tags"><span class="tag drive">Flight</span></div>
+        </div>
+      </div>
+
+      <div class="sched-item">
+        <div class="sched-dot"><div class="dot"></div><div class="time">12:08 PM</div></div>
+        <div class="sched-content">
+          <h4>Arrive Boston Logan — Pick Up the Mercedes</h4>
+          <p>Collect the 2023 Mercedes C-Class from your Turo host (plate 5YJP45). Take the Ted Williams Tunnel to I-90 West — the Mass Pike — through the eastern suburbs and then into the gorgeous rolling Berkshire hills. The drive itself is a delight once you clear Route 128.</p>
+          <div class="tags"><span class="tag drive">Car Pickup · ~2.5 hrs to Stockbridge</span></div>
+        </div>
+      </div>
+
+      <div class="sched-item">
+        <div class="sched-dot"><div class="dot"></div><div class="time">~3:00 PM</div></div>
+        <div class="sched-content">
+          <h4>Norman Rockwell Museum</h4>
+          <p>This is the trip's first and most anticipated stop. The museum holds the world's largest collection of Rockwell's original art — 998 paintings, drawings, and studies. The "Four Freedoms" series is here. His actual studio was moved to the museum grounds and is preserved exactly as he left it the day he died in 1978, right down to the coffee mug. The museum sits on a hillside with views that look like a Rockwell painting itself. Plan 2–3 hours. Last entry is typically 4:30 PM in summer — aim to arrive no later than 3:30.</p>
+          <div class="tags"><span class="tag must">Must-See #1</span></div>
+        </div>
+      </div>
+
+      <div class="sched-item">
+        <div class="sched-dot"><div class="dot"></div><div class="time">Before Dinner</div></div>
+        <div class="sched-content">
+          <h4>Stroll Stockbridge Main Street</h4>
+          <p>This is the literal street Norman Rockwell painted for his famous 1967 "Stockbridge Main Street at Christmas." The Red Lion Inn anchors the corner. The unchanged storefronts, white-steeple churches, and elm-lined sidewalks make it feel timeless. A walk before dinner is the perfect way to arrive.</p>
+          <div class="tags"><span class="tag">Explore</span></div>
+        </div>
+      </div>
+
+      <div class="sched-item">
+        <div class="sched-dot"><div class="dot"></div><div class="time">Dinner</div></div>
+        <div class="sched-content">
+          <h4>Red Lion Inn Dining Room</h4>
+          <p>Fine linens, candlelight, a James Beard House-honored kitchen — exactly right for night one. Widow Bingham's Tavern downstairs is cozier and more casual if you'd prefer. Both use the same kitchen. The award-winning wine list is excellent. After dinner: cocktails on the famous front porch with rocking chairs.</p>
+          <div class="tags"><span class="tag dining">Dining Priority</span><span class="tag lodge">Red Lion Inn · 47804SG033001</span></div>
+        </div>
+      </div>
+
+      <div class="sched-item">
+        <div class="sched-dot"><div class="dot"></div><div class="time">Night</div></div>
+        <div class="sched-content">
+          <h4>The Red Lion Porch</h4>
+          <p>The iconic front porch with rocking chairs overlooking Main Street is the most coveted seat in Stockbridge. Presidents have sat here. Rockwell painted it. Don't skip it.</p>
+          <div class="tags"><span class="tag">Evening ritual</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="day-sidebar">
+      <div class="sb-card">
+        <div class="sb-card-img">
+          <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80" alt="Historic New England inn" loading="lazy">
+        </div>
+        <div class="sb-card-body">
+          <div class="sb-card-label">Tonight's Stay</div>
+          <div class="sb-card-title">The Red Lion Inn</div>
+          <div class="sb-card-text">30 Main St · Stockbridge, MA<br>Main Inn King Room<br>Est. 1773 · Historic Hotels of America<br>Six U.S. presidents have stayed here</div>
+        </div>
+      </div>
+      <div class="sb-conf">
+        <div class="sb-conf-label">Confirmation</div>
+        <div class="sb-conf-val">47804SG033001</div>
+      </div>
+      <div class="highlights">
+        <div class="hl-label">Day 1 Highlights</div>
+        <ul>
+          <li>Norman Rockwell Museum</li>
+          <li>Rockwell's intact studio</li>
+          <li>Stockbridge Main Street</li>
+          <li>Red Lion Inn porch</li>
+          <li>Berkshires scenery on I-90</li>
+        </ul>
+      </div>
+      <div class="photo-spots">
+        <div class="ps-label">Photo Spots</div>
+        <ul>
+          <li>Rockwell's studio interior</li>
+          <li>Main Street from the porch</li>
+          <li>Berkshires from the museum hill</li>
+        </ul>
+      </div>
+      <div class="tip">
+        <div class="tip-label">Webb Tip</div>
+        <p>The museum gift shop has quality prints, books, and note cards. A signed print from the store makes a meaningful keepsake. If you want dinner at the main dining room, consider a reservation — summer evenings fill up.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ DAY 2 ════════════ -->
+<div class="day-page">
+  <div class="day-hero">
+    <img src="https://images.unsplash.com/photo-1504450874802-0ba2bcd9b5ae?w=1400&q=80" alt="Hudson Valley New York historic" loading="lazy">
+    <div class="day-hero-overlay"></div>
+    <div class="day-num-bg">2</div>
+    <div class="day-hero-label">
+      <div class="day-label-left">
+        <div class="day-date">Thursday · July 9, 2026</div>
+        <h2>Through the Hudson Valley</h2>
+      </div>
+      <div class="day-loc-pill">Stockbridge → Albany, NY</div>
+    </div>
+  </div>
+  <div class="drive-banner">
+    <div class="di">🚗 <strong>Drive:</strong> ~1.5 hrs · US-20 West (scenic) or I-90 West</div>
+    <div class="di">📍 <strong>Overnight:</strong> 1874 Row House Airbnb, Albany</div>
+  </div>
+  <div class="day-body">
+    <div class="day-main">
+      <p class="sched-label">Day Schedule</p>
+
+      <div class="sched-item">
+        <div class="sched-dot"><div class="dot"></div><div class="time">Morning</div></div>
+        <div class="sched-content">
+          <h4>Breakfast at the Red Lion Inn</h4>
+          <p>Start with breakfast in the dining room or coffee on the porch. The inn is at its best in the quiet morning before day-trippers arrive. No rush — it's a short drive today.</p>
+          <div class="tags"><span class="tag dining">Dining</span></div>
+        </div>
+      </div>
+
+      <div class="sched-item">
+        <div class="sched-dot"><div class="dot"></div><div class="time">Mid-Morning</div></div>
+        <div class="sched-content">
+          <h4>Scenic Drive West to Albany</h4>
+          <p>Take US-20 through Pittsfield and Hancock rather than the highway for a more scenic route through the Berkshire foothills and into the Hudson Valley. The landscape transitions beautifully from wooded hills to the open farmland west of the mountains. Albany sits at the confluence of the Hudson and Mohawk Rivers — one of the oldest continuously settled European communities in America.</p>
+          <div class="tags"><span class="tag drive">~1.5 hrs · US-20 recommended</span></div>
+        </div>
+      </div>
+
+      <div class="sched-item">
+        <div class="sched-dot"><div class="dot"></div><div class="time">Afternoon</div></div>
+        <div class="sched-content">
+          <h4>Check In — 1874 Historic Row House</h4>
+          <p>128 Grand Street, Albany. Approach via Governor's Mansion / Eagle Street per host Phat's GPS note. You're staying in the heart of Albany's finest historic district — brownstones and row houses from the Gilded Age, quiet tree-lined streets, and extraordinary architecture. The New York State Capitol is a short walk.</p>
+          <div class="tags"><span class="tag lodge">Airbnb · HM5PHWNKY2</span></div>
+        </div>
+      </div>
+
+      <div class="sched-item">
+        <div class="sched-dot"><div class="dot"></div><div class="time">Afternoon</div></div>
+        <div class="sched-content">
+          <h4>Explore Washington Park & Center Square</h4>
+          <p>Washington Park is a 90-acre Victorian park designed by Frederick Law Olmsted's firm — the same team that designed Central Park. The lake, rose gardens, and period lamp posts are gorgeous in summer. Center Square neighborhood surrounding the park has some of Albany's finest 19th-century row houses and is very walkable.</p>
+          <div class="tags"><span class="tag">Explore · Easy walking</span></div>
+        </div>
+      </div>
+
+      <div class="sched-item">
+        <div class="sched-dot"><div class="dot"></div><div class="time">Evening</div></div>
+        <div class="sched-content">
+          <h4>Dinner on Lark Street</h4>
+          <p>Albany's restaurant corridor. Top picks: <strong>Café Capriccio</strong> (beloved institution since 1981, outstanding Italian, James Beard-recognized) or <strong>Chez Mike</strong> (farm-to-table, excellent wine list). Both are 10–15 minutes from Grand Street. Lark Street itself is lined with cafés and bars worth a stroll after dinner.</p>
+          <div class="tags"><span class="tag dining">Dining</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="day-sidebar">
+      <div class="sb-card">
+        <div class="sb-card-img">
+          <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&q=80" alt="Albany New York row house" loading="lazy">
+        </div>
+        <div class="sb-card-body">
+          <div class="sb-card-label">Tonight's Stay</div>
+          <div class="sb-card-title">1874 Row House Suite</div>
+          <div class="sb-card-text">128 Grand Street · Albany, NY<br>Governor's Mansion District<br>Host: Phat · Jul 9–11 (2 nights)</div>
+        </div>
+      </div>
+      <div class="sb-conf">
+        <div class="sb-conf-label">Airbnb Confirmation</div>
+        <div class="sb-conf-val">HM5PHWNKY2</div>
+      </div>
+      <div class="warn">
+        <div class="tip-label">GPS Note</div>
+        <p>Approach 128 Grand St via Governor's Mansion / Eagle Street — host Phat confirmed this is the correct approach. Don't trust a direct GPS route.</p>
+      </div>
+      <div class="tip">
+        <div class="tip-label">Did You Know?</div>
+        <p>Albany was chartered in 1686, making it one of the oldest continuously chartered cities in the U.S. The row house you're staying in predates the Brooklyn Bridge by five years.</p>
+      </div>
+      <div class="photo-spots">
+        <div class="ps-label">Photo Spots</div>
+        <ul>
+          <li>Washington Park lake reflection</li>
+          <li>New York State Capitol facade</li>
+          <li>Grand Street row houses at dusk</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ DAY 3 ════════════ -->
+<div class="day-page">
+  <div class="day-hero">
+    <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1400&q=80" alt="Graduation ceremony celebration" loading="lazy">
+    <div class="day-hero-overlay"></div>
+    <div class="day-num-bg">3</div>
+    <div class="day-hero-label">
+      <div class="day-label-left">
+        <div class="day-date">Friday · July 10, 2026</div>
+        <h2>Graduation Day — Celebrate!</h2>
+      </div>
+      <div class="day-loc-pill">Albany, NY — The Big Day</div>
+    </div>
+  </div>
+  <div class="drive-banner">
+    <div class="di">🎓 <strong>No driving today</strong> — stay in Albany and celebrate</div>
+    <div class="di">📍 <strong>Overnight:</strong> 1874 Row House Airbnb, Albany (Night 2)</div>
+  </div>
+  <div class="day-body">
+    <div class="day-main">
+      <p class="sched-label">Day Schedule</p>
+
+      <div class="sched-item">
+        <div class="sched-dot"><div class="dot"></div><div class="time">Morning</div></div>
+        <div class="sched-content">
+          <h4>Graduation Ceremony</h4>
+          <p>The whole point of Albany. Take it all in — the ceremony, the photos, the pride. The historic surroundings of Albany make for a remarkable backdrop for this milestone.</p>
+          <div class="tags"><span class="tag must">Milestone</span></div>
+        </div>
+      </div>
+
+      <div class="sched-item">
+        <div class="sched-dot"><div class="dot"></div><div class="time">Afternoon</div></div>
+        <div class="sched-content">
+          <h4>Celebration Lunch</h4>
+          <p>Albany has excellent options for a celebration meal. <strong>New World Bistro Bar</strong> has inventive, globally-inspired cuisine with a warm, festive atmosphere. <strong>The Hollow Bar + Kitchen</strong> is housed in a stunning converted Victorian firehouse. Either would make the day feel special.</p>
+          <div class="tags"><span class="tag dining">Celebration Lunch</span></div>
+        </div>
+      </div>
+
+      <div class="sched-item">
+        <div class="sched-dot"><div class="dot"></div><div class="time">Afternoon</div></div>
+        <div class="sched-content">
+          <h4>Optional: New York State Capitol</h4>
+          <p>A 10-minute walk from Grand Street. The Capitol building (1899) is architecturally extraordinary — a blend of Romanesque and Renaissance Revival styles that took 32 years to complete. Free tours available. Worth the walk even just for the exterior and the Million Dollar Staircase inside.</p>
+          <div class="tags"><span class="tag opt">Optional</span></div>
+        </div>
+      </div>
+
+      <div class="sched-item">
+        <div class="sched-dot"><div class="dot"></div><div class="time">Evening</div></div>
+        <div class="sched-content">
+          <h4>Evening at the Row House</h4>
+          <p>Relax in your Gilded Age surroundings. Tomorrow is the trip's longest and most content-packed day — Albany → Hartford → Hampton — so an early-ish evening is wise. Pack up tonight so the morning is smooth.</p>
+          <div class="tags"><span class="tag lodge">Rest up — big day tomorrow</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="day-sidebar">
+      <div class="sb-card">
+        <div class="sb-card-img">
+          <img src="https://images.unsplash.com/photo-1607237138185-eedd9c632b0b?w=600&q=80" alt="Celebration" loading="lazy">
+        </div>
+        <div class="sb-card-body">
+          <div class="sb-card-label">Tonight's Stay</div>
+          <div class="sb-card-title">1874 Row House Suite</div>
+          <div class="sb-card-text">Second night · Albany, NY<br>Relax and celebrate</div>
+        </div>
+      </div>
+      <div class="tip">
+        <div class="tip-label">Evening Wind-Down</div>
+        <p>Washington Park is beautiful at dusk. After the ceremony and meal, a slow walk through the park is the perfect way to end a milestone day.</p>
+      </div>
+      <div class="warn">
+        <div class="tip-label">Pack Tonight</div>
+        <p>Tomorrow goes Albany → Hartford CT → Hampton NH. Get everything organized tonight so the morning is smooth and stress-free. It's a full day.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ DAY 4 ════════════ -->
+<div class="day-page">
+  <div class="day-hero">
+    <img src="https://images.unsplash.com/photo-1571701840046-e6c2e5194d1d?w=1400&q=80" alt="Hartford Connecticut Victorian architecture" loading="lazy">
+    <div class="day-hero-overlay"></div>
+    <div class="day-num-bg">4</div>
+    <div class="day-hero-label">
+      <div class="day-label-left">
+        <div class="day-date">Saturday · July 11, 2026</div>
+        <h2>Twain, Coastline & the Old Salt</h2>
+      </div>
+      <div class="day-loc-pill">Albany → Hartford, CT → Hampton, NH</div>
+    </div>
+  </div>
+  <div class="drive-banner">
+    <div class="di">🚗 <strong>Albany → Hartford:</strong> ~2.5 hrs · I-90 E / I-84 S</div>
+    <div class="di">🚗 <strong>Hartford → Hampton:</strong> ~2.5 hrs · I-91 N / I-95 N</div>
+    <div class="di">📍 <strong>Overnight:</strong> Lamie's Inn, Hampton NH</div>
+  </div>
+  <div class="day-body">
+    <div class="day-main">
+      <p class="sched-label">Day Schedule</p>
+
+      <div class="sched-item">
+        <div class="sched-dot"><div class="dot"></div><div class="time">8:00 AM</div></div>
+        <div class="sched-content">
+          <h4>Depart Albany — South to Hartford</h4>
+          <p>I-90 East then I-84 South through Connecticut. Hartford is about 2.5 hours. The Mark Twain House opens at 9:30 AM (tours typically begin on the hour), so a morning arrival sets up the day perfectly.</p>
+          <div class="tags"><span class="tag drive">~2.5 hrs · I-90 E / I-84 S</span></div>
+        </div>
+      </div>
+
+      <div class="sched-item">
+        <div class="sched-dot"><div class="dot"></div><div class="time">~10:30 AM</div></div>
+        <div class="sched-content">
+          <h4>Mark Twain House & Museum — Hartford</h4>
+          <p>One of America's greatest literary landmarks. The ornate Victorian Gothic mansion at 351 Farmington Ave was Twain's home from 1874–1891, and where he wrote <em>Adventures of Huckleberry Finn</em>, <em>Tom Sawyer</em>, <em>The Prince and the Pauper</em>, and <em>A Connecticut Yankee in King Arthur's Court</em>. Guided interior tours are outstanding — the house is full of Twain's wit and personality, right down to the billiard room where he entertained guests until all hours. The neighboring Harriet Beecher Stowe House is on the same property if you have time. <strong>Buy tickets at marktwainhouse.org before arriving — summer weekend tours sell out.</strong></p>
+          <div class="tags"><span class="tag must">Must-See · Buy tickets in advance</span></div>
+        </div>
+      </div>
+
+      <div class="sched-item">
+        <div class="sched-dot"><div class="dot"></div><div class="time">1:00 PM</div></div>
+        <div class="sched-content">
+          <h4>Quick Hartford Lunch</h4>
+          <p>The Parkville neighborhood near Farmington Ave has several solid lunch spots. <strong>Tisane Euro-Asian Café</strong> on Farmington Ave is excellent for a quick, quality stop. Alternatively, grab something light and hit the road — you have ground to cover.</p>
+          <div class="tags"><span class="tag dining">Lunch</span></div>
+        </div>
+      </div>
+
+      <div class="sched-item">
+        <div class="sched-dot"><div class="dot"></div><div class="time">2:00 PM</div></div>
+        <div class="sched-content">
+          <h4>Drive North to Hampton, NH</h4>
+          <p>I-91 North through the Connecticut River Valley, then I-95 North hugging the coast through New Haven, Providence, and into New Hampshire. Watch for the moment you cross into Maine territory — the coast begins to smell different. Hampton is just over the Massachusetts line on the NH coast.</p>
+          <div class="tags"><span class="tag drive">~2.5 hrs · I-91 N / I-95 N</span></div>
+        </div>
+      </div>
+
+      <div class="sched-item">
+        <div class="sched-dot"><div class="dot"></div><div class="time">Evening</div></div>
+        <div class="sched-content">
+          <h4>Check In & Dinner at the Old Salt Restaurant</h4>
+          <p>Lamie's Inn has welcomed travelers since 1740. The Old Salt Restaurant attached to the inn is the destination: classic New England seafood, warm nautical décor, a menu built on genuine regional tradition. The chowder is exceptional. The lobster dinner is a worthy pre-Maine warm-up. This is the kind of place locals have been bringing family for decades.</p>
+          <div class="tags"><span class="tag dining">Dining Priority — get the chowder</span><span class="tag lodge">Lamie's Inn · BB26033120496000</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="day-sidebar">
+      <div class="sb-card">
+        <div class="sb-card-img">
+          <img src="https://images.unsplash.com/photo-1566438480900-0609be27a4be?w=600&q=80" alt="New England coast inn" loading="lazy">
+        </div>
+        <div class="sb-card-body">
+          <div class="sb-card-label">Tonight's Stay</div>
+          <div class="sb-card-title">Lamie's Inn</div>
+          <div class="sb-card-text">490 Lafayette Rd · Hampton, NH<br>Standard King · AAA Rate $237.60<br>Est. 1740 · Old Salt Restaurant on-site<br>(603) 926-0330</div>
+        </div>
+      </div>
+      <div class="sb-conf">
+        <div class="sb-conf-label">Confirmation</div>
+        <div class="sb-conf-val">BB26033120496000</div>
+      </div>
+      <div class="highlights">
+        <div class="hl-label">Day 4 Highlights</div>
+        <ul>
+          <li>Mark Twain House & Museum</li>
+          <li>Harriet Beecher Stowe House</li>
+          <li>Hartford's Nook Farm literary district</li>
+          <li>Old Salt Restaurant</li>
+          <li>First Atlantic Coast air</li>
+        </ul>
+      </div>
+      <div class="warn">
+        <div class="tip-label">⚠ Action Required</div>
+        <p>Buy Mark Twain House tickets <strong>before you leave Texas</strong>. Visit <strong>marktwainhouse.org</strong>. Summer weekend tours fill up fast and there are no walk-in guarantees.</p>
+      </div>
+      <div class="dining-spot">
+        <div class="ds-label">Old Salt — What to Order</div>
+        <p>New England clam chowder is the move. The lobster dinner is classic and generous. If you want something lighter, the seafood stew is outstanding. Sunday brunch buffet is legendary but you'll be here Saturday.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ DAY 5 ════════════ -->
+<div class="day-page">
+  <div class="day-hero">
+    <img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1400&q=80" alt="Maine coastal scenery" loading="lazy">
+    <div class="day-hero-overlay"></div>
+    <div class="day-num-bg">5</div>
+    <div class="day-hero-label">
+      <div class="day-label-left">
+        <div class="day-date">Sunday · July 12, 2026</div>
+        <h2>Into Maine — The Quiet Side</h2>
+      </div>
+      <div class="day-loc-pill">Hampton, NH → Southwest Harbor, ME</div>
+    </div>
+  </div>
+  <div class="drive-banner">
+    <div class="di">🚗 <strong>Drive:</strong> ~4.5 hrs · I-95 N through Portland, then Route 1 / Route 3 to MDI</div>
+    <div class="di">⏰ <strong>Check-in window:</strong> 4:00–8:00 PM — plan arrival accordingly</div>
+    <div class="di">📍 <strong>Overnight:</strong> Harbour Cottage Inn, Southwest Harbor</div>
+  </div>
+  <div class="day-body">
+    <div class="day-main">
+      <p class="sched-label">Day Schedule</p>
+
+      <div class="sched-item">
+        <div class="sched-dot"><div class="dot"></div><div class="time">Morning</div></div>
+        <div class="sched-content">
+          <h4>Continental Breakfast & Depart Hampton</h4>
+          <p>Lamie's Inn includes continental breakfast. Don't linger too long — today is the longest drive of the trip at ~4.5 hours, and the Harbour Cottage check-in window opens at 4:00 PM. Aim to leave by 9 AM.</p>
+          <div class="tags"><span class="tag dining">Included breakfast</span><span class="tag drive">Depart by 9 AM</span></div>
+        </div>
+      </div>
+
+      <div class="sched-item">
+        <div class="sched-dot"><div class="dot"></div><div class="time">Mid-Morning</div></div>
+        <div class="sched-content">
+          <h4>The Maine Coast Begins</h4>
+          <p>Cross the Piscataqua River bridge into Maine and you'll know it immediately — the light changes, the pines crowd the highway, and the air smells different. Pull over at the Maine Welcome Center in Kittery for a stretch and the best free blueberry pie opportunity in the Northeast (they really do this). Follow I-95 N to Portland, then Route 1 or Route 3 north toward Ellsworth and the causeway to Mount Desert Island.</p>
+          <div class="tags"><span class="tag">Scenic drive — pull over when it calls you</span></div>
+        </div>
+      </div>
+
+      <div class="sched-item">
+        <div class="sched-dot"><div class="dot"></div><div class="time">Midday</div></div>
+        <div class="sched-content">
+          <h4>Optional: Lunch Stop — Coastal Route 1</h4>
+          <p>If you're taking coastal Route 1 north of Portland, <strong>Red's Eats in Wiscasset</strong> is legendary for lobster rolls (expect a line). Or stop in <strong>Damariscotta</strong> for a quiet riverside lunch. If you're on the faster inland route, save the appetite for dinner in Southwest Harbor.</p>
+          <div class="tags"><span class="tag opt">Optional lunch stop</span><span class="tag dining">Red's Eats if passing Wiscasset</span></div>
+        </div>
+      </div>
+
+      <div class="sched-item">
+        <div class="sched-dot"><div class="dot"></div><div class="time">~4:00 PM</div></div>
+        <div class="sched-content">
+          <h4>Arrive Southwest Harbor — Check In</h4>
+          <p>9 Dirigo Road. Harbour Cottage Inn is a beautifully restored Victorian property right at the harbor. Your room is the Yawl — named for a sailboat rig, fitting for a property this close to the water. Breakfast is included each morning. The innkeepers are exceptional and will give you the best local advice you'll get anywhere on the island. Call ahead: (207) 244-5738.</p>
+          <div class="tags"><span class="tag lodge">Check-in 4–8 PM · Conf: 695C3973</span></div>
+        </div>
+      </div>
+
+      <div class="sched-item">
+        <div class="sched-dot"><div class="dot"></div><div class="time">Evening</div></div>
+        <div class="sched-content">
+          <h4>First Evening in Southwest Harbor</h4>
+          <p>Walk to the harbor before dinner. Southwest Harbor is a working fishing village — lobster boats, the smell of brine, granite slabs, and spruce trees reaching the water. Dinner suggestion: <strong>Beal's Lobster Pier</strong> is a true Maine pound experience on an actual working pier. Or <strong>Xanthus</strong> at the Claremont Hotel for a more refined evening. Maine summer evenings stay light well past 8:30 PM — take advantage.</p>
+          <div class="tags"><span class="tag dining">Beal's Lobster Pier recommended</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="day-sidebar">
+      <div class="sb-card">
+        <div class="sb-card-img">
+          <img src="https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?w=600&q=80" alt="Maine harbor coast" loading="lazy">
+        </div>
+        <div class="sb-card-body">
+          <div class="sb-card-label">Tonight's Stay</div>
+          <div class="sb-card-title">Harbour Cottage Inn</div>
+          <div class="sb-card-text">9 Dirigo Road · Southwest Harbor, ME<br>Yawl Room · Breakfast included<br>Check-in 4:00–8:00 PM<br>(207) 244-5738 · Jul 12–14</div>
+        </div>
+      </div>
+      <div class="sb-conf">
+        <div class="sb-conf-label">Confirmation</div>
+        <div class="sb-conf-val">695C3973</div>
+      </div>
+      <div class="tip">
+        <div class="tip-label">Pam Pick — Why This Side</div>
+        <p>Southwest Harbor over Bar Harbor was exactly the right call. Same Acadia access, none of the July tourist traffic. A real fishing village, extraordinary inn, and Seawall sunsets that Bar Harbor can't match.</p>
+      </div>
+      <div class="tip">
+        <div class="tip-label">Innkeeper Tip</div>
+        <p>Ask the Harbour Cottage innkeepers about current tide timing for your Acadia plans — it matters for Thunder Hole and coastal access. They know this island cold.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ DAY 6 ════════════ -->
+<div class="day-page">
+  <div class="day-hero">
+    <img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=1400&q=80" alt="Acadia National Park Maine mountains" loading="lazy">
+    <div class="day-hero-overlay"></div>
+    <div class="day-num-bg">6</div>
+    <div class="day-hero-label">
+      <div class="day-label-left">
+        <div class="day-date">Monday · July 13, 2026</div>
+        <h2>Acadia — Your Pace, Your Day</h2>
+      </div>
+      <div class="day-loc-pill">Southwest Harbor & Acadia National Park</div>
+    </div>
+  </div>
+  <div class="drive-banner">
+    <div class="di">🏞️ <strong>No long drives today</strong> — all within Acadia & MDI</div>
+    <div class="di">🌅 <strong>Sunset:</strong> ~8:35 PM at Seawall — plan backwards from here</div>
+    <div class="di">📍 <strong>Overnight:</strong> Harbour Cottage Inn (Night 2)</div>
+  </div>
+  <div class="day-body">
+    <div class="day-main">
+      <p class="sched-label">Day Schedule — Flexible Acadia Day</p>
+
+      <div class="sched-item">
+        <div class="sched-dot"><div class="dot"></div><div class="time">Morning</div></div>
+        <div class="sched-content">
+          <h4>Breakfast at Harbour Cottage Inn</h4>
+          <p>Take your time. Included breakfast, exceptional innkeepers who will adjust your plan based on the day's weather, tides, and crowds. This is one of the best mornings of the trip.</p>
+          <div class="tags"><span class="tag dining">Included</span></div>
+        </div>
+      </div>
+
+      <div class="sched-item">
+        <div class="sched-dot"><div class="dot"></div><div class="time">Mid-Morning</div></div>
+        <div class="sched-content">
+          <h4>Jordan Pond — Popovers & the View</h4>
+          <p>The crown jewel of Acadia's south side. A glacier-carved pond reflecting the Bubbles — two symmetrical rounded mountains — is one of the most stunning natural scenes in the Northeast. The Jordan Pond House has served popovers with jam and tea for 130+ years; it's a genuine institution. The shoreline path around the pond is flat, wide, and remarkably easy walking on the gravel side. Total loop is 3.3 miles but the view from the near shore is just as good for a shorter stroll.</p>
+          <div class="tags"><span class="tag must">Must-See · Easy terrain</span><span class="tag dining">Jordan Pond House popovers</span></div>
+        </div>
+      </div>
+
+      <div class="sched-item">
+        <div class="sched-dot"><div class="dot"></div><div class="time">Early Afternoon</div></div>
+        <div class="sched-content">
+          <h4>Bass Harbor Head Lighthouse</h4>
+          <p>One of the most photographed lighthouses in America — a classic white-and-red structure perched on dramatic pink granite ledges above crashing surf on Acadia's southern tip. The setting is genuinely spectacular. The access path is short (about 5 minutes) with some uneven granite steps, but nothing difficult. Golden hour and blue hour photography here is extraordinary.</p>
+          <div class="tags"><span class="tag must">Must-See · Top photo stop</span></div>
+        </div>
+      </div>
+
+      <div class="sched-item">
+        <div class="sched-dot"><div class="dot"></div><div class="time">Afternoon</div></div>
+        <div class="sched-content">
+          <h4>Thunder Hole — Conditions Permitting</h4>
+          <p>A narrow Atlantic Ocean inlet on the Ocean Path where waves compress into an explosive surge and boom that can send spray 40 feet in the air. Best at 3/4 incoming tide with moderate surf. The innkeepers will know if conditions are right. It's a short, easy drive and walk — worth checking even if conditions are uncertain.</p>
+          <div class="tags"><span class="tag opt">Optional — check tide conditions</span></div>
+        </div>
+      </div>
+
+      <div class="sched-item">
+        <div class="sched-dot"><div class="dot"></div><div class="time">~7:00 PM</div></div>
+        <div class="sched-content">
+          <h4>Seawall Sunset — The Evening Plan</h4>
+          <p>The Seawall picnic area on Acadia's western shore is the trip's most deliberate moment. Flat, easy access to the rocky shoreline. West-facing — one of the rare Maine spots where the sun actually sets over the water. Bring a blanket, a bottle of wine from town, and settle in. Sunset is around 8:35 PM in July. The light is long and golden and unforgettable. This is why you chose Southwest Harbor.</p>
+          <div class="tags"><span class="tag must">The evening plan — don't miss</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="day-sidebar">
+      <div class="sb-card">
+        <div class="sb-card-img">
+          <img src="https://images.unsplash.com/photo-1439396087961-98bc12c21176?w=600&q=80" alt="Acadia National Park Maine" loading="lazy">
+        </div>
+        <div class="sb-card-body">
+          <div class="sb-card-label">Tonight's Stay</div>
+          <div class="sb-card-title">Harbour Cottage Inn</div>
+          <div class="sb-card-text">Second Acadia night<br>Southwest Harbor, ME<br>Breakfast included again</div>
+        </div>
+      </div>
+      <div class="highlights">
+        <div class="hl-label">Acadia Checklist</div>
+        <ul>
+          <li>Jordan Pond (+ popovers)</li>
+          <li>Bass Harbor Head Light</li>
+          <li>Seawall sunset with wine</li>
+          <li>Thunder Hole (if conditions)</li>
+          <li>Bar Harbor — only if desired</li>
+        </ul>
+      </div>
+      <div class="photo-spots">
+        <div class="ps-label">Best Photo Spots</div>
+        <ul>
+          <li>Jordan Pond — mountain reflection</li>
+          <li>Bass Harbor Light from below</li>
+          <li>Seawall at golden hour</li>
+          <li>Ocean Path shoreline</li>
+        </ul>
+      </div>
+      <div class="tip">
+        <div class="tip-label">Webb Tip</div>
+        <p>Skip Bar Harbor proper. In July it's wall-to-wall tourists and cruise ship day-trippers. Everything on your list is on the quiet side of MDI and dramatically better. You already made the right call.</p>
+      </div>
+      <div class="warn">
+        <div class="tip-label">Acadia Note</div>
+        <p>Park Loop Road may require timed-entry reservations in summer. Check <strong>recreation.gov</strong> and book before you leave. Jordan Pond and Bass Harbor are accessible without the loop road reservation.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ DAY 7 ════════════ -->
+<div class="day-page">
+  <div class="day-hero">
+    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1400&q=80" alt="Portland Head Lighthouse Maine" loading="lazy">
+    <div class="day-hero-overlay"></div>
+    <div class="day-num-bg">7</div>
+    <div class="day-hero-label">
+      <div class="day-label-left">
+        <div class="day-date">Tuesday · July 14, 2026</div>
+        <h2>South Along the Coast — Boston Tonight</h2>
+      </div>
+      <div class="day-loc-pill">Southwest Harbor → Portland Head → Boston</div>
+    </div>
+  </div>
+  <div class="drive-banner">
+    <div class="di">🚗 <strong>SW Harbor → Portland:</strong> ~3 hrs · I-95 S / Route 77</div>
+    <div class="di">🚗 <strong>Portland → Boston:</strong> ~2 hrs · I-95 S</div>
+    <div class="di">📍 <strong>Overnight:</strong> Copley Square Hotel, Boston</div>
+  </div>
+  <div class="day-body">
+    <div class="day-main">
+      <p class="sched-label">Day Schedule</p>
+
+      <div class="sched-item">
+        <div class="sched-dot"><div class="dot"></div><div class="time">Morning</div></div>
+        <div class="sched-content">
+          <h4>Final Harbour Cottage Breakfast</h4>
+          <p>Savour this one — it's the last inn breakfast of the trip. Thank the innkeepers. They've earned it. Then head south on the long coastal drive back toward civilization.</p>
+          <div class="tags"><span class="tag dining">Included</span></div>
+        </div>
+      </div>
+
+      <div class="sched-item">
+        <div class="sched-dot"><div class="dot"></div><div class="time">Mid-Morning</div></div>
+        <div class="sched-content">
+          <h4>Fort Williams Park — Portland Head Light</h4>
+          <p>George Washington commissioned this lighthouse in 1787 — it's the oldest in Maine and among the most photographed in America. The setting at Fort Williams Park is spectacular: the lighthouse on a granite headland, the Atlantic crashing on three sides, the skyline of Portland across the bay. The park grounds are extensive and free. Easy paved walking paths along the headland. The view north to Casco Bay is outstanding.</p>
+          <div class="tags"><span class="tag must">Must-See — one of America's finest lighthouses</span></div>
+        </div>
+      </div>
+
+      <div class="sched-item">
+        <div class="sched-dot"><div class="dot"></div><div class="time">Lunch</div></div>
+        <div class="sched-content">
+          <h4>Bite Into Maine — The Lobster Roll</h4>
+          <p>The food truck right at Fort Williams Park. This is one of Maine's most beloved lobster rolls — choose your style: Maine (cold, mayo) or Connecticut (warm, butter). The Connecticut-style is outstanding. Get a bag of chips and eat on the headland overlooking the lighthouse and the sea. This is a top-five trip moment. Cash accepted; line forms fast — arrive before noon if possible.</p>
+          <div class="tags"><span class="tag must">Bucket list food moment</span><span class="tag dining">Dining Priority — Arrive early</span></div>
+        </div>
+      </div>
+
+      <div class="sched-item">
+        <div class="sched-dot"><div class="dot"></div><div class="time">Early Afternoon</div></div>
+        <div class="sched-content">
+          <h4>Salem, MA — Optional Stop (~30 min off I-95)</h4>
+          <p>If the day's timing works, Salem is 25 miles north of Boston and worth 1.5–2 hours. The Salem Witch Trials Memorial (1692), the Peabody Essex Museum (world-class maritime art and Asian art collections), and Pickering Wharf are all within easy walking. Essex Street Pedestrian Mall is charming. Best visited late afternoon when day-trip crowds thin. Skip if you're tired — it's entirely optional.</p>
+          <div class="tags"><span class="tag opt">Optional — depends on energy and timing</span></div>
+        </div>
+      </div>
+
+      <div class="sched-item">
+        <div class="sched-dot"><div class="dot"></div><div class="time">Evening</div></div>
+        <div class="sched-content">
+          <h4>Boston — Copley Square & Dinner with Skadz</h4>
+          <p>47 Huntington Ave puts you directly on Copley Square — Trinity Church, the Boston Public Library, the Hancock Tower. Check in, freshen up. The evening belongs to Skadz, who knows Boston's restaurant scene well. Back Bay and South End are extraordinary for dinner. Let him lead — trust the local.</p>
+          <div class="tags"><span class="tag lodge">Copley Square Hotel · 73420339884662</span><span class="tag dining">Evening with Skadz</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="day-sidebar">
+      <div class="sb-card">
+        <div class="sb-card-img">
+          <img src="https://images.unsplash.com/photo-1569336415962-a4bd9f69c07a?w=600&q=80" alt="Boston Copley Square" loading="lazy">
+        </div>
+        <div class="sb-card-body">
+          <div class="sb-card-label">Tonight's Stay</div>
+          <div class="sb-card-title">Copley Square Hotel</div>
+          <div class="sb-card-text">47 Huntington Ave · Boston, MA<br>King Room · Final night<br>Hotels.com #73420339884662</div>
+        </div>
+      </div>
+      <div class="sb-conf">
+        <div class="sb-conf-label">Confirmation</div>
+        <div class="sb-conf-val">73420339884662</div>
+      </div>
+      <div class="highlights">
+        <div class="hl-label">Day 7 Highlights</div>
+        <ul>
+          <li>Portland Head Light</li>
+          <li>Bite Into Maine lobster roll</li>
+          <li>Fort Williams Park</li>
+          <li>Salem (optional)</li>
+          <li>Boston evening with Skadz</li>
+        </ul>
+      </div>
+      <div class="dining-spot">
+        <div class="ds-label">Palace Diner — Worth a Detour?</div>
+        <p>Palace Diner in Biddeford (just south of Portland) is widely called Maine's best diner. Only 15 seats, closes mid-afternoon. For a very early start, it's a memorable stop. But Bite Into Maine is the food priority today — don't overdo it.</p>
+      </div>
+      <div class="photo-spots">
+        <div class="ps-label">Best Photo Spots</div>
+        <ul>
+          <li>Portland Head Light from below</li>
+          <li>Lobster roll in hand at the headland</li>
+          <li>Copley Square at dusk</li>
+          <li>Salem streetscapes (if stopping)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ DAY 8 ════════════ -->
+<div class="day-page">
+  <div class="day-hero">
+    <img src="https://images.unsplash.com/photo-1569918630817-f09e06a7c97e?w=1400&q=80" alt="Boston morning Copley Square" loading="lazy">
+    <div class="day-hero-overlay"></div>
+    <div class="day-num-bg">8</div>
+    <div class="day-hero-label">
+      <div class="day-label-left">
+        <div class="day-date">Wednesday · July 15, 2026</div>
+        <h2>Homeward — Until Next Time</h2>
+      </div>
+      <div class="day-loc-pill">Boston Logan → DFW</div>
+    </div>
+  </div>
+  <div class="drive-banner">
+    <div cla
+  <div class="day-body">
+    <div class="day-main">
+      <p class="sched-label">Day Schedule</p>
+      <div class="sched-item">
+        <div class="sched-dot"><div class="dot"></div><div class="time">Morning</div></div>
+        <div class="sched-content">
+          <h4>Final Boston Morning</h4>
+          <p>If time allows, walk through the Boston Public Garden — the Make Way for Ducklings statues, Swan Boats, weeping willows. It's 10 minutes from the hotel. Or simply sit in Copley Square with a coffee from a nearby café.</p>
+          <div class="tags"><span class="tag opt">Optional if time allows</span></div>
+        </div>
+      </div>
+      <div class="sched-item">
+        <div class="sched-dot"><div class="dot"></div><div class="time">9:30 AM</div></div>
+        <div class="sched-content">
+          <h4>Return the Mercedes — Depart for Logan</h4>
+          <p>Turo return is typically at a satellite lot — the app guides you. Photograph all four sides before handoff. Complete the in-app return check-in at the lot. For a noon flight, be through security by 11:00 AM. Leave the hotel by 9:30 at the latest.</p>
+          <div class="tags"><span class="tag drive">Allow 2.5 hrs before departure</span></div>
+        </div>
+      </div>
+      <div class="sched-item">
+        <div class="sched-dot"><div class="dot"></div><div class="time">12:05 PM</div></div>
+        <div class="sched-content">
+          <h4>Delta DL0303 — Boston to DFW</h4>
+          <p>Seats 29A / 29B. Arrives DFW at 3:17 PM. Eight days of Rockwell and lobster rolls, Acadia sunsets and Victorian inns. It will feel shorter on the return than it should.</p>
+          <div class="tags"><span class="tag drive">Confirmation F6BVFX · Home by 3:17 PM</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="day-sidebar">
+      <div class="warn">
+        <div class="tip-label">Logan Morning Tips</div>
+        <p>Logan is congested in summer mornings. Leave the hotel by 9:30 AM for a noon flight. Terminal B is Delta's home. Allow buffer for the Turo satellite lot return process.</p>
+      </div>
+      <div class="highlights">
+        <div class="hl-label">Trip By The Numbers</div>
+        <ul>
+          <li>8 days · 7 nights</li>
+          <li>~1,400 miles driven</li>
+          <li>5 unique properties</li>
+          <li>5 states visited</li>
+          <li>1 National Park</li>
+          <li>1 transcendent lobster roll</li>
+        </ul>
+      </div>
+      <div class="tip">
+        <div class="tip-label">Turo Return Checklist</div>
+        <p>Photo all four sides of car. Complete in-app return check-in at the lot. Save your receipt. Note the return odometer for your records.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CLOSING PAGE -->
+<div class="closing-page">
+  <div class="closing-inner">
+    <div class="closing-header">
+      <p class="eyebrow" style="margin-bottom:.6rem;">Safe Travels</p>
+      <h2>Quick Reference, Packing & Notes</h2>
+      <p>Everything you need on one page.</p>
+    </div>
+    <div class="quick-ref">
+      <div class="qr-card"><div class="qr-label">Outbound Flight</div><div class="qr-val">Delta DL2351</div><div class="qr-sub">Jul 8 · 7:15 AM DFW→BOS · Seats 26A/26B · F6BVFX</div></div>
+      <div class="qr-card"><div class="qr-label">Return Flight</div><div class="qr-val">Delta DL0303</div><div class="qr-sub">Jul 15 · 12:05 PM BOS→DFW · Seats 29A/29B · F6BVFX</div></div>
+      <div class="qr-card"><div class="qr-label">Turo Mercedes</div><div class="qr-val">#58616893</div><div class="qr-sub">Plate 5YJP45 · 1,400 mi incl · $0.62 overage</div></div>
+      <div class="qr-card"><div class="qr-label">Red Lion Inn · Jul 8</div><div class="qr-val">47804SG033001</div><div class="qr-sub">Stockbridge MA · (413) 298-5545</div></div>
+      <div class="qr-card"><div class="qr-label">Albany Airbnb · Jul 9–11</div><div class="qr-val">HM5PHWNKY2</div><div class="qr-sub">128 Grand St · Host: Phat · via Eagle St</div></div>
+      <div class="qr-card"><div class="qr-label">Lamie's Inn · Jul 11</div><div class="qr-val">BB26033120496000</div><div class="qr-sub">Hampton NH · (603) 926-0330</div></div>
+      <div class="qr-card"><div class="qr-label">Harbour Cottage Inn · Jul 12–14</div><div class="qr-val">695C3973</div><div class="qr-sub">Southwest Harbor ME · (207) 244-5738</div></div>
+      <div class="qr-card"><div class="qr-label">Copley Square Hotel · Jul 14–15</div><div class="qr-val">73420339884662</div><div class="qr-sub">Boston MA · 47 Huntington Ave</div></div>
+    </div>
+
+    <div class="packing-section">
+      <h3>Packing List</h3>
+      <div class="pack-grid">
+        <div class="pack-cat"><h4>Documents</h4><ul>
+          <li>Driver's licenses — both</li>
+          <li>Delta conf F6BVFX (printed)</li>
+          <li>Turo reservation #58616893</li>
+          <li>All hotel confirmations (backup)</li>
+          <li>Travel insurance documents</li>
+          <li>Credit cards &amp; cash ($200 min)</li>
+          <li>State Farm insurance card</li>
+          <li>AAA card (Lamie's rate)</li>
+        </ul></div>
+        <div class="pack-cat"><h4>Maine &amp; Outdoors</h4><ul>
+          <li>Rain jacket — essential in Maine</li>
+          <li>Light fleece / sweater (cool evenings)</li>
+          <li>Good walking shoes (not sandals)</li>
+          <li>Sunscreen SPF 50+</li>
+          <li>Sunglasses</li>
+          <li>Bug spray (Acadia trails)</li>
+          <li>Reusable water bottles</li>
+          <li>Small daypack for Acadia</li>
+        </ul></div>
+        <div class="pack-cat"><h4>Electronics</h4><ul>
+          <li>Phones + chargers (both)</li>
+          <li>Car charger / USB adapter</li>
+          <li>Portable battery pack</li>
+          <li>Camera + extra memory cards</li>
+          <li>Earbuds / headphones</li>
+          <li>Turo app downloaded &amp; tested</li>
+          <li>Offline maps: MDI, Maine coast</li>
+        </ul></div>
+        <div class="pack-cat"><h4>Clothing</h4><ul>
+          <li>Layers — more than you think</li>
+          <li>One nice dinner outfit</li>
+          <li>Comfortable driving clothes</li>
+          <li>Swimwear (Red Lion pool)</li>
+          <li>Hat / cap for coastal sun</li>
+          <li>Light pajamas / sleepwear</li>
+          <li>Versatile shoes for all terrain</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <div class="tips-section">
+      <h3>Final Road Notes</h3>
+      <div class="tips-grid">
+        <div class="tip"><div class="tip-label">Mileage Watch</div><p>Planned route ≈ 1,350–1,400 miles. Any detours (Salem, Palace Diner) add up at $0.62/mile. Photograph the odometer at pickup and return.</p></div>
+        <div class="tip"><div class="tip-label">Maine Cell Coverage</div><p>Spotty north of Ellsworth and on MDI. Download offline Google Maps for MDI before leaving Hampton. Southwest Harbor has wifi at the inn.</p></div>
+        <div class="tip"><div class="tip-label">Wine for Seawall</div><p>Pick up a bottle before Acadia day — a wine shop in Southwest Harbor or a grocery in Ellsworth. The Seawall sunset calls for it. Pack a wine opener.</p></div>
+        <div class="tip"><div class="tip-label">Bite Into Maine Timing</div><p>Opens 11 AM at Fort Williams. Arrive by 11:15 to beat the line. Cash accepted. Worth every minute of the wait.</p></div>
+      </div>
+    </div>
+
+    <div class="journal-section">
+      <h3>Trip Notes</h3>
+      <div class="journal-lines">
+        <div class="journal-line"></div><div class="journal-line"></div>
+        <div class="journal-line"></div><div class="journal-line"></div>
+        <div class="journal-line"></div><div class="journal-line"></div>
+        <div class="journal-line"></div><div class="journal-line"></div>
+        <div class="journal-line"></div><div class="journal-line"></div>
+        <div class="journal-line"></div><div class="journal-line"></div>
+      </div>
+    </div>
+    <div class="page-footer">Ryan &amp; Pam Webb &nbsp;·&nbsp; New England Road Journey &nbsp;·&nbsp; July 8–15, 2026 &nbsp;·&nbsp; ✦</div>
+  </div>
+</div>
+</body>
+</html>
