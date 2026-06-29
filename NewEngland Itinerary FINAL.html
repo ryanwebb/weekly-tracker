@@ -210,22 +210,108 @@ h1,h2,h3,h4{font-family:'Playfair Display',Georgia,serif;line-height:1.2;font-we
 
 /* ═══ PRINT ═══ */
 @media print{
-  @page{size:letter;margin:.6in .65in;}
-  html,body{background:#fff !important;}
-  .cover{height:100vh;page-break-after:always;}
-  .map-page{page-break-before:always;page-break-after:always;}
-  .day-page{page-break-before:always;page-break-after:always;}
-  .closing-page{page-break-before:always;}
-  .day-hero{height:30vh;min-height:200px;}
-  .day-body{padding:1.2rem 1.5rem 1.5rem;gap:1.8rem;}
-  .day-body .day-sidebar{grid-column:unset;}
-  .recs-section{margin:0 1.5rem .8rem;}
-  .driving-stops{margin:0 1.5rem .8rem;}
-  #routemap{height:420px;}
-  .sb-card,.rec-card,.conf-card,.qr-card,.info-card,.todo-box,.tip,.warn,.highlights,.photo-spots,.sb-conf,.driving-stops,.recs-section{page-break-inside:avoid;}
-  h2,h3,h4{page-break-after:avoid;}
-  .sched-item{page-break-inside:avoid;}
-  *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  @page{size:8.5in 11in;margin:.55in .6in;}
+  @page:first{margin:.3in .6in;}
+
+  *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
+  html,body{background:#fff !important;width:100% !important;margin:0 !important;padding:0 !important;}
+
+  /* Cover: exactly one page */
+  .cover{
+    display:flex !important;
+    height:10in !important;
+    min-height:unset !important;
+    page-break-after:always !important;
+    page-break-inside:avoid !important;
+    overflow:hidden !important;
+  }
+
+  /* Map page: one page */
+  .map-page{
+    page-break-before:always !important;
+    page-break-after:always !important;
+    page-break-inside:avoid !important;
+  }
+  .map-page .page-inner{padding:1rem 1.2rem !important;}
+  #routemap{height:5.5in !important;}
+
+  /* Summary page */
+  .page.page-break{
+    page-break-before:always !important;
+    page-break-after:always !important;
+    padding:1.2rem 1.2rem !important;
+  }
+
+  /* Each day = new page start, content flows naturally */
+  .day-page{
+    page-break-before:always !important;
+    page-break-inside:avoid !important;
+  }
+
+  /* Day hero smaller for print */
+  .day-hero{height:2.4in !important;min-height:unset !important;}
+  .day-hero-overlay{background:linear-gradient(to bottom,rgba(250,250,246,0) 0%,rgba(250,250,246,.25) 55%,rgba(250,250,246,.92) 100%) !important;}
+
+  /* Day body tighter */
+  .day-body{
+    display:grid !important;
+    grid-template-columns:1fr 2.4in !important;
+    gap:0.5in !important;
+    padding:0.3in 0 0.2in !important;
+    max-width:100% !important;
+  }
+
+  /* Drive banner */
+  .drive-banner{padding:.3rem .5rem !important;font-size:.65rem !important;}
+
+  /* Driving stops */
+  .driving-stops{margin:0 0 .3in !important;page-break-inside:avoid !important;}
+  .ds-grid{grid-template-columns:1fr 1fr 1fr !important;}
+
+  /* Schedule items — avoid breaking mid-item */
+  .sched-item{page-break-inside:avoid !important;break-inside:avoid !important;}
+  .sched-content h4{page-break-after:avoid !important;}
+
+  /* Sidebar cards */
+  .sb-card{page-break-inside:avoid !important;break-inside:avoid !important;margin-bottom:.15in !important;}
+  .sb-card-img{height:1.4in !important;}
+  .sb-card-img img{height:1.4in !important;}
+  .sb-conf{page-break-inside:avoid !important;margin-bottom:.12in !important;}
+  .highlights{page-break-inside:avoid !important;margin-bottom:.12in !important;}
+  .photo-spots{page-break-inside:avoid !important;margin-bottom:.12in !important;}
+  .tip,.warn{page-break-inside:avoid !important;margin-bottom:.12in !important;}
+
+  /* Recs section */
+  .recs-section{
+    margin:0.15in 0 0 !important;
+    page-break-before:auto !important;
+    page-break-inside:avoid !important;
+  }
+  .recs-grid{grid-template-columns:repeat(3,1fr) !important;}
+  .rec-card{page-break-inside:avoid !important;}
+
+  /* Closing page */
+  .closing-page{
+    page-break-before:always !important;
+    padding:1in 0.8in !important;
+  }
+  .quick-ref{grid-template-columns:repeat(4,1fr) !important;}
+  .pack-grid{grid-template-columns:repeat(4,1fr) !important;}
+  .tips-grid{grid-template-columns:repeat(4,1fr) !important;}
+  .qr-card,.pack-cat,.rec-card,.info-card,.conf-card,.todo-box{
+    page-break-inside:avoid !important;break-inside:avoid !important;
+  }
+
+  /* Summary grid */
+  .summary-grid{grid-template-columns:1fr 1fr !important;}
+  .conf-grid{grid-template-columns:repeat(5,1fr) !important;}
+
+  /* Hide URL in footer printed by browser */
+  .page-footer{display:none !important;}
+
+  /* Fonts slightly smaller for print */
+  body{font-size:13px !important;}
+  h2.page-title{font-size:1.5rem !important;}
 }
 
 /* ═══ DARK MODE OVERRIDE — EVERY ELEMENT ═══ */
@@ -1370,5 +1456,67 @@ document.addEventListener('DOMContentLoaded', function() {
     <div class="page-footer">Ryan & Pam Webb &nbsp;·&nbsp; New England Road Journey &nbsp;·&nbsp; July 8–15, 2026 &nbsp;·&nbsp; Make beautiful memories ✦</div>
   </div>
 </div>
+
+<style>
+/* ── PRINT OVERRIDE — highest priority ── */
+@media print {
+  /* Force cover to exactly fill one page with image */
+  .cover { 
+    position: relative !important;
+    width: 8.5in !important;
+    height: 11in !important;
+    page-break-after: always !important;
+    overflow: hidden !important;
+  }
+  .cover-bg {
+    position: absolute !important;
+    inset: 0 !important;
+    opacity: 0.28 !important;
+  }
+  .cover-content {
+    position: relative !important;
+    z-index: 2 !important;
+  }
+  
+  /* Every day page starts fresh */
+  .day-page { page-break-before: always !important; }
+  
+  /* Prevent these from ever splitting across pages */
+  .sched-item, .sb-card, .rec-card, .driving-stops, 
+  .recs-section, .info-card, .conf-card, .tip, .warn,
+  .highlights, .photo-spots, .sb-conf, .todo-box {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Keep headings with their content */
+  h2, h3, h4 { 
+    break-after: avoid !important;
+    page-break-after: avoid !important; 
+  }
+
+  /* Tighten spacing for print */
+  .sched-item { padding-bottom: 0.8rem !important; }
+  .recs-section { margin-top: 0.2in !important; }
+  
+  /* Make sidebar images reasonable height */  
+  .sb-card-img, .sb-card-img img { height: 1.3in !important; }
+  
+  /* Closing page always starts fresh */
+  .closing-page { page-break-before: always !important; }
+
+  /* Map page always on its own */
+  .map-page { 
+    page-break-before: always !important; 
+    page-break-after: always !important;
+  }
+
+  /* Summary page */
+  .page.page-break { page-break-before: always !important; }
+
+  /* Remove box shadows and transitions for print */
+  * { box-shadow: none !important; transition: none !important; }
+}
+</style>
 </body>
 </html>
