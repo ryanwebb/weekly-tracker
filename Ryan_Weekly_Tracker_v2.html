@@ -105,6 +105,42 @@
   /* ── ALCOHOL CARD ── */
   .alc-weekly-card { background: var(--card); border-radius: var(--radius); padding: 14px 16px; min-width: 130px; flex-shrink: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.08); cursor: pointer; }
 
+  /* ── LAST WEEK BANNER ── */
+  .lastweek-banner { margin: 10px 16px 0; background: linear-gradient(135deg, #007aff, #5856d6); border-radius: var(--radius); padding: 16px; box-shadow: 0 2px 8px rgba(0,122,255,0.3); }
+  .lastweek-title { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.8); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .lastweek-main { font-size: 16px; font-weight: 700; color: white; margin-bottom: 10px; }
+  .lastweek-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+  .btn-lw-copy { flex: 1; min-width: 120px; background: white; color: #007aff; border: none; border-radius: 10px; padding: 10px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; }
+  .btn-lw-copy:active { opacity: 0.85; }
+  .btn-lw-newweek { flex: 1; min-width: 120px; background: rgba(255,255,255,0.2); color: white; border: none; border-radius: 10px; padding: 10px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; }
+  .btn-lw-newweek:active { opacity: 0.85; }
+  .context-section { margin: 10px 16px 0; background: var(--card); border-radius: var(--radius); padding: 12px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.07); }
+  .context-label { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .context-input { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 9px 12px; font-size: 14px; font-family: inherit; color: var(--text); outline: none; resize: none; min-height: 52px; }
+  .context-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,122,255,0.1); }
+  .bp-card { background: var(--card); border-radius: var(--radius); padding: 14px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); cursor: pointer; margin: 10px 16px 0; }
+  .bp-header { display: flex; justify-content: space-between; align-items: center; }
+  .bp-title { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .bp-latest { font-size: 22px; font-weight: 700; color: var(--text); }
+  .bp-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .bp-log-btn { background: var(--blue); color: white; border: none; border-radius: 20px; padding: 5px 14px; font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; }
+  .bp-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 0.5px solid var(--border); }
+  .bp-row:last-child { border-bottom: none; }
+  .bp-row-val { font-size: 17px; font-weight: 700; }
+  .bp-row-date { font-size: 12px; color: var(--muted); }
+  .bp-row-note { font-size: 12px; color: var(--text2); font-style: italic; margin-top: 2px; }
+  .bp-input-row { display: flex; gap: 8px; align-items: flex-end; margin-bottom: 12px; }
+  .bp-input-group { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+  .bp-input-label { font-size: 11px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; }
+  .bp-input { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 12px; font-size: 18px; font-family: inherit; color: var(--text); outline: none; width: 100%; text-align: center; font-weight: 700; }
+  .bp-input:focus { border-color: var(--blue); }
+  .bp-note-input { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 9px 12px; font-size: 14px; font-family: inherit; color: var(--text); outline: none; margin-bottom: 10px; }
+  .btn-bp-save { width: 100%; background: var(--blue); color: white; border: none; border-radius: var(--radius-sm); padding: 13px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: inherit; margin-bottom: 8px; }
+  .btn-bp-save:active { opacity: 0.85; }
+  .bp-category { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+  .bp-normal { background: #e8f8ee; color: var(--green); }
+  .bp-elevated { background: #fff8ec; color: var(--orange); }
+  .bp-high { background: #ffebea; color: var(--red); }
   /* ── QUICK ADD ── */
   .quick-section { padding: 0 16px 0; }
   .quick-title { font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; padding-top: 14px; }
@@ -285,8 +321,8 @@
   <span class="sync-label" id="syncLabel"></span>
 </div>
 
-<!-- New week banner (shown Sunday until user starts new week) -->
-<div id="newWeekBanner" style="display:none"></div>
+<!-- Last week banner -->
+<div id="lastWeekBanner" style="display:none"></div>
 
 <!-- Pace banner -->
 <div class="pace-banner" id="paceBanner">
@@ -318,13 +354,23 @@
 <!-- Zepbound tracker -->
 <div id="zepBanner" onclick="showZepModal()"></div>
 
-<div class="summary-scroll" id="summaryStrip"></div>
-
-<!-- Quick Add -->
-<div class="quick-section">
-  <div class="quick-title">⚡ Quick Add</div>
-  <div class="quick-scroll" id="quickScroll"></div>
+<div class="bp-card" id="bpCard" onclick="showBPModal()">
+  <div class="bp-header">
+    <div>
+      <div class="bp-title">❤️ Blood Pressure</div>
+      <div class="bp-latest" id="bpLatest">—</div>
+      <div class="bp-sub" id="bpSub">tap to log or view history</div>
+    </div>
+    <button class="bp-log-btn" onclick="event.stopPropagation();showBPLogForm()">+ Log</button>
+  </div>
 </div>
+
+<div class="context-section">
+  <div class="context-label">📝 Week Context</div>
+  <textarea class="context-input" id="weekContextInput" placeholder="e.g. PZ Challenge Week 4, travel Thu–Sat, sick Monday..." onblur="saveWeekContext(this.value)"></textarea>
+</div>
+
+<div class="summary-scroll" id="summaryStrip"></div>
 
 <div class="section-header">This Week</div>
 <div class="day-list" id="dayList"></div>
@@ -345,8 +391,8 @@
 <div class="how-to">
   <h3>How to use</h3>
   <div class="how-step"><div class="step-num">1</div><p><b>Daily:</b> Chat with Claude — send food pics, Peloton screenshots, descriptions.</p></div>
-  <div class="how-step"><div class="step-num">2</div><p><b>Log it:</b> Tap a day or use Quick Add for common foods. Summary cards at top for detail.</p></div>
-  <div class="how-step"><div class="step-num">3</div><p><b>Sunday:</b> Tap "Copy Week Data" then paste into Claude and say "generate my weekly report."</p></div>
+  <div class="how-step"><div class="step-num">2</div><p><b>Log it:</b> Tap a day, paste Claude's summary, or edit manually. Add week context above if relevant.</p></div>
+  <div class="how-step"><div class="step-num">3</div><p><b>Sunday:</b> Tap "Copy Week Data" then paste into Claude and say "generate my weekly report." Then tap "Done with it" to clear last week.</p></div>
 </div>
 
 <!-- Modal -->
@@ -555,15 +601,6 @@ function showZepModal() {
   openModal("Zepbound Tracker", html);
 }
 
-// Quick-add presets
-var QUICK_FOODS = [
-  {name:"Std Breakfast", cal:130, protein:26, carbs:2, fat:4, sodium:280},
-  {name:"Protein Shake", cal:90,  protein:20, carbs:2, fat:0, sodium:80},
-  {name:"Pudding Cup",   cal:100, protein:1,  carbs:20, fat:2.5, sodium:160},
-  {name:"Cheddar Pack",  cal:80,  protein:5,  carbs:1,  fat:7,   sodium:130},
-  {name:"Electrolytes",  cal:0,   protein:0,  carbs:0,  fat:0,   sodium:125},
-  {name:"Salad Dressing (1tbsp)", cal:86, protein:0, carbs:1.4, fat:9, sodium:60}
-];
 
 // ── STORAGE ─────────────────────────────────────────────
 var _mem = {};
@@ -580,6 +617,51 @@ function getSundayKey() {
   return s.getFullYear() + "-" + mm + "-" + dd;
 }
 function storageKey() { return "ryan_tracker_v2_" + getSundayKey(); }
+
+// ── PERSISTENT STORAGE (never cleared on week reset) ────────
+var BP_STORAGE_KEY     = "ryan_bp_history";
+var WT_STORAGE_KEY     = "ryan_weight_history_persistent";
+var CONTEXT_KEY_PREFIX = "ryan_week_context_";
+
+function loadWeightHistory() {
+  try { var r=store.get(WT_STORAGE_KEY); if(r) return JSON.parse(r); } catch(e){}
+  return WEIGHT_HISTORY.slice();
+}
+function saveWeightHistory(hist) { store.set(WT_STORAGE_KEY, JSON.stringify(hist)); }
+function addWeightEntry(dateStr, weightVal) {
+  var hist=loadWeightHistory();
+  hist=hist.filter(function(e){return e.date!==dateStr;});
+  hist.push({date:dateStr,weight:weightVal});
+  hist.sort(function(a,b){return a.date<b.date?-1:1;});
+  saveWeightHistory(hist);
+}
+function loadBPHistory() {
+  try { var r=store.get(BP_STORAGE_KEY); if(r) return JSON.parse(r); } catch(e){}
+  return [];
+}
+function saveBPHistory(hist) { store.set(BP_STORAGE_KEY, JSON.stringify(hist)); }
+function addBPEntry(sys,dia,note) {
+  var hist=loadBPHistory(), now=new Date();
+  hist.unshift({date:now.toISOString().slice(0,10),time:now.toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit"}),sys:sys,dia:dia,note:note||""});
+  if(hist.length>200) hist=hist.slice(0,200);
+  saveBPHistory(hist);
+}
+function bpCategory(sys,dia) {
+  if(sys<120&&dia<80) return {label:"Normal",cls:"bp-normal"};
+  if(sys<130&&dia<80) return {label:"Elevated",cls:"bp-elevated"};
+  return {label:"High",cls:"bp-high"};
+}
+function renderBPCard() {
+  var hist=loadBPHistory(),el=document.getElementById("bpLatest"),sub=document.getElementById("bpSub");
+  if(!el) return;
+  if(hist.length){var e=hist[0],cat=bpCategory(e.sys,e.dia);
+    el.innerHTML=e.sys+"/"+e.dia+' <span class="bp-category '+cat.cls+'">'+cat.label+"</span>";
+    sub.textContent=e.date+(e.time?" · "+e.time:"")+(e.note?" · "+e.note:"");
+  } else {el.textContent="—";sub.textContent="tap to log or view history";}
+}
+function getContextKey() { return CONTEXT_KEY_PREFIX+getSundayKey(); }
+function loadWeekContext() { return store.get(getContextKey())||""; }
+function saveWeekContext(val) { store.set(getContextKey(),val); }
 
 // ── GITHUB SYNC ──────────────────────────────────────────
 var SYNC_SETTINGS_KEY = "ryan_sync_settings";
@@ -636,7 +718,7 @@ async function jbCreateBin(apiKey) {
     var resp = await fetch("https://api.jsonbin.io/v3/b", {
       method: "POST",
       headers: { "X-Master-Key": apiKey, "Content-Type": "application/json", "X-Bin-Name": "ryan-tracker", "X-Bin-Private": "true" },
-      body: JSON.stringify({ weeks: {}, zeplog: [] })
+      body: JSON.stringify({ weeks: {}, zeplog: [], bp: [], weightHistory: [], contexts: {} })
     });
     if (!resp.ok) return null;
     var data = await resp.json();
@@ -671,6 +753,10 @@ function saveWeek() {
     var mergedRecord = { data: merged, savedAt: Date.now() };
     store.set(storageKey(), JSON.stringify(mergedRecord));
     record.weeks[storageKey()] = mergedRecord;
+    record.bp = loadBPHistory();
+    record.weightHistory = loadWeightHistory();
+    if(!record.contexts) record.contexts={};
+    record.contexts[getSundayKey()] = loadWeekContext();
     var ok = await jbWrite(record);
     if (ok) {
       setSyncStatus("ok", "Synced · " + new Date().toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit"}));
@@ -703,6 +789,12 @@ async function loadFromCloud() {
   if (!isSyncConfigured()) return false;
   setSyncStatus("saving", "Syncing...");
   var record = await jbRead();
+  if (record) {
+    if(record.bp&&record.bp.length) saveBPHistory(record.bp);
+    if(record.weightHistory&&record.weightHistory.length) saveWeightHistory(record.weightHistory);
+    if(record.contexts&&record.contexts[getSundayKey()]) store.set(getContextKey(),record.contexts[getSundayKey()]);
+    if(record.zeplog&&record.zeplog.length) saveZepLog(record.zeplog);
+  }
   if (record && record.weeks && record.weeks[storageKey()]) {
     var cloudEntry = record.weeks[storageKey()];
     var cloudData = cloudEntry.data || cloudEntry; // handle old format without .data wrapper
@@ -852,18 +944,8 @@ function getLoggedDays() {
 }
 function getLatestWeight() {
   for (var i=DAYS.length-1; i>=0; i--) { if (week[DAYS[i]].weight) return parseFloat(week[DAYS[i]].weight); }
-  // Fall back to last week's most recent weight
-  try {
-    var lastKey = "ryan_tracker_v2_" + getLastSundayKey();
-    var raw = store.get(lastKey);
-    if (raw) {
-      var p = JSON.parse(raw);
-      var d = p.data || p;
-      for (var i=DAYS.length-1; i>=0; i--) { if (d[DAYS[i]] && d[DAYS[i]].weight) return parseFloat(d[DAYS[i]].weight); }
-    }
-  } catch(e) {}
-  // Final fallback: most recent entry in WEIGHT_HISTORY
-  if (WEIGHT_HISTORY.length) return WEIGHT_HISTORY[WEIGHT_HISTORY.length-1].weight;
+  var hist = loadWeightHistory();
+  if (hist.length) return hist[hist.length-1].weight;
   return 279.3;
 }
 function getWeeklyDrinks() {
@@ -965,48 +1047,8 @@ function updateMilestoneBanner() {
   document.getElementById("milestoneTarget").textContent = m.next.label + " (" + m.next.weight + ")";
 }
 
-// ── QUICK ADD ───────────────────────────────────────────
-function renderQuickAdd() {
-  var qs = document.getElementById("quickScroll");
-  var html = "";
-  for (var i=0; i<QUICK_FOODS.length; i++) {
-    var f = QUICK_FOODS[i];
-    var macroStr = f.cal + " cal · " + f.protein + "g pro";
-    html += '<div class="quick-chip" onclick="showQuickPicker(' + i + ')">'
-      + '<div class="quick-chip-name">' + f.name + '</div>'
-      + '<div class="quick-chip-macros">' + macroStr + '</div>'
-      + '</div>';
-  }
-  qs.innerHTML = html;
-}
 
-function showQuickPicker(foodIdx) {
-  var f = QUICK_FOODS[foodIdx];
-  var html = '<p style="font-size:14px;color:var(--text2);margin-bottom:16px">Add <b>' + f.name + '</b> (' + f.cal + ' cal, ' + f.protein + 'g protein) to which day?</p>';
-  for (var i=0; i<DAYS.length; i++) {
-    var day = DAYS[i];
-    var isToday = i === todayIdx();
-    html += '<div class="quick-modal-day-row" onclick="applyQuickAdd(' + foodIdx + ',\'' + day + '\')">'
-      + '<div class="quick-modal-day">' + day + (isToday ? ' <span style="font-size:11px;color:var(--blue)">Today</span>' : '') + '</div>'
-      + '<div class="quick-modal-check">›</div>'
-      + '</div>';
-  }
-  openModal("Add " + f.name, html);
-}
 
-function applyQuickAdd(foodIdx, day) {
-  var f = QUICK_FOODS[foodIdx];
-  var d = week[day];
-  d.calories  = String(Math.round((parseFloat(d.calories)||0)  + f.cal));
-  d.protein   = String(Math.round((parseFloat(d.protein)||0)   + f.protein));
-  d.carbs     = String(Math.round((parseFloat(d.carbs)||0)     + f.carbs));
-  d.fat       = String(Math.round(((parseFloat(d.fat)||0)      + f.fat) * 10) / 10);
-  d.sodium    = String(Math.round((parseFloat(d.sodium)||0)    + f.sodium));
-  saveWeek();
-  closeModalDirect();
-  showToast(f.name + " added to " + day);
-  renderAll();
-}
 
 // ── MODAL ───────────────────────────────────────────────
 function openModal(title, bodyHtml) {
@@ -1242,7 +1284,6 @@ function renderAll() {
   renderNewWeekBanner();
   renderZepBanner();
   renderSummary();
-  renderQuickAdd();
   renderDays();
 }
 
@@ -1398,7 +1439,7 @@ function renderDays() {
       +'</div>'
       +'<div style="font-size:12px;color:var(--muted);padding-left:2px;margin-bottom:10px">+10 min cooldown/stretch added when reporting</div>'
       +'<div class="sec-div">📝 Notes</div>'
-      +'<textarea class="notes-input" placeholder="Anything to remember..." onblur="upd(\''+day+'\',\'notes\',this.value)">'+(d.notes||"")+'</textarea>';
+      +'<textarea class="notes-input" placeholder="Anything to remember... sick, traveling, special occasion, etc." onblur="upd(\''+day+'\',\'notes\',this.value)">'+(d.notes||"")+'</textarea>';
 
     html+='<div class="day-row" id="row_'+day+'">'
       +'<div class="day-row-header" onclick="toggleDay(\''+day+'\',event)">'
@@ -1435,15 +1476,24 @@ function handlePaste(day) {
   if(!count){showToast("Could not find values — try Edit Manually");return;}
   var mode=pasteMode[day]||"replace";
   applyParsed(day,parsed,mode);
+  if(parsed.weight){var sunday=getSundayKey(),dayDate=new Date(sunday+"T12:00:00");dayDate.setDate(dayDate.getDate()+DAYS.indexOf(day));addWeightEntry(dayDate.toISOString().slice(0,10),parseFloat(parsed.weight));}
   saveWeek();
   activeTab[day]="manual";
   showToast((mode==="add"?"Added to":"Filled")+" "+count+" field"+(count!==1?"s":"")+" for "+day);
   renderAll();
   setTimeout(function(){var el2=document.getElementById("row_"+day);if(el2)el2.scrollIntoView({behavior:"smooth",block:"nearest"});},80);
 }
-function upd(day,key,val) { week[day][key]=val; saveWeek(); updateHeaderExtras(); updatePaceBanner(); updateMilestoneBanner(); renderSummary(); renderDays(); }
+function upd(day,key,val) {
+  week[day][key]=val;
+  if(key==="weight"&&val){
+    var sunday=getSundayKey(),dayDate=new Date(sunday+"T12:00:00");
+    dayDate.setDate(dayDate.getDate()+DAYS.indexOf(day));
+    addWeightEntry(dayDate.toISOString().slice(0,10),parseFloat(val));
+  }
+  saveWeek(); updateHeaderExtras(); updatePaceBanner(); updateMilestoneBanner(); renderSummary(); renderDays();
+}
 function resetWeek() {
-  if(confirm("Reset all data for this week?")){week=emptyWeek();activeTab={};pasteMode={};openDay=null;saveWeek();renderAll();}
+  if(confirm("Reset all data for this week? BP history and weight history will be kept.")){week=emptyWeek();activeTab={};pasteMode={};openDay=null;store.remove(getContextKey());saveWeek();renderAll();}
 }
 
 // ── NEW WEEK HANDLING ────────────────────────────────────
@@ -1472,22 +1522,23 @@ function getLastWeekData() {
 }
 
 function isSundayAndHasLastWeek() {
-  if (new Date().getDay() !== 0) return false; // only Sunday
-  return getLastWeekData() !== null;
+  return getLastWeekData() !== null; // show any day
 }
 
-function renderNewWeekBanner() {
-  var el = document.getElementById("newWeekBanner");
-  if (!isSundayAndHasLastWeek()) { el.style.display = "none"; return; }
-  el.style.display = "block";
-  var lastRange = getLastWeekRange();
-  el.className = "new-week-banner";
-  el.innerHTML = '<div class="new-week-title">📋 New Week</div>'
-    + '<div class="new-week-main">Last week\'s data is ready for your report</div>'
-    + '<div class="new-week-btns">'
-    + '<button class="btn-copy-report" onclick="copyLastWeekData()">Copy Report Data</button>'
-    + '<button class="btn-start-week" onclick="startNewWeek()">Start New Week →</button>'
-    + '</div>';
+function renderNewWeekBanner() { /* replaced by renderLastWeekBanner */ }
+function renderLastWeekBanner() {
+  var el = document.getElementById("lastWeekBanner");
+  if(!el) return;
+  if(!isSundayAndHasLastWeek()) { el.style.display="none"; return; }
+  el.style.display="block";
+  el.className="lastweek-banner";
+  var prevRange=getLastWeekRange();
+  el.innerHTML='<div class="lastweek-title">📋 Previous Week Ready</div>'
+    +'<div class="lastweek-main">'+prevRange+'</div>'
+    +'<div class="lastweek-btns">'
+    +'<button class="btn-lw-copy" onclick="copyLastWeekData()">📋 Copy for Report</button>'
+    +'<button class="btn-lw-newweek" onclick="startNewWeek()">✓ Done with it</button>'
+    +'</div>';
 }
 
 function getLastWeekRange() {
@@ -1501,9 +1552,13 @@ function getLastWeekRange() {
 function copyLastWeekData() {
   var lastWeek = getLastWeekData();
   if (!lastWeek) { showToast("No last week data found"); return; }
-  // Build report text from last week
   var lastRange = getLastWeekRange();
+  var prevCtx=store.get(CONTEXT_KEY_PREFIX+getLastSundayKey())||"";
+  var bpHistLW=loadBPHistory(),prevSun=getLastSundayKey(),prevSat=new Date(prevSun+"T12:00:00");
+  prevSat.setDate(prevSat.getDate()+6);var prevSatStr=prevSat.toISOString().slice(0,10);
+  var lastWeekBP=bpHistLW.filter(function(e){return e.date>=prevSun&&e.date<=prevSatStr;});
   var lines = ["WEEKLY LOG — " + lastRange, ""];
+  if(prevCtx)lines.push("Week Context: "+prevCtx,"");
   for (var i=0; i<DAYS.length; i++) {
     var day=DAYS[i], d=lastWeek[day];
     if (!d) continue;
@@ -1532,6 +1587,7 @@ function copyLastWeekData() {
     lines.push("Total alcohol: "+td+" drink(s)");
     if(lw)lines.push("Latest weight: "+lastWeek[lw].weight+" lbs (−"+(WEIGHT_START-parseFloat(lastWeek[lw].weight)).toFixed(1)+" lbs from start)");
   }
+  if(lastWeekBP.length){lines.push("","--- BLOOD PRESSURE ---");lastWeekBP.forEach(function(e){lines.push(e.date+": "+e.sys+"/"+e.dia+(e.note?" ("+e.note+")":""));});}
   var text = lines.join("\n");
   var btn = document.querySelector(".btn-copy-report");
   function ok() { if(btn){btn.textContent="✓ Copied!";setTimeout(function(){btn.textContent="Copy Report Data";},2500);} }
@@ -1539,27 +1595,20 @@ function copyLastWeekData() {
 }
 
 async function startNewWeek() {
-  if (!confirm("Archive last week and start fresh? This week's log will clear.")) return;
-  // Archive last week to JSONBin if configured
+  if (!confirm("Mark last week as done and clear it? Make sure you've copied the data first.")) return;
   if (isSyncConfigured()) {
-    setSyncStatus("saving", "Archiving last week...");
-    var record = await jbRead() || { weeks: {}, zeplog: [] };
+    setSyncStatus("saving", "Archiving...");
+    var record = await jbRead() || { weeks: {}, zeplog: [], bp: [], weightHistory: [], contexts: {} };
     if (!record.weeks) record.weeks = {};
-    var lastKey = "ryan_tracker_v2_" + getLastSundayKey();
     var lastData = getLastWeekData();
     if (lastData) {
-      record.weeks[lastKey] = { data: lastData, savedAt: Date.now(), archived: true };
+      record.weeks["ryan_tracker_v2_"+getLastSundayKey()] = { data: lastData, savedAt: Date.now(), archived: true };
       await jbWrite(record);
     }
   }
-  // Clear last week from localStorage
-  var lastKey = "ryan_tracker_v2_" + getLastSundayKey();
-  store.remove(lastKey);
-  // Start fresh for this week
-  week = emptyWeek(); activeTab = {}; pasteMode = {}; openDay = DAYS[todayIdx()];
-  saveWeek();
-  document.getElementById("newWeekBanner").style.display = "none";
-  showToast("New week started!");
+  store.remove("ryan_tracker_v2_" + getLastSundayKey());
+  renderLastWeekBanner();
+  showToast("Previous week cleared");
   renderAll();
 }
 function showToast(msg) {
@@ -1569,7 +1618,12 @@ function showToast(msg) {
 
 // ── COPY WEEK DATA ───────────────────────────────────────
 function copyData() {
+  var ctx=loadWeekContext();
+  var bpHist=loadBPHistory(),sun=getSundayKey(),sat=new Date(sun+"T12:00:00");
+  sat.setDate(sat.getDate()+6);var satStr=sat.toISOString().slice(0,10);
+  var weekBP=bpHist.filter(function(e){return e.date>=sun&&e.date<=satStr;});
   var lines=["WEEKLY LOG — "+getWeekRange(),""];
+  if(ctx)lines.push("Week Context: "+ctx,"");
   for(var i=0;i<DAYS.length;i++){
     var day=DAYS[i], d=week[day];
     var hm=d.calories!=="", he=(parseInt(d.exerciseDuration)||0)>0&&d.exerciseType!=="Rest";
@@ -1596,6 +1650,7 @@ function copyData() {
     lines.push("Total alcohol: "+td+" drink(s)");
     if(lw)lines.push("Latest weight: "+week[lw].weight+" lbs (−"+(WEIGHT_START-parseFloat(week[lw].weight)).toFixed(1)+" lbs from start)");
   }
+  if(weekBP.length){lines.push("","--- BLOOD PRESSURE ---");weekBP.forEach(function(e){lines.push(e.date+": "+e.sys+"/"+e.dia+(e.note?" ("+e.note+")":""));});}
   var text=lines.join("\n");
   var btn=document.getElementById("copyBtn");
   function ok(){btn.classList.add("btn-copy-success");btn.innerHTML="<span>✓</span> Copied!";setTimeout(function(){btn.classList.remove("btn-copy-success");btn.innerHTML="<span>📋</span> Copy Week Data for Report";},2500);}
@@ -1605,7 +1660,7 @@ function fb(text,cb){var ta=document.createElement("textarea");ta.value=text;ta.
 
 // ── EXPORT / IMPORT ──────────────────────────────────────
 function exportBackup() {
-  var backup={version:"2.0",exported:new Date().toISOString(),weekKey:storageKey(),weekRange:getWeekRange(),data:week};
+  var backup={version:"2.1",exported:new Date().toISOString(),weekKey:storageKey(),weekRange:getWeekRange(),data:week,bp:loadBPHistory(),weightHistory:loadWeightHistory(),weekContext:loadWeekContext()};
   var json=JSON.stringify(backup,null,2);
   var blob=new Blob([json],{type:"application/json"});
   var url=URL.createObjectURL(blob);
@@ -1626,6 +1681,9 @@ function importBackup(event) {
       if(confirm("Import backup from "+(backup.weekRange||"unknown week")+"? This will replace current data.")){
         week=backup.data;
         for(var j=0;j<DAYS.length;j++){if(!week[DAYS[j]])week[DAYS[j]]=emptyDay();}
+        if(backup.bp)saveBPHistory(backup.bp);
+        if(backup.weightHistory)saveWeightHistory(backup.weightHistory);
+        if(backup.weekContext)store.set(getContextKey(),backup.weekContext);
         saveWeek();openDay=null;activeTab={};pasteMode={};renderAll();
         showToast("Backup restored successfully");
       }
@@ -1635,18 +1693,54 @@ function importBackup(event) {
   event.target.value="";
 }
 
-// ── INIT ────────────────────────────────────────────────
-renderAll();
-openDay = DAYS[todayIdx()];
-renderDays();
 
-// Show sync status bar if configured, then try to load from cloud
-if (isSyncConfigured()) {
-  setSyncStatus("saving", "Syncing...");
-  loadFromCloud().then(function(loaded) {
-    if (loaded) { renderAll(); openDay = DAYS[todayIdx()]; renderDays(); }
-  });
+// ── BP MODAL ─────────────────────────────────────────────
+function showBPModal() { showBPHistory(); }
+function showBPHistory() {
+  var hist=loadBPHistory();
+  var html='<div style="margin-bottom:14px"><button class="btn-bp-save" onclick="showBPLogForm()" style="margin-bottom:0">+ Log New Reading</button></div>';
+  if(!hist.length){ html+='<p class="detail-empty">No readings logged yet</p>'; }
+  else {
+    var lastMonth="";
+    hist.forEach(function(e){
+      var month=e.date.slice(0,7);
+      if(month!==lastMonth){var d2=new Date(e.date+"T12:00:00");html+='<div style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;padding:10px 0 4px">'+d2.toLocaleDateString("en-US",{month:"long",year:"numeric"})+'</div>';lastMonth=month;}
+      var cat=bpCategory(e.sys,e.dia),dl=new Date(e.date+"T12:00:00");
+      var dateLabel=dl.toLocaleDateString("en-US",{month:"short",day:"numeric"})+(e.time?" "+e.time:"");
+      html+='<div class="bp-row"><div><div class="bp-row-val">'+e.sys+"/"+e.dia+' <span class="bp-category '+cat.cls+'">'+cat.label+'</span></div>'+(e.note?'<div class="bp-row-note">'+e.note+'</div>':'')+'</div><div class="bp-row-date">'+dateLabel+'</div></div>';
+    });
+  }
+  openModal("❤️ Blood Pressure History",html);
 }
+function showBPLogForm() {
+  var html='<div class="bp-input-row"><div class="bp-input-group"><div class="bp-input-label">Systolic</div><input class="bp-input" id="bpSys" type="number" placeholder="120" inputmode="numeric" min="60" max="220"/></div><div style="font-size:24px;color:var(--muted);padding-bottom:8px;font-weight:300">/</div><div class="bp-input-group"><div class="bp-input-label">Diastolic</div><input class="bp-input" id="bpDia" type="number" placeholder="80" inputmode="numeric" min="40" max="140"/></div></div><input class="bp-note-input" id="bpNote" type="text" placeholder="Optional note (e.g. after ride, feeling stressed...)" autocapitalize="sentences"/><button class="btn-bp-save" onclick="submitBPEntry()">Save Reading</button><button style="width:100%;background:none;border:none;color:var(--muted);font-size:14px;padding:8px;cursor:pointer;font-family:inherit" onclick="showBPHistory()">← View History</button>';
+  openModal("❤️ Log Blood Pressure",html);
+  setTimeout(function(){var el=document.getElementById("bpSys");if(el)el.focus();},200);
+}
+function submitBPEntry() {
+  var sys=parseInt(document.getElementById("bpSys").value),dia=parseInt(document.getElementById("bpDia").value),note=(document.getElementById("bpNote").value||"").trim();
+  if(!sys||!dia||sys<60||sys>220||dia<40||dia>140){showToast("Please enter valid BP numbers");return;}
+  addBPEntry(sys,dia,note); renderBPCard(); showToast("BP logged: "+sys+"/"+dia); showBPHistory();
+}
+
+// ── INIT ────────────────────────────────────────────────
+function init() {
+  renderAll();
+  openDay = DAYS[todayIdx()];
+  renderDays();
+  if (isSyncConfigured()) {
+    setSyncStatus("saving", "Syncing...");
+    loadFromCloud().then(function(loaded) {
+      if (loaded) { renderAll(); openDay = DAYS[todayIdx()]; renderDays(); }
+    });
+  }
+}
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", init);
+} else {
+  init();
+}
+
 </script>
 </body>
 </html>
