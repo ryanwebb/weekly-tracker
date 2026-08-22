@@ -915,12 +915,16 @@ function emptyWeek() {
   for (var i=0; i<DAYS.length; i++) w[DAYS[i]] = emptyDay();
   return w;
 }
+function isCurrentWeekEmpty(data) {
+  for (var i=0; i<DAYS.length; i++) { if (data[DAYS[i]] && data[DAYS[i]].calories !== "") return false; }
+  return true;
+}
+
 function loadWeek() {
   try {
     var raw = store.get(storageKey());
     if (raw) {
       var p = JSON.parse(raw);
-      // Handle new format {data: {...}, savedAt: timestamp}
       var d = p.data || p;
       for (var i=0; i<DAYS.length; i++) { if (!d[DAYS[i]]) d[DAYS[i]] = emptyDay(); }
       return d;
@@ -929,7 +933,22 @@ function loadWeek() {
   return emptyWeek();
 }
 
-var week = loadWeek();
+// Sunday bridge: if current week is empty but last week has data, show last week
+var _viewingLastWeek = false;
+function loadWeekWithBridge() {
+  var current = loadWeek();
+  if (isCurrentWeekEmpty(current)) {
+    var lastData = getLastWeekData();
+    if (lastData) {
+      _viewingLastWeek = true;
+      return lastData;
+    }
+  }
+  _viewingLastWeek = false;
+  return current;
+}
+
+var week = loadWeekWithBridge();
 var openDay = null;
 var activeTab = {};
 var pasteMode = {};
@@ -1277,12 +1296,17 @@ function buildSparkline(weightPoints) {
 
 // ── RENDER ALL ──────────────────────────────────────────
 function renderAll() {
-  document.getElementById("weekLabel").textContent = getWeekRange();
+  var weekRangeDisplay = _viewingLastWeek ? getLastWeekRange() + " (previous week)" : getWeekRange();
+  document.getElementById("weekLabel").textContent = weekRangeDisplay;
   updateHeaderExtras();
   updatePaceBanner();
   updateMilestoneBanner();
   renderNewWeekBanner();
+  renderLastWeekBanner();
   renderZepBanner();
+  renderBPCard();
+  var ctx=loadWeekContext(),ctxEl=document.getElementById("weekContextInput");
+  if(ctxEl&&ctxEl.value!==ctx) ctxEl.value=ctx;
   renderSummary();
   renderDays();
 }
@@ -1486,11 +1510,18 @@ function handlePaste(day) {
 function upd(day,key,val) {
   week[day][key]=val;
   if(key==="weight"&&val){
-    var sunday=getSundayKey(),dayDate=new Date(sunday+"T12:00:00");
+    var wkSunday=_viewingLastWeek?getLastSundayKey():getSundayKey();
+    var dayDate=new Date(wkSunday+"T12:00:00");
     dayDate.setDate(dayDate.getDate()+DAYS.indexOf(day));
     addWeightEntry(dayDate.toISOString().slice(0,10),parseFloat(val));
   }
-  saveWeek(); updateHeaderExtras(); updatePaceBanner(); updateMilestoneBanner(); renderSummary(); renderDays();
+  if(_viewingLastWeek){
+    // Save edits to last week's key, not current week
+    store.set("ryan_tracker_v2_"+getLastSundayKey(), JSON.stringify({data:week,savedAt:Date.now()}));
+  } else {
+    saveWeek();
+  }
+  updateHeaderExtras(); updatePaceBanner(); updateMilestoneBanner(); renderSummary(); renderDays();
 }
 function resetWeek() {
   if(confirm("Reset all data for this week? BP history and weight history will be kept.")){week=emptyWeek();activeTab={};pasteMode={};openDay=null;store.remove(getContextKey());saveWeek();renderAll();}
@@ -1529,16 +1560,30 @@ function renderNewWeekBanner() { /* replaced by renderLastWeekBanner */ }
 function renderLastWeekBanner() {
   var el = document.getElementById("lastWeekBanner");
   if(!el) return;
-  if(!isSundayAndHasLastWeek()) { el.style.display="none"; return; }
-  el.style.display="block";
-  el.className="lastweek-banner";
-  var prevRange=getLastWeekRange();
-  el.innerHTML='<div class="lastweek-title">📋 Previous Week Ready</div>'
-    +'<div class="lastweek-main">'+prevRange+'</div>'
-    +'<div class="lastweek-btns">'
-    +'<button class="btn-lw-copy" onclick="copyLastWeekData()">📋 Copy for Report</button>'
-    +'<button class="btn-lw-newweek" onclick="startNewWeek()">✓ Done with it</button>'
-    +'</div>';
+  if (_viewingLastWeek) {
+    // Sunday bridge mode — showing last week's data in the day list
+    el.style.display="block";
+    el.className="lastweek-banner";
+    el.innerHTML='<div class="lastweek-title">📋 Viewing Previous Week</div>'
+      +'<div class="lastweek-main">Add any missing entries, then copy &amp; clear when ready</div>'
+      +'<div class="lastweek-btns">'
+      +'<button class="btn-lw-copy" onclick="copyAndPromptClear()">📋 Copy for Report</button>'
+      +'<button class="btn-lw-newweek" onclick="startNewWeek()">✓ Done with it</button>'
+      +'</div>';
+  } else if (isSundayAndHasLastWeek()) {
+    // Separate last week data exists (shouldn't normally happen with bridge active)
+    el.style.display="block";
+    el.className="lastweek-banner";
+    var prevRange=getLastWeekRange();
+    el.innerHTML='<div class="lastweek-title">📋 Previous Week Ready</div>'
+      +'<div class="lastweek-main">'+prevRange+'</div>'
+      +'<div class="lastweek-btns">'
+      +'<button class="btn-lw-copy" onclick="copyLastWeekData()">📋 Copy for Report</button>'
+      +'<button class="btn-lw-newweek" onclick="startNewWeek()">✓ Done with it</button>'
+      +'</div>';
+  } else {
+    el.style.display="none";
+  }
 }
 
 function getLastWeekRange() {
@@ -1594,22 +1639,38 @@ function copyLastWeekData() {
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(ok).catch(function(){fb(text,ok);});}else{fb(text,ok);}
 }
 
+function copyAndPromptClear() {
+  // Copy last week data then offer to clear
+  copyLastWeekData();
+  setTimeout(function() {
+    showToast("Data copied! Tap Done with it when ready to start new week.");
+  }, 300);
+}
+
 async function startNewWeek() {
   if (!confirm("Mark last week as done and clear it? Make sure you've copied the data first.")) return;
+  // If in bridge mode, save any edits made to last week back to last week's key first
+  if (_viewingLastWeek) {
+    store.set("ryan_tracker_v2_" + getLastSundayKey(), JSON.stringify({ data: week, savedAt: Date.now() }));
+  }
   if (isSyncConfigured()) {
     setSyncStatus("saving", "Archiving...");
     var record = await jbRead() || { weeks: {}, zeplog: [], bp: [], weightHistory: [], contexts: {} };
     if (!record.weeks) record.weeks = {};
-    var lastData = getLastWeekData();
+    var lastData = _viewingLastWeek ? week : getLastWeekData();
     if (lastData) {
       record.weeks["ryan_tracker_v2_"+getLastSundayKey()] = { data: lastData, savedAt: Date.now(), archived: true };
       await jbWrite(record);
     }
   }
   store.remove("ryan_tracker_v2_" + getLastSundayKey());
-  renderLastWeekBanner();
-  showToast("Previous week cleared");
+  _viewingLastWeek = false;
+  week = loadWeek();
+  openDay = DAYS[todayIdx()];
+  activeTab = {}; pasteMode = {};
+  showToast("New week started!");
   renderAll();
+  renderDays();
 }
 function showToast(msg) {
   var t=document.getElementById("toast"); t.textContent=msg; t.classList.add("toast-show");
@@ -1618,11 +1679,13 @@ function showToast(msg) {
 
 // ── COPY WEEK DATA ───────────────────────────────────────
 function copyData() {
-  var ctx=loadWeekContext();
-  var bpHist=loadBPHistory(),sun=getSundayKey(),sat=new Date(sun+"T12:00:00");
+  var activeSun = _viewingLastWeek ? getLastSundayKey() : getSundayKey();
+  var activeRange = _viewingLastWeek ? getLastWeekRange() : getWeekRange();
+  var ctx = _viewingLastWeek ? (store.get(CONTEXT_KEY_PREFIX+getLastSundayKey())||"") : loadWeekContext();
+  var bpHist=loadBPHistory(),sat=new Date(activeSun+"T12:00:00");
   sat.setDate(sat.getDate()+6);var satStr=sat.toISOString().slice(0,10);
-  var weekBP=bpHist.filter(function(e){return e.date>=sun&&e.date<=satStr;});
-  var lines=["WEEKLY LOG — "+getWeekRange(),""];
+  var weekBP=bpHist.filter(function(e){return e.date>=activeSun&&e.date<=satStr;});
+  var lines=["WEEKLY LOG — "+activeRange,""];
   if(ctx)lines.push("Week Context: "+ctx,"");
   for(var i=0;i<DAYS.length;i++){
     var day=DAYS[i], d=week[day];
