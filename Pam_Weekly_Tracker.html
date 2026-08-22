@@ -714,11 +714,12 @@ function loadWeek() {
   return emptyWeek();
 }
 
-// Sunday bridge: if current week is empty but last week has data, show last week
+// Sunday bridge: only activate on Sunday when current week is empty
 var _viewingLastWeek = false;
 function loadWeekWithBridge() {
   var current = loadWeek();
-  if (isCurrentWeekEmpty(current)) {
+  var isSunday = new Date().getDay() === 0;
+  if (isSunday && isCurrentWeekEmpty(current)) {
     var lastData = getPrevWeekData();
     if (lastData) {
       _viewingLastWeek = true;
@@ -774,7 +775,7 @@ function renderLastWeekBanner() {
       + '<button class="btn-lw-copy" onclick="copyAndPromptClear()">📋 Copy for Report</button>'
       + '<button class="btn-lw-newweek" onclick="clearPrevWeekBridge()">✓ Done with it</button>'
       + '</div>';
-  } else if (hasPrevWeekData()) {
+  } else if (new Date().getDay() === 0 && (hasPrevWeekData())) {
     el.style.display = "block";
     el.className = "lastweek-banner";
     var prevRange = getWeekRange(getPrevSundayKey());
