@@ -1225,6 +1225,9 @@ function parsePaste(text) {
   // Grab the first number followed by "min" — that's the ride duration; ignore cooldown references
   var dm=text.match(/(\d+)\s*(?:min|minutes?)/i);
   if (dm) { r.exerciseDuration=String(parseInt(dm[1])); }
+  // Parse Context or Notes line into notes field
+  var ctxMatch = text.match(/(?:context|notes?)[:\s]+([^\n\r]+)/i);
+  if (ctxMatch) r.notes = ctxMatch[1].trim();
   var keys=Object.keys(r);
   for (var j=0; j<keys.length; j++) { if (r[keys[j]]===null||r[keys[j]]==="") delete r[keys[j]]; }
   return r;
