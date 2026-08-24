@@ -933,6 +933,30 @@ function loadWeek() {
   return emptyWeek();
 }
 
+function getLastSundayKey() {
+  var n = new Date();
+  // Go back 7 days from current Sunday
+  var thisSunday = new Date(n.getFullYear(), n.getMonth(), n.getDate() - n.getDay());
+  var lastSunday = new Date(thisSunday);
+  lastSunday.setDate(thisSunday.getDate() - 7);
+  var mm = String(lastSunday.getMonth()+1).padStart(2,"0");
+  var dd = String(lastSunday.getDate()).padStart(2,"0");
+  return lastSunday.getFullYear() + "-" + mm + "-" + dd;
+}
+
+function getLastWeekData() {
+  // Try to load last week's data from localStorage
+  var lastKey = "ryan_tracker_v2_" + getLastSundayKey();
+  try {
+    var raw = store.get(lastKey);
+    if (raw) {
+      var p = JSON.parse(raw);
+      return p.data || p;
+    }
+  } catch(e) {}
+  return null;
+}
+
 // Bridge: activate any day when current week is empty but last week has data
 // Persists until user explicitly clears it
 var _viewingLastWeek = false;
@@ -1536,29 +1560,7 @@ function resetWeek() {
 }
 
 // ── NEW WEEK HANDLING ────────────────────────────────────
-function getLastSundayKey() {
-  var n = new Date();
-  // Go back 7 days from current Sunday
-  var thisSunday = new Date(n.getFullYear(), n.getMonth(), n.getDate() - n.getDay());
-  var lastSunday = new Date(thisSunday);
-  lastSunday.setDate(thisSunday.getDate() - 7);
-  var mm = String(lastSunday.getMonth()+1).padStart(2,"0");
-  var dd = String(lastSunday.getDate()).padStart(2,"0");
-  return lastSunday.getFullYear() + "-" + mm + "-" + dd;
-}
 
-function getLastWeekData() {
-  // Try to load last week's data from localStorage
-  var lastKey = "ryan_tracker_v2_" + getLastSundayKey();
-  try {
-    var raw = store.get(lastKey);
-    if (raw) {
-      var p = JSON.parse(raw);
-      return p.data || p;
-    }
-  } catch(e) {}
-  return null;
-}
 
 function isSundayAndHasLastWeek() {
   return getLastWeekData() !== null; // show any day
