@@ -714,19 +714,23 @@ function loadWeek() {
   return emptyWeek();
 }
 
-// Sunday bridge: only activate on Sunday when current week is empty
+// Bridge: activate any day when current week is empty but last week has data
+// Persists until user explicitly clears it
 var _viewingLastWeek = false;
 function loadWeekWithBridge() {
   var current = loadWeek();
-  var isSunday = new Date().getDay() === 0;
-  if (isSunday && isCurrentWeekEmpty(current)) {
+  // Check if we were already in bridge mode (persists across reloads)
+  try { if (sessionStorage.getItem('_bridge_active') === '1') _viewingLastWeek = true; } catch(e) {}
+  if (isCurrentWeekEmpty(current)) {
     var lastData = getPrevWeekData();
     if (lastData) {
       _viewingLastWeek = true;
+      try { sessionStorage.setItem('_bridge_active', '1'); } catch(e) {}
       return lastData;
     }
   }
   _viewingLastWeek = false;
+  try { sessionStorage.removeItem('_bridge_active'); } catch(e) {}
   return current;
 }
 
@@ -775,7 +779,7 @@ function renderLastWeekBanner() {
       + '<button class="btn-lw-copy" onclick="copyAndPromptClear()">📋 Copy for Report</button>'
       + '<button class="btn-lw-newweek" onclick="clearPrevWeekBridge()">✓ Done with it</button>'
       + '</div>';
-  } else if (new Date().getDay() === 0 && (hasPrevWeekData())) {
+  } else if (hasPrevWeekData())) {
     el.style.display = "block";
     el.className = "lastweek-banner";
     var prevRange = getWeekRange(getPrevSundayKey());
@@ -853,6 +857,7 @@ function clearPrevWeekBridge() {
   store.set("pam_tracker_v2_" + getPrevSundayKey(), JSON.stringify({data:week, savedAt:Date.now()}));
   store.remove("pam_tracker_v2_" + getPrevSundayKey());
   _viewingLastWeek = false;
+  try { sessionStorage.removeItem('_bridge_active'); } catch(e) {}
   week = loadWeek();
   openDay = DAYS[todayIdx()];
   activeTab = {}; pasteMode = {};
