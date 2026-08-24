@@ -760,7 +760,9 @@ function getPrevSundayKey() {
 }
 function getPrevWeekData() {
   try {
-    var raw = store.get("pam_tracker_v2_" + getPrevSundayKey());
+    // Check v2 key first, then fall back to v1 key for older data
+    var raw = store.get("pam_tracker_v2_" + getPrevSundayKey())
+           || store.get("pam_tracker_v1_" + getPrevSundayKey());
     if (raw) { var p = JSON.parse(raw); return p.data || p; }
   } catch(e) {}
   return null;
@@ -856,6 +858,7 @@ function clearPrevWeekBridge() {
   // Save any edits back to last week's key first
   store.set("pam_tracker_v2_" + getPrevSundayKey(), JSON.stringify({data:week, savedAt:Date.now()}));
   store.remove("pam_tracker_v2_" + getPrevSundayKey());
+  store.remove("pam_tracker_v1_" + getPrevSundayKey());
   _viewingLastWeek = false;
   try { sessionStorage.removeItem('_bridge_active'); } catch(e) {}
   week = loadWeek();
@@ -868,6 +871,7 @@ function clearPrevWeekBridge() {
 function clearPrevWeek() {
   if (confirm("Mark previous week as done and clear it? Make sure you've copied the data first.")) {
     store.remove("pam_tracker_v2_" + getPrevSundayKey());
+  store.remove("pam_tracker_v1_" + getPrevSundayKey());
     renderLastWeekBanner();
     showToast("Previous week cleared");
   }
