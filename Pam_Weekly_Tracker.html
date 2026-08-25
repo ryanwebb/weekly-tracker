@@ -247,7 +247,7 @@
 <div class="header">
   <div class="header-top">
     <div>
-      <h1>Pam's Tracker <span style="font-size:14px;font-weight:500;color:var(--muted)">v2 <span style="font-size:11px;font-weight:400">· build 2.2</span></span></h1>
+      <h1>Pam's Tracker <span style="font-size:14px;font-weight:500;color:var(--muted)">v2 <span style="font-size:11px;font-weight:400">· build 2.3</span></span></h1>
       <div class="header-badges">
         <span class="week-label" id="weekLabel"></span>
       </div>
@@ -754,11 +754,36 @@ function getPrevWeekData() {
 }
 function hasPrevWeekData() { return getPrevWeekData() !== null; }
 
+function weekHasData() {
+  // Returns true if the in-memory week variable has any logged days
+  for (var i=0; i<DAYS.length; i++) {
+    if (week[DAYS[i]] && week[DAYS[i]].calories !== "") return true;
+  }
+  return false;
+}
+
+function currentWeekStorageIsEmpty() {
+  // Returns true if nothing is saved to this week's localStorage key
+  var raw = store.get(storageKey());
+  if (!raw) return true;
+  try {
+    var p = JSON.parse(raw);
+    var d = p.data || p;
+    for (var i=0; i<DAYS.length; i++) {
+      if (d[DAYS[i]] && d[DAYS[i]].calories !== "") return false;
+    }
+  } catch(e) {}
+  return true;
+}
+
 function renderLastWeekBanner() {
   var el = document.getElementById("lastWeekBanner");
   if (!el) return;
-  // Show banner any time previous week data exists
-  if (_viewingLastWeek || hasPrevWeekData()) {
+  // Show banner if: flag is set, OR prev week data exists, OR
+  // week has data but current week storage key is empty (cloud loaded old data)
+  var shouldShow = _viewingLastWeek || hasPrevWeekData() || 
+                   (weekHasData() && currentWeekStorageIsEmpty());
+  if (shouldShow) {
     el.style.display = "block";
     el.className = "lastweek-banner";
     el.innerHTML = '<div class="lastweek-title">📋 Viewing Previous Week</div>'
