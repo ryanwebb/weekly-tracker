@@ -621,8 +621,23 @@ async function loadFromCloud() {
     }
     var merged = cloudSavedAt >= localSavedAt ? mergeWeeks(cloudData, localData) : mergeWeeks(localData, cloudData);
     for (var i=0; i<DAYS.length; i++) { if (!merged[DAYS[i]]) merged[DAYS[i]] = emptyDay(); }
-    week = merged;
     store.set(storageKey(), JSON.stringify({ data: merged, savedAt: Math.max(cloudSavedAt, localSavedAt) }));
+    // Only update week display if not in bridge mode, or if merged data has content
+    if (!_viewingLastWeek || !isCurrentWeekEmpty(merged)) {
+      week = merged;
+      // Re-check bridge after cloud load
+      if (isCurrentWeekEmpty(merged)) {
+        var lastData = getPrevWeekData();
+        if (lastData) {
+          _viewingLastWeek = true;
+          try { sessionStorage.setItem('_pam_bridge', '1'); } catch(e) {}
+          week = lastData;
+        }
+      } else {
+        _viewingLastWeek = false;
+        try { sessionStorage.removeItem('_pam_bridge'); } catch(e) {}
+      }
+    }
   }
   setSyncStatus("ok", "Synced · " + new Date().toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit"}));
   return true;
