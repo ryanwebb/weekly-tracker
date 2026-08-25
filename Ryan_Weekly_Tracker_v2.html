@@ -111,9 +111,7 @@
   .lastweek-main { font-size: 16px; font-weight: 700; color: white; margin-bottom: 10px; }
   .lastweek-btns { display: flex; gap: 8px; flex-wrap: wrap; }
   .btn-lw-copy { flex: 1; min-width: 120px; background: white; color: #007aff; border: none; border-radius: 10px; padding: 10px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; }
-  .btn-lw-copy:active { opacity: 0.85; }
   .btn-lw-newweek { flex: 1; min-width: 120px; background: rgba(255,255,255,0.2); color: white; border: none; border-radius: 10px; padding: 10px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; }
-  .btn-lw-newweek:active { opacity: 0.85; }
   .context-section { margin: 10px 16px 0; background: var(--card); border-radius: var(--radius); padding: 12px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.07); }
   .context-label { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
   .context-input { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 9px 12px; font-size: 14px; font-family: inherit; color: var(--text); outline: none; resize: none; min-height: 52px; }
@@ -133,7 +131,6 @@
   .bp-input-group { display: flex; flex-direction: column; gap: 4px; flex: 1; }
   .bp-input-label { font-size: 11px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; }
   .bp-input { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 12px; font-size: 18px; font-family: inherit; color: var(--text); outline: none; width: 100%; text-align: center; font-weight: 700; }
-  .bp-input:focus { border-color: var(--blue); }
   .bp-note-input { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 9px 12px; font-size: 14px; font-family: inherit; color: var(--text); outline: none; margin-bottom: 10px; }
   .btn-bp-save { width: 100%; background: var(--blue); color: white; border: none; border-radius: var(--radius-sm); padding: 13px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: inherit; margin-bottom: 8px; }
   .btn-bp-save:active { opacity: 0.85; }
@@ -141,15 +138,6 @@
   .bp-normal { background: #e8f8ee; color: var(--green); }
   .bp-elevated { background: #fff8ec; color: var(--orange); }
   .bp-high { background: #ffebea; color: var(--red); }
-  /* ── QUICK ADD ── */
-  .quick-section { padding: 0 16px 0; }
-  .quick-title { font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; padding-top: 14px; }
-  .quick-scroll { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px; }
-  .quick-scroll::-webkit-scrollbar { display: none; }
-  .quick-chip { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 8px 14px; font-size: 13px; font-weight: 500; color: var(--text); white-space: nowrap; cursor: pointer; flex-shrink: 0; transition: all 0.1s; display: flex; flex-direction: column; align-items: flex-start; gap: 1px; min-width: 100px; box-shadow: 0 1px 2px rgba(0,0,0,0.06); }
-  .quick-chip:active { background: var(--bg); transform: scale(0.96); }
-  .quick-chip-name { font-size: 12px; font-weight: 600; color: var(--text); }
-  .quick-chip-macros { font-size: 10px; color: var(--muted); }
 
   /* ── MODAL ── */
   .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 200; display: none; align-items: flex-end; justify-content: center; }
@@ -179,11 +167,6 @@
   .wt-stat-val { font-size: 22px; font-weight: 700; color: var(--green); }
   .wt-stat-lbl { font-size: 11px; color: var(--muted); margin-top: 2px; }
 
-  /* ── QUICK ADD PICKER MODAL ── */
-  .quick-modal-day-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 0.5px solid var(--border); cursor: pointer; }
-  .quick-modal-day-row:last-child { border-bottom: none; }
-  .quick-modal-day { font-size: 15px; font-weight: 500; }
-  .quick-modal-check { color: var(--blue); font-size: 18px; }
 
   /* ── SECTION HEADER ── */
   .section-header { padding: 14px 20px 6px; font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
@@ -304,7 +287,7 @@
 <div class="header">
   <div class="header-top">
     <div>
-      <h1>Weekly Tracker <span style="font-size:14px;font-weight:500;color:var(--muted)">v2</span> <span id="buildNum" style="font-size:11px;font-weight:400;color:var(--muted)">build 2.1</span></h1>
+      <h1>Weekly Tracker <span style="font-size:14px;font-weight:500;color:var(--muted)">v2 <span style="font-size:11px;font-weight:400">· build 2.2</span></span></h1>
       <div class="header-badges">
         <span class="week-label" id="weekLabel"></span>
       </div>
@@ -391,8 +374,8 @@
 <div class="how-to">
   <h3>How to use</h3>
   <div class="how-step"><div class="step-num">1</div><p><b>Daily:</b> Chat with Claude — send food pics, Peloton screenshots, descriptions.</p></div>
-  <div class="how-step"><div class="step-num">2</div><p><b>Log it:</b> Tap a day, paste Claude's summary, or edit manually. Add week context above if relevant.</p></div>
-  <div class="how-step"><div class="step-num">3</div><p><b>Sunday:</b> Tap "Copy Week Data" then paste into Claude and say "generate my weekly report." Then tap "Done with it" to clear last week.</p></div>
+  <div class="how-step"><div class="step-num">2</div><p><b>Log it:</b> Tap a day, paste Claude's summary, or edit manually. Add week context above.</p></div>
+  <div class="how-step"><div class="step-num">3</div><p><b>Sunday:</b> Tap "Copy Week Data" then paste into Claude. Then tap "Done with it" to clear last week.</p></div>
 </div>
 
 <!-- Modal -->
@@ -618,7 +601,7 @@ function getSundayKey() {
 }
 function storageKey() { return "ryan_tracker_v2_" + getSundayKey(); }
 
-// ── PERSISTENT STORAGE (never cleared on week reset) ────────
+// ── PERSISTENT STORAGE ──────────────────────────────────
 var BP_STORAGE_KEY     = "ryan_bp_history";
 var WT_STORAGE_KEY     = "ryan_weight_history_persistent";
 var CONTEXT_KEY_PREFIX = "ryan_week_context_";
@@ -834,7 +817,7 @@ function showSettingsModal() {
   var s = loadSyncSettings();
   var configured = isSyncConfigured();
   var statusHtml = configured
-    ? '<div class="settings-status-row"><div class="sync-dot sync-dot-ok" style="flex-shrink:0"></div><span style="color:var(--green);font-weight:600">Connected to JSONBin</span></div>'
+    ? '<div class="settings-status-row"><div class="sync-dot sync-dot-ok" style="flex-shrink:0"></div><span style="color:var(--green);font-weight:600">Connected to JSONBin</span><span style="margin-left:auto;font-size:11px;color:var(--muted)">Bin: ' + s.binId.slice(-8) + '</span></div>'
     : '<div class="settings-status-row"><div class="sync-dot sync-dot-off" style="flex-shrink:0"></div><span style="color:var(--muted)">Not configured — saving locally only</span></div>';
 
   var html = statusHtml
@@ -915,66 +898,18 @@ function emptyWeek() {
   for (var i=0; i<DAYS.length; i++) w[DAYS[i]] = emptyDay();
   return w;
 }
-function isCurrentWeekEmpty(data) {
-  for (var i=0; i<DAYS.length; i++) { if (data[DAYS[i]] && data[DAYS[i]].calories !== "") return false; }
-  return true;
-}
-
 function loadWeek() {
   try {
     var raw = store.get(storageKey());
     if (raw) {
       var p = JSON.parse(raw);
+      // Handle new format {data: {...}, savedAt: timestamp}
       var d = p.data || p;
       for (var i=0; i<DAYS.length; i++) { if (!d[DAYS[i]]) d[DAYS[i]] = emptyDay(); }
       return d;
     }
   } catch(e) {}
   return emptyWeek();
-}
-
-function getLastSundayKey() {
-  var n = new Date();
-  // Go back 7 days from current Sunday
-  var thisSunday = new Date(n.getFullYear(), n.getMonth(), n.getDate() - n.getDay());
-  var lastSunday = new Date(thisSunday);
-  lastSunday.setDate(thisSunday.getDate() - 7);
-  var mm = String(lastSunday.getMonth()+1).padStart(2,"0");
-  var dd = String(lastSunday.getDate()).padStart(2,"0");
-  return lastSunday.getFullYear() + "-" + mm + "-" + dd;
-}
-
-function getLastWeekData() {
-  // Try to load last week's data from localStorage
-  var lastKey = "ryan_tracker_v2_" + getLastSundayKey();
-  try {
-    var raw = store.get(lastKey);
-    if (raw) {
-      var p = JSON.parse(raw);
-      return p.data || p;
-    }
-  } catch(e) {}
-  return null;
-}
-
-// Bridge: activate any day when current week is empty but last week has data
-// Persists until user explicitly clears it
-var _viewingLastWeek = false;
-function loadWeekWithBridge() {
-  var current = loadWeek();
-  // Check if we were already in bridge mode (persists across reloads)
-  try { if (sessionStorage.getItem('_bridge_active') === '1') _viewingLastWeek = true; } catch(e) {}
-  if (isCurrentWeekEmpty(current)) {
-    var lastData = getLastWeekData();
-    if (lastData) {
-      _viewingLastWeek = true;
-      try { sessionStorage.setItem('_bridge_active', '1'); } catch(e) {}
-      return lastData;
-    }
-  }
-  _viewingLastWeek = false;
-  try { sessionStorage.removeItem('_bridge_active'); } catch(e) {}
-  return current;
 }
 
 var week = loadWeekWithBridge();
@@ -994,6 +929,7 @@ function getLatestWeight() {
   for (var i=DAYS.length-1; i>=0; i--) { if (week[DAYS[i]].weight) return parseFloat(week[DAYS[i]].weight); }
   var hist = loadWeightHistory();
   if (hist.length) return hist[hist.length-1].weight;
+  if (WEIGHT_HISTORY.length) return WEIGHT_HISTORY[WEIGHT_HISTORY.length-1].weight;
   return 279.3;
 }
 function getWeeklyDrinks() {
@@ -1253,9 +1189,8 @@ function parsePaste(text) {
   // Grab the first number followed by "min" — that's the ride duration; ignore cooldown references
   var dm=text.match(/(\d+)\s*(?:min|minutes?)/i);
   if (dm) { r.exerciseDuration=String(parseInt(dm[1])); }
-  // Parse Context or Notes line into notes field
-  var ctxMatch = text.match(/(?:context|notes?)[:\s]+([^\n\r]+)/i);
-  if (ctxMatch) r.notes = ctxMatch[1].trim();
+  var ctxM=text.match(/(?:context|notes?)[:\s]+([^\n\r]+)/i);
+  if(ctxM) r.notes=ctxM[1].trim();
   var keys=Object.keys(r);
   for (var j=0; j<keys.length; j++) { if (r[keys[j]]===null||r[keys[j]]==="") delete r[keys[j]]; }
   return r;
@@ -1328,8 +1263,8 @@ function buildSparkline(weightPoints) {
 
 // ── RENDER ALL ──────────────────────────────────────────
 function renderAll() {
-  var weekRangeDisplay = _viewingLastWeek ? getLastWeekRange() + " (previous week)" : getWeekRange();
-  document.getElementById("weekLabel").textContent = weekRangeDisplay;
+  var wl = _viewingLastWeek ? getLastWeekRange()+" (previous week)" : getWeekRange();
+  document.getElementById("weekLabel").textContent = wl;
   updateHeaderExtras();
   updatePaceBanner();
   updateMilestoneBanner();
@@ -1337,7 +1272,7 @@ function renderAll() {
   renderLastWeekBanner();
   renderZepBanner();
   renderBPCard();
-  var ctx=loadWeekContext(),ctxEl=document.getElementById("weekContextInput");
+  var ctx=loadWeekContext(), ctxEl=document.getElementById("weekContextInput");
   if(ctxEl&&ctxEl.value!==ctx) ctxEl.value=ctx;
   renderSummary();
   renderDays();
@@ -1495,7 +1430,7 @@ function renderDays() {
       +'</div>'
       +'<div style="font-size:12px;color:var(--muted);padding-left:2px;margin-bottom:10px">+10 min cooldown/stretch added when reporting</div>'
       +'<div class="sec-div">📝 Notes</div>'
-      +'<textarea class="notes-input" placeholder="Anything to remember... sick, traveling, special occasion, etc." onblur="upd(\''+day+'\',\'notes\',this.value)">'+(d.notes||"")+'</textarea>';
+      +'<textarea class="notes-input" placeholder="Anything to remember..." onblur="upd(\''+day+'\',\'notes\',this.value)">'+(d.notes||"")+'</textarea>';
 
     html+='<div class="day-row" id="row_'+day+'">'
       +'<div class="day-row-header" onclick="toggleDay(\''+day+'\',event)">'
@@ -1532,8 +1467,14 @@ function handlePaste(day) {
   if(!count){showToast("Could not find values — try Edit Manually");return;}
   var mode=pasteMode[day]||"replace";
   applyParsed(day,parsed,mode);
-  if(parsed.weight){var sunday=getSundayKey(),dayDate=new Date(sunday+"T12:00:00");dayDate.setDate(dayDate.getDate()+DAYS.indexOf(day));addWeightEntry(dayDate.toISOString().slice(0,10),parseFloat(parsed.weight));}
-  saveWeek();
+  if(parsed.weight){
+    var wkSun=_viewingLastWeek?getLastSundayKey():getSundayKey();
+    var dd=new Date(wkSun+"T12:00:00"); dd.setDate(dd.getDate()+DAYS.indexOf(day));
+    addWeightEntry(dd.toISOString().slice(0,10),parseFloat(parsed.weight));
+  }
+  if(_viewingLastWeek){
+    store.set("ryan_tracker_v2_"+getLastSundayKey(),JSON.stringify({data:week,savedAt:Date.now()}));
+  } else { saveWeek(); }
   activeTab[day]="manual";
   showToast((mode==="add"?"Added to":"Filled")+" "+count+" field"+(count!==1?"s":"")+" for "+day);
   renderAll();
@@ -1542,57 +1483,95 @@ function handlePaste(day) {
 function upd(day,key,val) {
   week[day][key]=val;
   if(key==="weight"&&val){
-    var wkSunday=_viewingLastWeek?getLastSundayKey():getSundayKey();
-    var dayDate=new Date(wkSunday+"T12:00:00");
-    dayDate.setDate(dayDate.getDate()+DAYS.indexOf(day));
-    addWeightEntry(dayDate.toISOString().slice(0,10),parseFloat(val));
+    var wkSun=_viewingLastWeek?getLastSundayKey():getSundayKey();
+    var dd=new Date(wkSun+"T12:00:00"); dd.setDate(dd.getDate()+DAYS.indexOf(day));
+    addWeightEntry(dd.toISOString().slice(0,10),parseFloat(val));
   }
   if(_viewingLastWeek){
-    // Save edits to last week's key, not current week
-    store.set("ryan_tracker_v2_"+getLastSundayKey(), JSON.stringify({data:week,savedAt:Date.now()}));
-  } else {
-    saveWeek();
-  }
+    store.set("ryan_tracker_v2_"+getLastSundayKey(),JSON.stringify({data:week,savedAt:Date.now()}));
+  } else { saveWeek(); }
   updateHeaderExtras(); updatePaceBanner(); updateMilestoneBanner(); renderSummary(); renderDays();
 }
 function resetWeek() {
-  if(confirm("Reset all data for this week? BP history and weight history will be kept.")){week=emptyWeek();activeTab={};pasteMode={};openDay=null;store.remove(getContextKey());saveWeek();renderAll();}
+  if(confirm("Reset all data for this week? BP and weight history are kept.")){week=emptyWeek();activeTab={};pasteMode={};openDay=null;store.remove(getContextKey());saveWeek();renderAll();}
 }
 
 // ── NEW WEEK HANDLING ────────────────────────────────────
+function getLastSundayKey() {
+  var n = new Date();
+  // Go back 7 days from current Sunday
+  var thisSunday = new Date(n.getFullYear(), n.getMonth(), n.getDate() - n.getDay());
+  var lastSunday = new Date(thisSunday);
+  lastSunday.setDate(thisSunday.getDate() - 7);
+  var mm = String(lastSunday.getMonth()+1).padStart(2,"0");
+  var dd = String(lastSunday.getDate()).padStart(2,"0");
+  return lastSunday.getFullYear() + "-" + mm + "-" + dd;
+}
+
+function getLastWeekData() {
+  // Try to load last week's data from localStorage
+  var lastKey = "ryan_tracker_v2_" + getLastSundayKey();
+  try {
+    var raw = store.get(lastKey);
+    if (raw) {
+      var p = JSON.parse(raw);
+      return p.data || p;
+    }
+  } catch(e) {}
+  return null;
+}
+
+function isCurrentWeekEmpty(data) {
+  for (var i=0; i<DAYS.length; i++) {
+    if (data[DAYS[i]] && data[DAYS[i]].calories !== "") return false;
+  }
+  return true;
+}
+
+var _viewingLastWeek = false;
+
+function loadWeekWithBridge() {
+  var current = loadWeek();
+  // Restore from persistent flag
+  if (store.get('ryan_bridge_active') === '1') {
+    var lastData = getLastWeekData();
+    if (lastData) { _viewingLastWeek = true; return lastData; }
+    else { store.remove('ryan_bridge_active'); }
+  }
+  if (isCurrentWeekEmpty(current)) {
+    var lastData = getLastWeekData();
+    if (lastData) {
+      _viewingLastWeek = true;
+      store.set('ryan_bridge_active', '1');
+      return lastData;
+    }
+  }
+  _viewingLastWeek = false;
+  return current;
+}
 
 
 function isSundayAndHasLastWeek() {
-  return getLastWeekData() !== null; // show any day
+  if (new Date().getDay() !== 0) return false; // only Sunday
+  return getLastWeekData() !== null;
 }
 
 function renderNewWeekBanner() { /* replaced by renderLastWeekBanner */ }
 function renderLastWeekBanner() {
   var el = document.getElementById("lastWeekBanner");
-  if(!el) return;
-  if (_viewingLastWeek) {
-    // Sunday bridge mode — showing last week's data in the day list
-    el.style.display="block";
-    el.className="lastweek-banner";
-    el.innerHTML='<div class="lastweek-title">📋 Viewing Previous Week</div>'
-      +'<div class="lastweek-main">Add any missing entries, then copy &amp; clear when ready</div>'
-      +'<div class="lastweek-btns">'
-      +'<button class="btn-lw-copy" onclick="copyAndPromptClear()">📋 Copy for Report</button>'
-      +'<button class="btn-lw-newweek" onclick="startNewWeek()">✓ Done with it</button>'
-      +'</div>';
-  } else if (isSundayAndHasLastWeek())) {
-    // Separate last week data exists (shouldn't normally happen with bridge active)
-    el.style.display="block";
-    el.className="lastweek-banner";
-    var prevRange=getLastWeekRange();
-    el.innerHTML='<div class="lastweek-title">📋 Previous Week Ready</div>'
-      +'<div class="lastweek-main">'+prevRange+'</div>'
-      +'<div class="lastweek-btns">'
-      +'<button class="btn-lw-copy" onclick="copyLastWeekData()">📋 Copy for Report</button>'
-      +'<button class="btn-lw-newweek" onclick="startNewWeek()">✓ Done with it</button>'
-      +'</div>';
+  if (!el) return;
+  var show = _viewingLastWeek || isSundayAndHasLastWeek() || store.get('ryan_bridge_active') === '1';
+  if (show) {
+    el.style.display = "block";
+    el.className = "lastweek-banner";
+    el.innerHTML = '<div class="lastweek-title">📋 Viewing Previous Week</div>'
+      + '<div class="lastweek-main">Add any missing entries, then copy &amp; clear when ready</div>'
+      + '<div class="lastweek-btns">'
+      + '<button class="btn-lw-copy" onclick="copyAndClearRyan()">📋 Copy for Report</button>'
+      + '<button class="btn-lw-newweek" onclick="doneWithLastWeekRyan()">✓ Done with it</button>'
+      + '</div>';
   } else {
-    el.style.display="none";
+    el.style.display = "none";
   }
 }
 
@@ -1607,13 +1586,9 @@ function getLastWeekRange() {
 function copyLastWeekData() {
   var lastWeek = getLastWeekData();
   if (!lastWeek) { showToast("No last week data found"); return; }
+  // Build report text from last week
   var lastRange = getLastWeekRange();
-  var prevCtx=store.get(CONTEXT_KEY_PREFIX+getLastSundayKey())||"";
-  var bpHistLW=loadBPHistory(),prevSun=getLastSundayKey(),prevSat=new Date(prevSun+"T12:00:00");
-  prevSat.setDate(prevSat.getDate()+6);var prevSatStr=prevSat.toISOString().slice(0,10);
-  var lastWeekBP=bpHistLW.filter(function(e){return e.date>=prevSun&&e.date<=prevSatStr;});
   var lines = ["WEEKLY LOG — " + lastRange, ""];
-  if(prevCtx)lines.push("Week Context: "+prevCtx,"");
   for (var i=0; i<DAYS.length; i++) {
     var day=DAYS[i], d=lastWeek[day];
     if (!d) continue;
@@ -1642,47 +1617,35 @@ function copyLastWeekData() {
     lines.push("Total alcohol: "+td+" drink(s)");
     if(lw)lines.push("Latest weight: "+lastWeek[lw].weight+" lbs (−"+(WEIGHT_START-parseFloat(lastWeek[lw].weight)).toFixed(1)+" lbs from start)");
   }
-  if(lastWeekBP.length){lines.push("","--- BLOOD PRESSURE ---");lastWeekBP.forEach(function(e){lines.push(e.date+": "+e.sys+"/"+e.dia+(e.note?" ("+e.note+")":""));});}
   var text = lines.join("\n");
   var btn = document.querySelector(".btn-copy-report");
   function ok() { if(btn){btn.textContent="✓ Copied!";setTimeout(function(){btn.textContent="Copy Report Data";},2500);} }
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(ok).catch(function(){fb(text,ok);});}else{fb(text,ok);}
 }
 
-function copyAndPromptClear() {
-  // Copy last week data then offer to clear
+function copyAndClearRyan() {
   copyLastWeekData();
-  setTimeout(function() {
-    showToast("Data copied! Tap Done with it when ready to start new week.");
-  }, 300);
+  setTimeout(function(){ showToast("Copied! Tap Done with it when ready."); }, 300);
 }
-
-async function startNewWeek() {
-  if (!confirm("Mark last week as done and clear it? Make sure you've copied the data first.")) return;
-  // If in bridge mode, save any edits made to last week back to last week's key first
+async function doneWithLastWeekRyan() {
+  if (!confirm("Clear last week and start fresh? Make sure you've copied the data first.")) return;
   if (_viewingLastWeek) {
-    store.set("ryan_tracker_v2_" + getLastSundayKey(), JSON.stringify({ data: week, savedAt: Date.now() }));
+    store.set("ryan_tracker_v2_"+getLastSundayKey(), JSON.stringify({data:week,savedAt:Date.now()}));
   }
   if (isSyncConfigured()) {
-    setSyncStatus("saving", "Archiving...");
-    var record = await jbRead() || { weeks: {}, zeplog: [], bp: [], weightHistory: [], contexts: {} };
-    if (!record.weeks) record.weeks = {};
+    setSyncStatus("saving","Archiving...");
+    var record = await jbRead() || {weeks:{},zeplog:[],bp:[],weightHistory:[],contexts:{}};
+    if(!record.weeks) record.weeks={};
     var lastData = _viewingLastWeek ? week : getLastWeekData();
-    if (lastData) {
-      record.weeks["ryan_tracker_v2_"+getLastSundayKey()] = { data: lastData, savedAt: Date.now(), archived: true };
-      await jbWrite(record);
-    }
+    if(lastData){ record.weeks["ryan_tracker_v2_"+getLastSundayKey()]={data:lastData,savedAt:Date.now(),archived:true}; await jbWrite(record); }
   }
-  store.remove("ryan_tracker_v2_" + getLastSundayKey());
+  store.remove("ryan_tracker_v2_"+getLastSundayKey());
+  store.remove('ryan_bridge_active');
   _viewingLastWeek = false;
-  try { sessionStorage.removeItem('_bridge_active'); } catch(e) {}
-  week = loadWeek();
-  openDay = DAYS[todayIdx()];
-  activeTab = {}; pasteMode = {};
-  showToast("New week started!");
-  renderAll();
-  renderDays();
+  week = loadWeek(); openDay=DAYS[todayIdx()]; activeTab={}; pasteMode={};
+  showToast("New week started!"); renderAll(); renderDays();
 }
+async function startNewWeek() { doneWithLastWeekRyan(); }
 function showToast(msg) {
   var t=document.getElementById("toast"); t.textContent=msg; t.classList.add("toast-show");
   setTimeout(function(){t.classList.remove("toast-show");},2200);
@@ -1690,13 +1653,12 @@ function showToast(msg) {
 
 // ── COPY WEEK DATA ───────────────────────────────────────
 function copyData() {
-  var activeSun = _viewingLastWeek ? getLastSundayKey() : getSundayKey();
-  var activeRange = _viewingLastWeek ? getLastWeekRange() : getWeekRange();
-  var ctx = _viewingLastWeek ? (store.get(CONTEXT_KEY_PREFIX+getLastSundayKey())||"") : loadWeekContext();
-  var bpHist=loadBPHistory(),sat=new Date(activeSun+"T12:00:00");
-  sat.setDate(sat.getDate()+6);var satStr=sat.toISOString().slice(0,10);
-  var weekBP=bpHist.filter(function(e){return e.date>=activeSun&&e.date<=satStr;});
-  var lines=["WEEKLY LOG — "+activeRange,""];
+  if(_viewingLastWeek){ copyLastWeekData(); return; }
+  var ctx=loadWeekContext();
+  var bpHist=loadBPHistory(),sun=getSundayKey(),sat=new Date(sun+"T12:00:00");
+  sat.setDate(sat.getDate()+6); var satStr=sat.toISOString().slice(0,10);
+  var weekBP=bpHist.filter(function(e){return e.date>=sun&&e.date<=satStr;});
+  var lines=["WEEKLY LOG — "+getWeekRange(),""];
   if(ctx)lines.push("Week Context: "+ctx,"");
   for(var i=0;i<DAYS.length;i++){
     var day=DAYS[i], d=week[day];
@@ -1773,8 +1735,8 @@ function showBPModal() { showBPHistory(); }
 function showBPHistory() {
   var hist=loadBPHistory();
   var html='<div style="margin-bottom:14px"><button class="btn-bp-save" onclick="showBPLogForm()" style="margin-bottom:0">+ Log New Reading</button></div>';
-  if(!hist.length){ html+='<p class="detail-empty">No readings logged yet</p>'; }
-  else {
+  if(!hist.length){html+='<p class="detail-empty">No readings logged yet</p>';}
+  else{
     var lastMonth="";
     hist.forEach(function(e){
       var month=e.date.slice(0,7);
@@ -1797,7 +1759,7 @@ function submitBPEntry() {
   addBPEntry(sys,dia,note); renderBPCard(); showToast("BP logged: "+sys+"/"+dia); showBPHistory();
 }
 
-// ── INIT ────────────────────────────────────────────────
+// ── INIT ─────────────────────────────────────────────────
 function init() {
   renderAll();
   openDay = DAYS[todayIdx()];
