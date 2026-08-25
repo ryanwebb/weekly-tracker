@@ -1492,6 +1492,28 @@ function importBackup(event) {
 }
 
 // ── INIT ─────────────────────────────────────────────────
+// Diagnostic helper - call from Safari: javascript:pamDiag()
+function pamDiag() {
+  var prevKey = "pam_tracker_v2_" + getPrevSundayKey();
+  var prevKeyV1 = "pam_tracker_v1_" + getPrevSundayKey();
+  var currKey = storageKey();
+  var prevData = store.get(prevKey);
+  var prevDataV1 = store.get(prevKeyV1);
+  var currData = store.get(currKey);
+  var bridgeFlag = '';
+  try { bridgeFlag = sessionStorage.getItem('_pam_bridge'); } catch(e) {}
+  alert(
+    "prevSundayKey: " + getPrevSundayKey() + "\n" +
+    "currSundayKey: " + getSundayKey() + "\n" +
+    "v2 prev data: " + (prevData ? "EXISTS (" + prevData.length + " chars)" : "NULL") + "\n" +
+    "v1 prev data: " + (prevDataV1 ? "EXISTS (" + prevDataV1.length + " chars)" : "NULL") + "\n" +
+    "curr data: " + (currData ? "EXISTS (" + currData.length + " chars)" : "NULL") + "\n" +
+    "_viewingLastWeek: " + _viewingLastWeek + "\n" +
+    "sessionStorage bridge: " + bridgeFlag + "\n" +
+    "isCurrentWeekEmpty: " + isCurrentWeekEmpty(week)
+  );
+}
+
 renderAll();
 openDay = DAYS[todayIdx()];
 renderDays();
