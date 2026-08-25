@@ -247,7 +247,7 @@
 <div class="header">
   <div class="header-top">
     <div>
-      <h1>Pam's Tracker <span style="font-size:14px;font-weight:500;color:var(--muted)">v2 <span style="font-size:11px;font-weight:400">· build 2.3</span></span></h1>
+      <h1>Pam's Tracker <span style="font-size:14px;font-weight:500;color:var(--muted)">v2 <span style="font-size:11px;font-weight:400">· build 2.4</span></span></h1>
       <div class="header-badges">
         <span class="week-label" id="weekLabel"></span>
       </div>
@@ -782,6 +782,7 @@ function renderLastWeekBanner() {
   // Show banner if: flag is set, OR prev week data exists, OR
   // week has data but current week storage key is empty (cloud loaded old data)
   var shouldShow = _viewingLastWeek || hasPrevWeekData() || 
+                   store.get('pam_bridge_active') === '1' ||
                    (weekHasData() && currentWeekStorageIsEmpty());
   if (shouldShow) {
     el.style.display = "block";
@@ -840,6 +841,7 @@ function loadWeekWithBridge() {
     if (lastData) {
       _viewingLastWeek = true;
       try { sessionStorage.setItem('_pam_bridge', '1'); } catch(e) {}
+      store.set('pam_bridge_active', '1');
       return lastData;
     }
   }
@@ -919,6 +921,7 @@ function doneWithLastWeek() {
   store.remove("pam_tracker_v2_" + getPrevSundayKey());
   store.remove("pam_tracker_v1_" + getPrevSundayKey());
   _viewingLastWeek = false;
+  store.remove('pam_bridge_active');
   try { sessionStorage.removeItem('_pam_bridge'); } catch(e) {}
   week = loadWeek();
   openDay = DAYS[todayIdx()];
