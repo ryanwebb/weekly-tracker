@@ -247,7 +247,7 @@
 <div class="header">
   <div class="header-top">
     <div>
-      <h1>Pam's Tracker <span style="font-size:14px;font-weight:500;color:var(--muted)">v2</span> <span id="buildNum" style="font-size:11px;font-weight:400;color:var(--muted)">build 2.1</span></h1>
+      <h1>Pam's Tracker <span style="font-size:14px;font-weight:500;color:var(--muted)">v2 <span style="font-size:11px;font-weight:400">· build 2.1</span></span></h1>
       <div class="header-badges">
         <span class="week-label" id="weekLabel"></span>
       </div>
@@ -754,23 +754,11 @@ function getPrevWeekData() {
 }
 function hasPrevWeekData() { return getPrevWeekData() !== null; }
 
-function isShowingLastWeekData() {
-  // Check if current week storage is empty — means we're showing last week's data
-  var currRaw = store.get(storageKey());
-  if (!currRaw) return hasPrevWeekData();
-  try {
-    var p = JSON.parse(currRaw);
-    var d = p.data || p;
-    return isCurrentWeekEmpty(d) && hasPrevWeekData();
-  } catch(e) {}
-  return false;
-}
-
 function renderLastWeekBanner() {
   var el = document.getElementById("lastWeekBanner");
   if (!el) return;
-  var showingLast = _viewingLastWeek || isShowingLastWeekData();
-  if (showingLast) {
+  // Show banner any time previous week data exists
+  if (_viewingLastWeek || hasPrevWeekData()) {
     el.style.display = "block";
     el.className = "lastweek-banner";
     el.innerHTML = '<div class="lastweek-title">📋 Viewing Previous Week</div>'
